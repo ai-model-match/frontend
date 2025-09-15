@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="450"
+   height="254.92784"
+   viewBox="0 0 119.06249 67.44966"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient11">
+      <stop
+         id="stop8"
+         stop-color="#ff1e27"
+         offset="0"
+         style="stop-color:#f3003f;stop-opacity:1;" />
+      <stop
+         id="stop7"
+         stop-color="#7d141d"
+         offset="1"
+         style="stop-color:#800008;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient6">
+      <stop
+         id="stop5"
+         stop-color="#7d141d"
+         offset="0"
+         style="stop-color:#800008;stop-opacity:1;" />
+      <stop
+         id="stop6"
+         stop-color="#ff1e27"
+         offset="1"
+         style="stop-color:#f3003f;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2">
+      <stop
+         style="stop-color:#cdcdcd;stop-opacity:1;"
+         offset="0"
+         id="stop2" />
+      <stop
+         style="stop-color:#f1f1f1;stop-opacity:1;"
+         offset="0.41991341"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="SvgjsLinearGradient1015">
+      <stop
+         id="SvgjsStop1016"
+         stop-color="#7d141d"
+         offset="0"
+         style="stop-color:#800008;stop-opacity:1;" />
+      <stop
+         id="SvgjsStop1017"
+         stop-color="#ff1e27"
+         offset="1"
+         style="stop-color:#f3003f;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient6"
+       id="linearGradient7"
+       gradientTransform="scale(1.0745664,0.9306079)"
+       x1="19.981083"
+       y1="27.179008"
+       x2="73.079704"
+       y2="27.179008"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#SvgjsLinearGradient1015"
+       id="linearGradient8"
+       gradientTransform="scale(0.62591589,1.5976588)"
+       x1="124.00069"
+       y1="17.407347"
+       x2="151.77757"
+       y2="17.407347"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient11"
+       id="linearGradient9"
+       gradientTransform="scale(0.62591589,1.5976588)"
+       x1="35.76519"
+       y1="17.407347"
+       x2="7.9882927"
+       y2="17.407347"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient2"
+       id="linearGradient3"
+       x1="39.624516"
+       y1="79.311996"
+       x2="39.624516"
+       y2="0.062980473"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="scale(1.709379,1.7066666)" />
+  </defs>
+  <g
+     id="layer2"
+     style="display:none"
+     transform="translate(-8.2020842,-34.008506)">
+    <rect
+       style="display:inline;vector-effect:non-scaling-stroke;fill:url(#linearGradient3);fill-opacity:1;stroke:none;stroke-width:0.451913;stroke-dasharray:none;stroke-opacity:1;-inkscape-stroke:hairline"
+       id="rect2"
+       width="135.46666"
+       height="135.46666"
+       x="1.110223e-16"
+       y="0" />
+  </g>
+  <g
+     id="g3"
+     style="display:inline"
+     transform="translate(-8.2020842,-34.008506)">
+    <rect
+       style="display:inline;vector-effect:non-scaling-stroke;fill:#000000;fill-opacity:0;stroke:none;stroke-width:0.451913;stroke-dasharray:none;stroke-opacity:1;-inkscape-stroke:hairline"
+       id="rect3"
+       width="135.46666"
+       height="135.46666"
+       x="1.110223e-16"
+       y="0" />
+  </g>
+  <g
+     id="layer1"
+     transform="matrix(1.7889787,0,0,1.7889787,-11.468844,-37.275266)">
+    <polyline
+       points="77.614,35.736 82.189,27.811 95,50 82.189,72.189 77.614,64.264 85.85,50 77.614,35.736 "
+       style="clip-rule:evenodd;overflow:visible;fill:url(#linearGradient8);fill-rule:evenodd"
+       id="polyline2"
+       transform="matrix(0.76300001,0,0,0.76300001,0.47916655,1.5374999)" />
+    <polyline
+       points="17.811,72.189 5,50 17.811,27.811 22.386,35.736 14.151,50 22.386,64.264 17.811,72.189 "
+       style="clip-rule:evenodd;overflow:visible;fill:url(#linearGradient9);fill-rule:evenodd"
+       id="polyline3"
+       transform="matrix(0.76300001,0,0,0.76300001,2.5958332,1.5374999)" />
+    <path
+       d="m 38.481,69.952 -1.83,3.17 H 63.35 l -1.83,-3.17 H 38.481 M 63.35,26.878 H 36.651 l 1.83,3.17 h 23.038 l 1.831,-3.17 M 40.311,33.218 30.622,50 40.311,66.782 H 59.689 L 69.378,50 59.689,33.218 H 40.311 M 35.736,74.707 21.471,50 35.735,25.293 H 64.264 L 78.529,50 64.265,74.707 H 35.736"
+       style="clip-rule:evenodd;overflow:visible;fill:url(#linearGradient7);fill-rule:evenodd"
+       id="path2"
+       transform="matrix(0.76300001,0,0,0.76300001,1.5374999,1.5374999)" />
+  </g>
+</svg>
