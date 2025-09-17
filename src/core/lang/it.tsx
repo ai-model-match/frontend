@@ -1,5 +1,6 @@
 export const itTranslations = {
     appName: "AI MODEL MATCH",
+    searchPlaceholderField: "Cerca...",
     notFoundTitle: "Hai trovato un posto segreto",
     notFoundDescription: "Sfortunatamente, é solo una pagina 404. Magari hai scritto male l'indirizzo web, o la pagina é stata spostata sotto un altro URL.",
     notFoundButton: "Portami a casa",
@@ -19,4 +20,10 @@ export const itTranslations = {
     useCaseIsActive: "Attivo",
     useCaseCreatedAt: "Creato il",
     useCaseUpdatedAt: "Aggiornato il",
+    useCaseNoResultsTitle: "Oops... nessun risultato trovato!",
+    useCaseNoResultsBtn: "RIMUOVI FILTRI",
+    useCaseCreateNewTitle: "Crea il tuo primo Use Case",
+    useCaseCreateNewText: "Uno Use Case rappresenta un goal che vuoi che la tua applicazione AI raggiunga.",
+    useCaseCreateNewSuggestion: "Ad esempio, potresti creare uno Use Case dove l'AI chieda come un utente si sente per poter consigliargli i 3 migliori film da guardare.",
+    useCaseCreateNewBtn: "INIZIAMO",
 };

@@ -9,15 +9,18 @@ export type useCaseDto = {
     createdAt: string;
     updatedAt: string;
 };
-type listUseCaseInputDto = {
+
+export type orderByOptions = 'title' | 'code' | 'active' | 'created_at' | 'updated_at' | 'relevance';
+
+export type listUseCaseInputDto = {
     page: number;
     pageSize: number;
     orderDir: 'asc' | 'desc';
-    orderBy: string;
+    orderBy: orderByOptions;
     searchKey: string | null;
 };
 
-type listUseCasesOutputDto = {
+export type listUseCasesOutputDto = {
     hasNext: boolean;
     totalCount: number;
     items: useCaseDto[];

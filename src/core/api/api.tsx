@@ -7,7 +7,7 @@ export const callApi = async (url: string, method: 'POST' | 'GET' | 'HEAD' | 'PU
         headers['Authorization'] = `Bearer ${accessToken}`;
     }
 
-    let finalUrl = `http://localhost:8001${url}`;
+    let finalUrl = `${import.meta.env.VITE_BACKEND_URL}${url}`;
     let fetchBody: string | undefined;
 
     if (method === 'GET' || method === 'HEAD') {

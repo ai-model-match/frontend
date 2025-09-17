@@ -36,7 +36,7 @@ export default function LanguageSelector({ absolute }: LanguageSelectorProps) {
             <Menu shadow="lg" position="bottom-end" width={130} offset={5}>
                 <Menu.Target>
                     <Button variant="default">
-                        <Text size="lg">{language.flag}</Text>
+                        <Text size="xl">{language.flag}</Text>
                     </Button>
                 </Menu.Target>
                 <Menu.Dropdown >

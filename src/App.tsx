@@ -12,6 +12,14 @@ import NotFound from "./pages/not-found/not-found.page";
 import UseCasePage from "./pages/use-case/use-case";
 import { cssVariablesResolver, mantineTheme } from "./theme";
 
+/*
+Import all assets to be used as components.
+We can apply style of SVGs
+*/
+export const assets = import.meta.glob('./assets/*.svg', {
+    eager: true,
+    import: 'ReactComponent',
+});
 
 export default function App() {
 

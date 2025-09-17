@@ -1,6 +1,6 @@
 
 import { Grid, Skeleton } from '@mantine/core';
-import { LayoutComponent } from '../../components/layout/layout.component';
+import LayoutComponent from '../../components/layout/layout.component';
 import AuthGuard from '../../core/auth/auth.guard';
 
 

@@ -3,7 +3,7 @@ import Header from '../header/header.component';
 import { MenuComponent } from '../menu/menu.component';
 import classes from './layout.module.css';
 
-export function LayoutComponent({ children }: { children: React.ReactNode; }) {
+export default function LayoutComponent({ children }: { children: React.ReactNode; }) {
     return (
         <div>
             <Header></Header>

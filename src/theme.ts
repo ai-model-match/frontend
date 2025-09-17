@@ -79,12 +79,14 @@ export const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
     variables: {
     },
     light: {
+        "--aimm-svg-color": theme.colors.brand[8],
         "--aimm-bg-paper": theme.other.bpPaperLight,
         "--aimm-gradient-bg-start": theme.other.lightBgGradientBgStart,
         "--aimm-gradient-bg-end": theme.other.lightBgGradientBgEnd,
         "--aimm-gradient-bg": `linear-gradient(135deg, ${theme.other.lightBgGradientBgStart} 0%, ${theme.other.lightBgGradientBgEnd} 70%)`,
     },
     dark: {
+        "--aimm-svg-color": theme.colors.brand[8],
         "--aimm-bg-paper": theme.other.bpPaperDark,
         "--aimm-gradient-bg-start": theme.other.darkBgGradientBgStart,
         "--aimm-gradient-bg-end": theme.other.darkBgGradientBgEnd,
