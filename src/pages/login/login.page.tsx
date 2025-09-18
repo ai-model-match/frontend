@@ -44,10 +44,20 @@ export default function LoginPage() {
                 });
                 auth.refresh(data.accessToken, data.refreshToken);
                 setAuthenticated(true);
-            } catch (err) {
-                auth.logout();
-                setPageLoaded(true);
-            } finally {
+            } catch (err: any) {
+                switch (err.message) {
+                    case 'refresh-token-failed': {
+                        auth.logout();
+                        setPageLoaded(true);
+                        break;
+                    }
+                    default: {
+                        auth.logout();
+                        alert(t('appGenericError'));
+                        setPageLoaded(true);
+                        break;
+                    }
+                }
             }
         })();
     }, [auth.loaded]);
@@ -58,7 +68,7 @@ export default function LoginPage() {
         <Box className={classes.root}>
             <LanguageSelector absolute></LanguageSelector>
             <Container className={classes.boxLogin}>
-                <Paper >
+                <Paper p={'xl'} >
                     <Image src="/icon.svg" alt="Login Icon" className={classes.boxLogo} />
                     <Title className={classes.boxTitle} order={2} >
                         {t('appName')}

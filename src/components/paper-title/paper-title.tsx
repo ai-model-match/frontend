@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Text, TextInput, ThemeIcon } from "@mantine/core";
+import { ActionIcon, Button, Group, Text, TextInput, ThemeIcon } from "@mantine/core";
 import { type Icon, IconSearch, IconX } from "@tabler/icons-react";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useState } from "react";
@@ -9,10 +9,12 @@ type PaperTitleProps = {
     title: string;
     showSearch?: boolean;
     onSearchChange?: (value: string) => void;
+    btnIcon?: Icon;
+    btnClick?: () => void;
 
 };
 
-export default function PaperTitle({ icon: Icon, title, showSearch, onSearchChange }: PaperTitleProps) {
+export default function PaperTitle({ icon: Icon, title, showSearch, onSearchChange, btnIcon: BtnIcon, btnClick }: PaperTitleProps) {
     // Services
     const { t } = useTranslation();
     const [searchKeyValue, setSearchKeyValue] = useState<string>('');
@@ -20,16 +22,16 @@ export default function PaperTitle({ icon: Icon, title, showSearch, onSearchChan
     // Callbacks
     const debouncedSearch = useCallback(
         debounce((value: string) => {
-            setSearchKeyValue(value);
+            if (onSearchChange) {
+                onSearchChange(value);
+            }
         }, 300),
         []
     );
 
     // Effects
     useEffect(() => {
-        if (onSearchChange) {
-            onSearchChange(searchKeyValue);
-        }
+        debouncedSearch(searchKeyValue);
     }, [searchKeyValue]);
 
     useEffect(() => {
@@ -45,10 +47,6 @@ export default function PaperTitle({ icon: Icon, title, showSearch, onSearchChan
     }, [debouncedSearch]);
 
     // Handlers
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        debouncedSearch(e.currentTarget.value);
-    };
-
     const handleClearBtn = () => {
         setSearchKeyValue('');
     };
@@ -56,21 +54,30 @@ export default function PaperTitle({ icon: Icon, title, showSearch, onSearchChan
     // Content
     return (
         <Group justify="space-between" align="center" mb={30}>
-            <Group justify="space-between" align="flex-start">
+            <Group justify="left" align="flex-start">
                 <ThemeIcon variant="filled" c={'white'} size={30}>
                     <Icon size={18} />
                 </ThemeIcon>
                 <Text size={'lg'}>{title}</Text>
             </Group>
-            {showSearch && <TextInput
-                radius="xl"
-                onChange={handleSearchChange}
-                leftSection={<IconSearch size={18} />}
-                rightSection={searchKeyValue && <ActionIcon onClick={handleClearBtn} radius={'xl'}><IconX size={18} /></ActionIcon>}
-                placeholder={t('searchPlaceholderField')}
-                w={250}
-                ta={'right'}
-            />}
+            <Group justify="right" align="flex-end">
+                {showSearch && <TextInput
+                    id='searchField'
+                    radius="xl"
+                    value={searchKeyValue}
+                    onChange={(event) => setSearchKeyValue(event.currentTarget.value)}
+                    leftSection={<IconSearch size={18} />}
+                    rightSection={searchKeyValue && <ActionIcon onClick={handleClearBtn} radius={'xl'}><IconX size={18} /></ActionIcon>}
+                    placeholder={t('searchPlaceholderField')}
+                    w={250}
+                    ta={'right'}
+                />}
+                {BtnIcon && btnClick &&
+                    <Button size="xs" p={5} mb={3} onClick={btnClick} >
+                        <BtnIcon />
+                    </Button>
+                }
+            </Group>
         </Group>
     );
 }

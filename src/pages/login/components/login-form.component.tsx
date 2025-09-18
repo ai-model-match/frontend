@@ -36,8 +36,8 @@ export default function LoginFormComponent() {
             password: ''
         },
         validate: {
-            username: (value: string) => value.trim().length != 0 ? null : t('loginFieldRequired'),
-            password: (value: string) => value.trim().length != 0 ? null : t('loginFieldRequired')
+            username: (value: string) => value.trim().length != 0 ? null : t('fieldRequired'),
+            password: (value: string) => value.trim().length != 0 ? null : t('fieldRequired')
         }
     });
 
@@ -51,11 +51,15 @@ export default function LoginFormComponent() {
             });
             auth.login(values.username, data.accessToken, data.refreshToken);
             setLoginSuccessful(true);
-        } catch (err) {
-            form.setFieldError('username', t('loginInvalidCredentials'));
-            form.setFieldError('password', t('loginInvalidCredentials'));
-            auth.logout();
-            setLoginSuccessful(false);
+        } catch (err: any) {
+            if (err.message === 'invalid-username-or-password') {
+                form.setFieldError('username', t('loginInvalidCredentials'));
+                form.setFieldError('password', t('loginInvalidCredentials'));
+                auth.logout();
+                setLoginSuccessful(false);
+            } else {
+                alert(t('appGenericError'));
+            }
         } finally {
             setApiLoading(false);
         }

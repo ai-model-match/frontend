@@ -13,7 +13,7 @@ export const callRefreshApi = async (input: refreshInputDto): Promise<refreshOut
         refreshToken: input.refreshToken,
     });
     if (!response.ok) {
-        throw new Error('refresh-failed');
+        throw new Error('refresh-token-failed');
     }
     const data = await response.json();
     return {

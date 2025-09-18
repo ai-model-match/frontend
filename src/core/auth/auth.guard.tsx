@@ -21,7 +21,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode; }) 
         } else {
             setAuthenticated(true);
         }
-    }, [auth.loaded]);
+    }, [auth.loaded, auth.accessToken]);
 
     // Content
     return authenticated ? <>{children}</> : null;

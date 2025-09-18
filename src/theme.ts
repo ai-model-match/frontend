@@ -63,7 +63,7 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         Paper: {
             defaultProps: {
                 shadow: 'lg',
-                p: 'xl',
+                p: 'sm',
                 bg: 'var(--aimm-bg-paper)'
             }
         },
@@ -71,7 +71,12 @@ export const mantineTheme: MantineThemeOverride = createTheme({
             defaultProps: {
                 mb: 'xl'
             }
-        }
+        },
+        Modal: {
+            defaultProps: {
+                padding: 'xs'
+            },
+        },
     },
 });
 

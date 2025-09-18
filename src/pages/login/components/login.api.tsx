@@ -14,8 +14,12 @@ export const callLoginApi = async (input: loginInputDto): Promise<loginOutputDto
         username: input.username,
         password: input.password
     });
-    if (!response.ok) {
+    if (!response) {
         throw new Error('login-failed');
+    }
+    if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.errors[0]);
     }
     const data = await response.json();
     return {

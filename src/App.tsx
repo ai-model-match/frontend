@@ -5,11 +5,11 @@ import './core/lang/i18n';
 import { DirectionProvider, MantineProvider } from "@mantine/core";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./core/auth/auth.context";
-import DashboardPage from "./pages/dashboard/dashboard";
+import DashboardPage from "./pages/dashboard/dashboard.page";
 import LoginPage from "./pages/login/login.page";
 import LogoutPage from "./pages/logout/logout.page";
 import NotFound from "./pages/not-found/not-found.page";
-import UseCasePage from "./pages/use-case/use-case";
+import UseCasePage from "./pages/use-case/use-case.page";
 import { cssVariablesResolver, mantineTheme } from "./theme";
 
 /*

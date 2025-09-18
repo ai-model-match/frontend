@@ -16,7 +16,7 @@ export default function LogoutPage() {
                 if (auth.refreshToken) {
                     await callLogoutApi({ refreshToken: auth.refreshToken });
                 }
-            } catch (err) {
+            } catch (err: any) {
             } finally {
                 auth.logout();
                 navigate('/login', { replace: true });

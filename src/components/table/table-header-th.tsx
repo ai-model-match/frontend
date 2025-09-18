@@ -14,7 +14,7 @@ export default function Th({ children, reversed, sorted, onSort }: ThProps) {
         <Table.Th >
             <UnstyledButton onClick={onSort}>
                 <Group justify="space-between">
-                    <Text fw={500} fz="sm">
+                    <Text fw={600} fz="sm">
                         {children}
                     </Text>
                     <Center>

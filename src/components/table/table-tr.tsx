@@ -20,14 +20,14 @@ export default function Tr({ trKey, tds }: TrProps) {
             {tds.map((td, index) => {
                 return (
                     <Table.Td key={index} style={{ maxWidth: td.mw }}>
-                        {td.text && !td.children && !td.textWithTooltip && !td.textWithCopy && <Text size='xs'>{td.text}</Text>}
+                        {td.text && !td.children && !td.textWithTooltip && !td.textWithCopy && <Text size='sm'>{td.text}</Text>}
                         {td.text && td.textWithCopy &&
                             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                                {td.textWithTooltip && <Tooltip withArrow style={{ fontSize: '12px' }} label={td.text}><Text size='xs' truncate="end">{td.text}</Text></Tooltip>}
-                                <CopyButton value={td.text} timeout={2000}>
+                                {td.textWithTooltip && <Tooltip withArrow style={{ fontSize: '12px' }} label={td.text}><Text size='sm' truncate="end">{td.text}</Text></Tooltip>}
+                                <CopyButton value={td.text} timeout={1000}>
                                     {({ copied, copy }) => (
                                         <ActionIcon color={copied ? 'teal' : 'gray'} variant="subtle" onClick={copy}>
-                                            {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
+                                            {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
                                         </ActionIcon>
                                     )}
                                 </CopyButton>
