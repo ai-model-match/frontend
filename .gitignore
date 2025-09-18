@@ -3,4 +3,3 @@ dist
 .git
 .vscode
 npm-debug.log
-.DS_Store
