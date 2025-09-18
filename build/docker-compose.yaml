@@ -1,0 +1,19 @@
+services:
+  mm-webapp:
+    build:
+      context: ../
+      dockerfile: build/docker-webapp
+      target: production
+    image: frontend-webapp
+    restart: unless-stopped
+    ports:
+      - 5173:5173
+    environment:
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://localhost:8001}
+      VITE_DATE_FORMAT: ${VITE_DATE_FORMAT:-yyyy-MM-dd, HH:mm}
+    networks:
+      - frontend-network
+
+networks:
+  frontend-network:
+    driver: bridge
