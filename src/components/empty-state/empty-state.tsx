@@ -1,15 +1,14 @@
-import { Box, Button, Stack, Text, Title } from "@mantine/core";
-import { assets } from "../../App";
+import { Box, Button, Stack, Text, Title } from '@mantine/core';
+import { assets } from '../../App';
 
-
-type EmptyStateProps = {
+interface EmptyStateProps {
     title: string;
     text?: string;
     suggestion?: string;
-    image: any;
+    image: string;
     btnText: string;
     btnHandle: () => void;
-};
+}
 
 export default function EmptyState(props: EmptyStateProps) {
     // Import image based on name
@@ -18,11 +17,25 @@ export default function EmptyState(props: EmptyStateProps) {
     // Content
     return (
         <Stack align="center" gap="xs">
-            <Box w={200} maw={200}><Box mt={30} component={Image} /></Box>
-            <Title order={3} mt={30} mb={0} maw={550}>{props.title}</Title>
-            {props.text && <Text size="sm" ta={"center"} maw={550}>{props.text}</Text>}
-            {props.suggestion && <Text maw={550} fs={"italic"} size="sm" ta={"center"} mt={20}>{props.suggestion}</Text>}
-            <Button mt={20} mb={40} onClick={props.btnHandle}>{props.btnText}</Button>
+            <Box w={200} maw={200}>
+                <Box mt={30} component={Image} />
+            </Box>
+            <Title order={3} mt={30} mb={0} maw={550}>
+                {props.title}
+            </Title>
+            {props.text && (
+                <Text size="sm" ta={'center'} maw={550}>
+                    {props.text}
+                </Text>
+            )}
+            {props.suggestion && (
+                <Text maw={550} fs={'italic'} size="sm" ta={'center'} mt={20}>
+                    {props.suggestion}
+                </Text>
+            )}
+            <Button mt={20} mb={40} onClick={props.btnHandle}>
+                {props.btnText}
+            </Button>
         </Stack>
     );
 }

@@ -1,4 +1,9 @@
-export const callApi = async (url: string, method: 'POST' | 'GET' | 'HEAD' | 'PUT' | 'PATCH' | 'DELETE', accessToken: string | null, body: Record<string, unknown> | null = null) => {
+export const callApi = async (
+    url: string,
+    method: 'POST' | 'GET' | 'HEAD' | 'PUT' | 'PATCH' | 'DELETE',
+    accessToken: string | null,
+    body: Record<string, unknown> | null = null,
+) => {
     const headers: Record<string, string> = {
         'Content-Type': 'application/json',
     };
@@ -15,7 +20,7 @@ export const callApi = async (url: string, method: 'POST' | 'GET' | 'HEAD' | 'PU
             const query = new URLSearchParams(
                 Object.entries(body)
                     .filter(([, value]) => value != null)
-                    .map(([key, value]) => [key, String(value)])
+                    .map(([key, value]) => [key, String(value)]),
             );
             finalUrl += `?${query.toString()}`;
         }
@@ -30,4 +35,3 @@ export const callApi = async (url: string, method: 'POST' | 'GET' | 'HEAD' | 'PU
         body: fetchBody,
     });
 };
-

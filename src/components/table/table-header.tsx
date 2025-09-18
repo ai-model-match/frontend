@@ -1,6 +1,6 @@
-import { Table } from "@mantine/core";
-import { useState } from "react";
-import Th from "./table-header-th";
+import { Table } from '@mantine/core';
+import { useState } from 'react';
+import Th from './table-header-th';
 
 type Columns = {
     key: string;
@@ -16,25 +16,34 @@ export default function TableHeader({ sortBy, setSorting, columns }: TableHeader
     // Services
     const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-
     // Handlers
     const setSortingHandler = (key: string) => {
-        key === sortBy ? setReverseSortDirection(!reverseSortDirection) : setReverseSortDirection(false);
+        const newDirection = key === sortBy ? !reverseSortDirection : false;
+        setReverseSortDirection(newDirection);
         setSorting(key, reverseSortDirection ? 'desc' : 'asc');
     };
 
     // Content
-    return <Table.Thead>
-        <Table.Tr>
-            {columns.map(x => {
-                if (x.sortable) {
-                    return <Th key={x.key} sorted={sortBy === x.key}
-                        reversed={reverseSortDirection}
-                        onSort={() => setSortingHandler(x.key)}>{x.title}</Th>;
-                } else {
-                    return <Table.Th key={x.key}>{x.title}</Table.Th>;
-                }
-            })}
-        </Table.Tr>
-    </Table.Thead>;
+    return (
+        <Table.Thead>
+            <Table.Tr>
+                {columns.map((x) => {
+                    if (x.sortable) {
+                        return (
+                            <Th
+                                key={x.key}
+                                sorted={sortBy === x.key}
+                                reversed={reverseSortDirection}
+                                onSort={() => setSortingHandler(x.key)}
+                            >
+                                {x.title}
+                            </Th>
+                        );
+                    } else {
+                        return <Table.Th key={x.key}>{x.title}</Table.Th>;
+                    }
+                })}
+            </Table.Tr>
+        </Table.Thead>
+    );
 }

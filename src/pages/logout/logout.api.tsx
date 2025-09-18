@@ -1,4 +1,4 @@
-import { callApi } from "../../core/api/api";
+import { callApi } from '../../core/api/api';
 
 type logoutInputDto = {
     refreshToken: string;

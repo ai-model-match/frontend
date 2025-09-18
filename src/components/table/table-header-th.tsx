@@ -1,5 +1,5 @@
-import { Center, Group, Table, Text, UnstyledButton } from "@mantine/core";
-import { IconChevronDown, IconChevronUp, IconSelector } from "@tabler/icons-react";
+import { Center, Group, Table, Text, UnstyledButton } from '@mantine/core';
+import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-react';
 
 interface ThProps {
     children: React.ReactNode;
@@ -11,7 +11,7 @@ interface ThProps {
 export default function Th({ children, reversed, sorted, onSort }: ThProps) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
     return (
-        <Table.Th >
+        <Table.Th>
             <UnstyledButton onClick={onSort}>
                 <Group justify="space-between">
                     <Text fw={600} fz="sm">

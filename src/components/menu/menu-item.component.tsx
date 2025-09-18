@@ -1,14 +1,14 @@
 import { Box, Collapse, Group, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { ComponentType, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import classes from './menu-item.module.css';
 
 interface LinksGroupProps {
-    icon: React.FC<any>;
+    icon: ComponentType<{ size?: number }>;
     label: string;
     link?: string;
-    items?: { label: string; link: string; }[];
+    items?: { label: string; link: string }[];
 }
 
 export function LinksGroup({ icon: Icon, label, link, items }: LinksGroupProps) {
@@ -19,23 +19,21 @@ export function LinksGroup({ icon: Icon, label, link, items }: LinksGroupProps) 
 
     // Data
     const hasItems = Array.isArray(items);
-    const isSelected = location.pathname === link;
+    const isSelected = link && location.pathname.startsWith(link);
 
     // Effects
     useEffect(() => {
         // Check if one sub-item has been selected, so open the section menu to show it
-        if (hasItems && items?.some((item) => location.pathname === item.link)) {
+        if (hasItems && items?.some((item) => location.pathname.startsWith(item.link))) {
             setOpened(true);
         }
     }, [location.pathname, hasItems, items]);
-
-    // Content
 
     // Sub-items Menu
     const subLinks = (hasItems ? items : []).map((item) => (
         <Text<'a'>
             component="a"
-            className={`${classes.link} ${location.pathname === item.link ? classes.activeLink : ''}`}
+            className={`${classes.link} ${location.pathname.startsWith(item.link) ? classes.activeLink : ''}`}
             href={item.link}
             key={item.label}
             onClick={() => navigate(item.link)}
@@ -44,11 +42,13 @@ export function LinksGroup({ icon: Icon, label, link, items }: LinksGroupProps) 
         </Text>
     ));
 
-
     // Menu items
     return (
         <>
-            <UnstyledButton onClick={link != null ? () => navigate(link) : () => setOpened((o) => !o)} className={`${classes.control} ${isSelected ? classes.active : ''}`}>
+            <UnstyledButton
+                onClick={link != null ? () => navigate(link) : () => setOpened((o) => !o)}
+                className={`${classes.control} ${isSelected ? classes.active : ''}`}
+            >
                 <Group justify="space-between" gap={0}>
                     <Box style={{ display: 'flex', alignItems: 'center' }}>
                         <ThemeIcon variant="filled" c={'white'} size={30}>
@@ -65,8 +65,8 @@ export function LinksGroup({ icon: Icon, label, link, items }: LinksGroupProps) 
                         />
                     )}
                 </Group>
-            </UnstyledButton >
-            {hasItems ? <Collapse in={opened}> {subLinks}</Collapse > : null}
+            </UnstyledButton>
+            {hasItems ? <Collapse in={opened}> {subLinks}</Collapse> : null}
         </>
     );
 }

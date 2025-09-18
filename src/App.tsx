@@ -1,16 +1,17 @@
-import "@fontsource/ubuntu";
-import "@mantine/core/styles.css";
+import '@fontsource/ubuntu';
+import '@mantine/core/styles.css';
 import './core/lang/i18n';
 
-import { DirectionProvider, MantineProvider } from "@mantine/core";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { AuthProvider } from "./core/auth/auth.context";
-import DashboardPage from "./pages/dashboard/dashboard.page";
-import LoginPage from "./pages/login/login.page";
-import LogoutPage from "./pages/logout/logout.page";
-import NotFound from "./pages/not-found/not-found.page";
-import UseCasePage from "./pages/use-case/use-case.page";
-import { cssVariablesResolver, mantineTheme } from "./theme";
+import { DirectionProvider, MantineProvider } from '@mantine/core';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './core/auth/auth.context';
+import DashboardPage from './pages/dashboard/dashboard.page';
+import LoginPage from './pages/login/login.page';
+import LogoutPage from './pages/logout/logout.page';
+import NotFound from './pages/not-found/not-found.page';
+import UseCaseStepPage from './pages/use-case-step/use-case-step.page';
+import UseCasePage from './pages/use-case/use-case.page';
+import { cssVariablesResolver, mantineTheme } from './theme';
 
 /*
 Import all assets to be used as components.
@@ -22,10 +23,13 @@ export const assets = import.meta.glob('./assets/*.svg', {
 });
 
 export default function App() {
-
     return (
-        <DirectionProvider >
-            <MantineProvider theme={mantineTheme} cssVariablesResolver={cssVariablesResolver} defaultColorScheme="auto">
+        <DirectionProvider>
+            <MantineProvider
+                theme={mantineTheme}
+                cssVariablesResolver={cssVariablesResolver}
+                defaultColorScheme="auto"
+            >
                 <AuthProvider>
                     <BrowserRouter>
                         <Routes>
@@ -33,7 +37,7 @@ export default function App() {
                             <Route path="/" element={<Navigate to="/dashboard" replace />} />
                             <Route path="/dashboard" element={<DashboardPage />} />
                             <Route path="/use-cases" element={<UseCasePage />} />
-                            <Route path="/use-cases/:id/steps" element={<DashboardPage />} />
+                            <Route path="/use-cases/:id/steps" element={<UseCaseStepPage />} />
                             <Route path="/logout" element={<LogoutPage />} />
 
                             {/* Public login page */}
@@ -42,7 +46,7 @@ export default function App() {
                         </Routes>
                     </BrowserRouter>
                 </AuthProvider>
-            </MantineProvider >
-        </DirectionProvider >
+            </MantineProvider>
+        </DirectionProvider>
     );
 }

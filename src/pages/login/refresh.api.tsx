@@ -1,4 +1,4 @@
-import { callApi } from "../../core/api/api";
+import { callApi } from '../../core/api/api';
 
 type refreshInputDto = {
     refreshToken: string;
@@ -18,6 +18,6 @@ export const callRefreshApi = async (input: refreshInputDto): Promise<refreshOut
     const data = await response.json();
     return {
         accessToken: data.item.accessToken,
-        refreshToken: data.item.refreshToken
+        refreshToken: data.item.refreshToken,
     };
 };

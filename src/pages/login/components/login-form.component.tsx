@@ -1,17 +1,12 @@
-import {
-    Box,
-    Button,
-    PasswordInput,
-    TextInput,
-} from '@mantine/core';
+import { Box, Button, PasswordInput, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconKey, IconUser } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/auth.context';
+import { getErrorMessage } from '../../../core/err/err';
 import { callLoginApi } from './login.api';
-
 
 export default function LoginFormComponent() {
     // Services
@@ -28,17 +23,17 @@ export default function LoginFormComponent() {
         if (loginSuccessful) {
             navigate('/dashboard', { replace: true });
         }
-    }, [loginSuccessful]);
+    }, [loginSuccessful, navigate]);
 
     const form = useForm({
         initialValues: {
             username: '',
-            password: ''
+            password: '',
         },
         validate: {
-            username: (value: string) => value.trim().length != 0 ? null : t('fieldRequired'),
-            password: (value: string) => value.trim().length != 0 ? null : t('fieldRequired')
-        }
+            username: (value: string) => (value.trim().length != 0 ? null : t('fieldRequired')),
+            password: (value: string) => (value.trim().length != 0 ? null : t('fieldRequired')),
+        },
     });
 
     // Handles
@@ -47,18 +42,23 @@ export default function LoginFormComponent() {
             setApiLoading(true);
             const data = await callLoginApi({
                 username: values.username,
-                password: values.password
+                password: values.password,
             });
             auth.login(values.username, data.accessToken, data.refreshToken);
             setLoginSuccessful(true);
-        } catch (err: any) {
-            if (err.message === 'invalid-username-or-password') {
-                form.setFieldError('username', t('loginInvalidCredentials'));
-                form.setFieldError('password', t('loginInvalidCredentials'));
-                auth.logout();
-                setLoginSuccessful(false);
-            } else {
-                alert(t('appGenericError'));
+        } catch (err: unknown) {
+            switch (getErrorMessage(err)) {
+                case 'invalid-username-or-password': {
+                    form.setFieldError('username', t('loginInvalidCredentials'));
+                    form.setFieldError('password', t('loginInvalidCredentials'));
+                    auth.logout();
+                    setLoginSuccessful(false);
+                    break;
+                }
+                default: {
+                    alert(t('appGenericError'));
+                    break;
+                }
             }
         } finally {
             setApiLoading(false);
@@ -67,16 +67,16 @@ export default function LoginFormComponent() {
 
     // Content
     return (
-        <Box >
+        <Box>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <TextInput
                     leftSection={<IconUser size={16} />}
                     withAsterisk
-                    label='Username'
+                    label="Username"
                     placeholder={t('loginTypeUsername')}
                     key={form.key('username')}
                     {...form.getInputProps('username')}
-                    mb='sm'
+                    mb="sm"
                 />
                 <PasswordInput
                     leftSection={<IconKey size={16} />}
@@ -85,12 +85,12 @@ export default function LoginFormComponent() {
                     placeholder={t('loginTypePassword')}
                     key={form.key('password')}
                     {...form.getInputProps('password')}
-                    mb='xl'
+                    mb="xl"
                 />
-                <Button type='submit' mt={'lg'} loading={apiloading} fullWidth >
+                <Button type="submit" mt={'lg'} loading={apiloading} fullWidth>
                     {t('loginBtnLogin')}
                 </Button>
             </form>
-        </Box >
+        </Box>
     );
 }

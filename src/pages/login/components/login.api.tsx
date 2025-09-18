@@ -1,4 +1,4 @@
-import { callApi } from "../../../core/api/api";
+import { callApi } from '../../../core/api/api';
 
 type loginInputDto = {
     username: string;
@@ -12,7 +12,7 @@ type loginOutputDto = {
 export const callLoginApi = async (input: loginInputDto): Promise<loginOutputDto> => {
     const response = await callApi(`/api/v1/auth/login`, 'POST', null, {
         username: input.username,
-        password: input.password
+        password: input.password,
     });
     if (!response) {
         throw new Error('login-failed');
@@ -24,6 +24,6 @@ export const callLoginApi = async (input: loginInputDto): Promise<loginOutputDto
     const data = await response.json();
     return {
         accessToken: data.item.accessToken,
-        refreshToken: data.item.refreshToken
+        refreshToken: data.item.refreshToken,
     };
 };

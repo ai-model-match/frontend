@@ -1,8 +1,8 @@
-import { ActionIcon, Button, Group, Text, TextInput, ThemeIcon } from "@mantine/core";
-import { type Icon, IconSearch, IconX } from "@tabler/icons-react";
-import debounce from "lodash.debounce";
-import { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { ActionIcon, Button, Group, Text, TextInput, ThemeIcon } from '@mantine/core';
+import { type Icon, IconSearch, IconX } from '@tabler/icons-react';
+import debounce from 'lodash.debounce';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type PaperTitleProps = {
     icon: Icon;
@@ -11,28 +11,35 @@ type PaperTitleProps = {
     onSearchChange?: (value: string) => void;
     btnIcon?: Icon;
     btnClick?: () => void;
-
 };
 
-export default function PaperTitle({ icon: Icon, title, showSearch, onSearchChange, btnIcon: BtnIcon, btnClick }: PaperTitleProps) {
+export default function PaperTitle({
+    icon: Icon,
+    title,
+    showSearch,
+    onSearchChange,
+    btnIcon: BtnIcon,
+    btnClick,
+}: PaperTitleProps) {
     // Services
     const { t } = useTranslation();
     const [searchKeyValue, setSearchKeyValue] = useState<string>('');
 
     // Callbacks
-    const debouncedSearch = useCallback(
-        debounce((value: string) => {
-            if (onSearchChange) {
-                onSearchChange(value);
-            }
-        }, 300),
-        []
+    const debouncedSearch = useMemo(
+        () =>
+            debounce((value: string) => {
+                if (onSearchChange) {
+                    onSearchChange(value);
+                }
+            }, 300),
+        [onSearchChange],
     );
 
     // Effects
     useEffect(() => {
         debouncedSearch(searchKeyValue);
-    }, [searchKeyValue]);
+    }, [searchKeyValue, debouncedSearch]);
 
     useEffect(() => {
         if (!showSearch) {
@@ -61,22 +68,30 @@ export default function PaperTitle({ icon: Icon, title, showSearch, onSearchChan
                 <Text size={'lg'}>{title}</Text>
             </Group>
             <Group justify="right" align="flex-end">
-                {showSearch && <TextInput
-                    id='searchField'
-                    radius="xl"
-                    value={searchKeyValue}
-                    onChange={(event) => setSearchKeyValue(event.currentTarget.value)}
-                    leftSection={<IconSearch size={18} />}
-                    rightSection={searchKeyValue && <ActionIcon onClick={handleClearBtn} radius={'xl'}><IconX size={18} /></ActionIcon>}
-                    placeholder={t('searchPlaceholderField')}
-                    w={250}
-                    ta={'right'}
-                />}
-                {BtnIcon && btnClick &&
-                    <Button size="xs" p={5} mb={3} onClick={btnClick} >
+                {showSearch && (
+                    <TextInput
+                        id="searchField"
+                        radius="xl"
+                        value={searchKeyValue}
+                        onChange={(event) => setSearchKeyValue(event.currentTarget.value)}
+                        leftSection={<IconSearch size={18} />}
+                        rightSection={
+                            searchKeyValue && (
+                                <ActionIcon onClick={handleClearBtn} radius={'xl'}>
+                                    <IconX size={18} />
+                                </ActionIcon>
+                            )
+                        }
+                        placeholder={t('searchPlaceholderField')}
+                        w={250}
+                        ta={'right'}
+                    />
+                )}
+                {BtnIcon && btnClick && (
+                    <Button size="xs" p={5} mb={3} onClick={btnClick}>
                         <BtnIcon />
                     </Button>
-                }
+                )}
             </Group>
         </Group>
     );

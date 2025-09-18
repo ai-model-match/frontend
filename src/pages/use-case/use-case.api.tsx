@@ -1,4 +1,4 @@
-import { callAuthApi } from "../../core/auth/auth.api";
+import { callAuthApi } from '../../core/auth/auth.api';
 
 export type useCaseDto = {
     id: string;
@@ -10,7 +10,13 @@ export type useCaseDto = {
     updatedAt: string;
 };
 
-export type orderByOptions = 'title' | 'code' | 'active' | 'created_at' | 'updated_at' | 'relevance';
+export type orderByOptions =
+    | 'title'
+    | 'code'
+    | 'active'
+    | 'created_at'
+    | 'updated_at'
+    | 'relevance';
 
 export type listUseCaseInputDto = {
     page: number;
@@ -25,17 +31,20 @@ export type listUseCasesOutputDto = {
     totalCount: number;
     items: useCaseDto[];
 };
-export const callListUseCaseApi = async (input: listUseCaseInputDto): Promise<listUseCasesOutputDto> => {
+export const callListUseCaseApi = async (
+    input: listUseCaseInputDto,
+): Promise<listUseCasesOutputDto> => {
     const response = await callAuthApi(`/api/v1/use-cases`, 'GET', input);
-    if (!response || !response.ok) {
+    if (!response) {
         throw new Error('list-use-case-failed');
+    }
+    if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.errors[0]);
     }
     const data = await response.json();
     return data;
 };
-
-
-
 
 export type createUseCaseInputDto = {
     title: string;
@@ -47,7 +56,9 @@ export type useCasesOutputDto = {
     item: useCaseDto;
 };
 
-export const callCreateUseCaseApi = async (input: createUseCaseInputDto): Promise<useCasesOutputDto> => {
+export const callCreateUseCaseApi = async (
+    input: createUseCaseInputDto,
+): Promise<useCasesOutputDto> => {
     const response = await callAuthApi(`/api/v1/use-cases`, 'POST', input);
     if (!response) {
         throw new Error('use-case-created-failed');

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import LanguageSelector from '../../components/language/language-selector.component';
 import { useAuth } from '../../core/auth/auth.context';
+import { getErrorMessage } from '../../core/err/err';
 import LoginFormComponent from './components/login-form.component';
 import classes from './login.module.css';
 import { callRefreshApi } from './refresh.api';
@@ -26,7 +27,7 @@ export default function LoginPage() {
         if (authenticated) {
             navigate('/dashboard', { replace: true });
         }
-    }, [authenticated]);
+    }, [authenticated, navigate]);
 
     useEffect(() => {
         if (!auth.loaded) return;
@@ -40,12 +41,12 @@ export default function LoginPage() {
                     return;
                 }
                 const data = await callRefreshApi({
-                    refreshToken: auth.refreshToken
+                    refreshToken: auth.refreshToken,
                 });
                 auth.refresh(data.accessToken, data.refreshToken);
                 setAuthenticated(true);
-            } catch (err: any) {
-                switch (err.message) {
+            } catch (err: unknown) {
+                switch (getErrorMessage(err)) {
                     case 'refresh-token-failed': {
                         auth.logout();
                         setPageLoaded(true);
@@ -60,22 +61,23 @@ export default function LoginPage() {
                 }
             }
         })();
-    }, [auth.loaded]);
+    }, [auth, t, navigate]);
 
     // Content
     return (
-        pageLoaded &&
-        <Box className={classes.root}>
-            <LanguageSelector absolute></LanguageSelector>
-            <Container className={classes.boxLogin}>
-                <Paper p={'xl'} >
-                    <Image src="/icon.svg" alt="Login Icon" className={classes.boxLogo} />
-                    <Title className={classes.boxTitle} order={2} >
-                        {t('appName')}
-                    </Title>
-                    <LoginFormComponent />
-                </Paper>
-            </Container>
-        </Box >
+        pageLoaded && (
+            <Box className={classes.root}>
+                <LanguageSelector absolute></LanguageSelector>
+                <Container className={classes.boxLogin}>
+                    <Paper p={'xl'}>
+                        <Image src="/icon.svg" alt="Login Icon" className={classes.boxLogo} />
+                        <Title className={classes.boxTitle} order={2}>
+                            {t('appName')}
+                        </Title>
+                        <LoginFormComponent />
+                    </Paper>
+                </Container>
+            </Box>
+        )
     );
 }

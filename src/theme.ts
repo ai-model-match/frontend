@@ -1,7 +1,6 @@
 // theme.ts
 import { createTheme, CSSVariablesResolver, MantineThemeOverride } from '@mantine/core';
 
-
 // Define the theme
 export const mantineTheme: MantineThemeOverride = createTheme({
     /** Font family */
@@ -50,51 +49,50 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         lightBgGradientBgStart: '#d2002a',
         lightBgGradientBgEnd: '#6f0016',
         bpPaperDark: '#252525',
-        bpPaperLight: '#f3f3f3'
+        bpPaperLight: '#f3f3f3',
     },
     shadows: {
         md: '1px 1px 3px rgba(0, 0, 0, .40)',
         lg: '3px 3px 10px rgba(0, 0, 0, .40)',
         xl: '5px 5px 3px rgba(0, 0, 0, .40)',
     },
-    primaryColor: "brand",
+    primaryColor: 'brand',
     defaultRadius: 'md',
     components: {
         Paper: {
             defaultProps: {
                 shadow: 'lg',
                 p: 'sm',
-                bg: 'var(--aimm-bg-paper)'
-            }
+                bg: 'var(--aimm-bg-paper)',
+            },
         },
         Title: {
             defaultProps: {
-                mb: 'xl'
-            }
+                mb: 'xl',
+            },
         },
         Modal: {
             defaultProps: {
-                padding: 'xs'
+                padding: 'xs',
             },
         },
     },
 });
 
 export const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
-    variables: {
-    },
+    variables: {},
     light: {
-        "--aimm-svg-color": theme.colors.brand[8],
-        "--aimm-bg-paper": theme.other.bpPaperLight,
-        "--aimm-gradient-bg-start": theme.other.lightBgGradientBgStart,
-        "--aimm-gradient-bg-end": theme.other.lightBgGradientBgEnd,
-        "--aimm-gradient-bg": `linear-gradient(135deg, ${theme.other.lightBgGradientBgStart} 0%, ${theme.other.lightBgGradientBgEnd} 70%)`,
+        '--aimm-svg-color': theme.colors.brand[8],
+        '--aimm-bg-paper': theme.other.bpPaperLight,
+        '--aimm-gradient-bg-start': theme.other.lightBgGradientBgStart,
+        '--aimm-gradient-bg-end': theme.other.lightBgGradientBgEnd,
+        '--aimm-gradient-bg': `linear-gradient(135deg, ${theme.other.lightBgGradientBgStart} 0%, ${theme.other.lightBgGradientBgEnd} 70%)`,
     },
     dark: {
-        "--aimm-svg-color": theme.colors.brand[8],
-        "--aimm-bg-paper": theme.other.bpPaperDark,
-        "--aimm-gradient-bg-start": theme.other.darkBgGradientBgStart,
-        "--aimm-gradient-bg-end": theme.other.darkBgGradientBgEnd,
-        "--aimm-gradient-bg": `linear-gradient(135deg, ${theme.other.darkBgGradientBgStart} 0%, ${theme.other.darkBgGradientBgEnd} 70%)`,
-    }
+        '--aimm-svg-color': theme.colors.brand[8],
+        '--aimm-bg-paper': theme.other.bpPaperDark,
+        '--aimm-gradient-bg-start': theme.other.darkBgGradientBgStart,
+        '--aimm-gradient-bg-end': theme.other.darkBgGradientBgEnd,
+        '--aimm-gradient-bg': `linear-gradient(135deg, ${theme.other.darkBgGradientBgStart} 0%, ${theme.other.darkBgGradientBgEnd} 70%)`,
+    },
 });

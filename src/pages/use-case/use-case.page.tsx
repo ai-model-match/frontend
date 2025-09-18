@@ -1,5 +1,18 @@
-
-import { ActionIcon, Badge, Box, Drawer, Grid, Group, Loader, Modal, Pagination, Paper, Table, Text, Tooltip } from '@mantine/core';
+import {
+    ActionIcon,
+    Badge,
+    Box,
+    Drawer,
+    Grid,
+    Group,
+    Loader,
+    Modal,
+    Pagination,
+    Paper,
+    Table,
+    Text,
+    Tooltip,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowFork, IconPlus, IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
@@ -14,17 +27,21 @@ import TableHeader from '../../components/table/table-header';
 import Tr from '../../components/table/table-tr';
 import { useAuth } from '../../core/auth/auth.context';
 import AuthGuard from '../../core/auth/auth.guard';
+import { getErrorMessage } from '../../core/err/err';
 import DeleteUseCaseComponent from './delete-use-case.component';
 import NewUseCaseComponent from './new-use-case.component';
-import { callDeleteUseCaseApi, callListUseCaseApi, listUseCaseInputDto, listUseCasesOutputDto, orderByOptions } from './use-case.api';
-
-
-
+import {
+    callDeleteUseCaseApi,
+    callListUseCaseApi,
+    listUseCaseInputDto,
+    listUseCasesOutputDto,
+    orderByOptions,
+} from './use-case.api';
 
 export default function UseCasePage() {
     // Services
     const navigate = useNavigate();
-    var auth = useAuth();
+    const auth = useAuth();
     const { t } = useTranslation();
 
     const defaultInputData: listUseCaseInputDto = {
@@ -32,7 +49,7 @@ export default function UseCasePage() {
         pageSize: 5,
         orderDir: 'desc',
         orderBy: 'updated_at',
-        searchKey: null
+        searchKey: null,
     };
 
     const [newUseCaseOpen, newUseCaseActions] = useDisclosure(false);
@@ -43,7 +60,6 @@ export default function UseCasePage() {
     const [isDataLoading, setIsDataLoading] = useState(true);
     const [deleteUseCaseID, setDeleteUseCaseID] = useState<string>('');
 
-
     // Effects
     useEffect(() => {
         if (!auth.loaded) return;
@@ -53,8 +69,8 @@ export default function UseCasePage() {
                 const data = await callListUseCaseApi(inputData);
                 setDataLoaded(data);
                 setIsDataLoading(false);
-            } catch (err: any) {
-                switch (err.message) {
+            } catch (err: unknown) {
+                switch (getErrorMessage(err)) {
                     case 'refresh-token-failed':
                         navigate('/logout');
                         break;
@@ -67,9 +83,7 @@ export default function UseCasePage() {
                 setIsDataLoading(false);
             }
         })();
-    }, [auth.loaded, inputData]);
-
-
+    }, [auth.loaded, inputData, t, navigate]);
 
     // Utils
     const isFilterApplied = (): boolean => {
@@ -77,7 +91,12 @@ export default function UseCasePage() {
     };
 
     const hasNoFilteredResults = (): boolean => {
-        return !!(!isDataLoading && dataLoaded && dataLoaded.items.length == 0 && (dataLoaded.totalCount != 0 || !isFilterApplied()));
+        return !!(
+            !isDataLoading &&
+            dataLoaded &&
+            dataLoaded.items.length == 0 &&
+            (dataLoaded.totalCount != 0 || !isFilterApplied())
+        );
     };
 
     const hasNoResults = (): boolean => {
@@ -87,7 +106,7 @@ export default function UseCasePage() {
     const onPageSelected = (selected: number) => {
         setInputData({
             ...inputData,
-            page: selected
+            page: selected,
         });
     };
 
@@ -104,7 +123,7 @@ export default function UseCasePage() {
             searchKey: newValue,
             page: 1,
             orderBy: orderBy,
-            orderDir: 'desc'
+            orderDir: 'desc',
         });
     };
 
@@ -117,8 +136,8 @@ export default function UseCasePage() {
         deleteUseCaseActions.close();
         try {
             await callDeleteUseCaseApi({ id: deleteUseCaseID });
-        } catch (err: any) {
-            switch (err.message) {
+        } catch (err: unknown) {
+            switch (getErrorMessage(err)) {
                 case 'refresh-token-failed':
                     navigate('/logout');
                     break;
@@ -138,81 +157,131 @@ export default function UseCasePage() {
             } else {
                 setInputData({
                     ...inputData,
-                    page: newPage
+                    page: newPage,
                 });
             }
-        };
+        }
     };
-
 
     const setSorting = (field: string, dir: string) => {
         setInputData({
             ...inputData,
-            orderDir: dir as ('asc' | 'desc'),
-            orderBy: field as orderByOptions
+            orderDir: dir as 'asc' | 'desc',
+            orderBy: field as orderByOptions,
         });
     };
 
     // Columns
     const getColumns = () => {
-        return [{
-            key: 'id',
-            title: t('useCaseID'),
-            sortable: false
-        }, {
-            key: 'code',
-            title: t('useCaseCode'),
-            sortable: true
-        }, {
-            key: 'title',
-            title: t('useCaseTitle'),
-            sortable: true
-        }, {
-            key: 'active',
-            title: t('useCaseIsActive'),
-            sortable: true
-        }, {
-            key: 'created_at',
-            title: t('useCaseCreatedAt'),
-            sortable: true
-        }, {
-            key: 'updated_at',
-            title: t('useCaseUpdatedAt'),
-            sortable: true
-        }];
+        return [
+            {
+                key: 'id',
+                title: t('useCaseID'),
+                sortable: false,
+            },
+            {
+                key: 'code',
+                title: t('useCaseCode'),
+                sortable: true,
+            },
+            {
+                key: 'title',
+                title: t('useCaseTitle'),
+                sortable: true,
+            },
+            {
+                key: 'active',
+                title: t('useCaseIsActive'),
+                sortable: true,
+            },
+            {
+                key: 'created_at',
+                title: t('useCaseCreatedAt'),
+                sortable: true,
+            },
+            {
+                key: 'updated_at',
+                title: t('useCaseUpdatedAt'),
+                sortable: true,
+            },
+        ];
     };
 
     // Rows
     const rows = dataLoaded?.items.map((row) => {
         return (
-            <Tr key={row.id} trKey={row.id} tds={[{
-                mw: 100,
-                text: row.id,
-                textWithCopy: true,
-                textWithTooltip: true
-            }, {
-                text: row.code,
-                textWithCopy: true,
-                textWithTooltip: true
-            }, {
-                children: <Text td={'underline'} style={{ cursor: 'pointer' }} size='sm' onClick={() => navigate(`/use-cases/${row.id}/steps`, { replace: true })}>{row.title} </Text>
-            }, {
-                children: row.active ? <Badge color='green' size='sm'>{t('useCaseEnable')}</Badge> : <Badge color='grey' size='sm'>{t('useCaseDisable')}</Badge>
-            }, {
-                text: format(new Date(row.createdAt), import.meta.env.VITE_DATE_FORMAT!)
-            }, {
-                text: format(new Date(row.updatedAt), import.meta.env.VITE_DATE_FORMAT!)
-            }, {
-                children: <>
-                    <Tooltip withArrow style={{ fontSize: '12px' }} label={row.active ? t('useCaseCannotDelete') : t('useCaseDeleteAction')}>
-                        <ActionIcon color="red" variant="subtle" onClick={() => handleDeleteRequest(row.id)} disabled={row.active}>
-                            <IconTrash size={18} />
-                        </ActionIcon>
-                    </Tooltip>
-                </>
-            }
-            ]}>
-            </Tr >
+            <Tr
+                key={row.id}
+                trKey={row.id}
+                tds={[
+                    {
+                        mw: 100,
+                        text: row.id,
+                        textWithCopy: true,
+                        textWithTooltip: true,
+                    },
+                    {
+                        text: row.code,
+                        textWithCopy: true,
+                        textWithTooltip: true,
+                    },
+                    {
+                        children: (
+                            <Text
+                                td={'underline'}
+                                style={{ cursor: 'pointer' }}
+                                size="sm"
+                                onClick={() =>
+                                    navigate(`/use-cases/${row.id}/steps`, { replace: true })
+                                }
+                            >
+                                {row.title}{' '}
+                            </Text>
+                        ),
+                    },
+                    {
+                        children: row.active ? (
+                            <Badge color="green" size="sm">
+                                {t('useCaseEnable')}
+                            </Badge>
+                        ) : (
+                            <Badge color="grey" size="sm">
+                                {t('useCaseDisable')}
+                            </Badge>
+                        ),
+                    },
+                    {
+                        text: format(new Date(row.createdAt), import.meta.env.VITE_DATE_FORMAT!),
+                    },
+                    {
+                        text: format(new Date(row.updatedAt), import.meta.env.VITE_DATE_FORMAT!),
+                    },
+                    {
+                        children: (
+                            <>
+                                <Tooltip
+                                    withArrow
+                                    style={{ fontSize: '12px' }}
+                                    label={
+                                        row.active
+                                            ? t('useCaseCannotDelete')
+                                            : t('useCaseDeleteAction')
+                                    }
+                                >
+                                    <ActionIcon
+                                        color="red"
+                                        variant="subtle"
+                                        onClick={() => handleDeleteRequest(row.id)}
+                                        disabled={row.active}
+                                    >
+                                        <IconTrash size={18} />
+                                    </ActionIcon>
+                                </Tooltip>
+                            </>
+                        ),
+                    },
+                ]}
+            ></Tr>
         );
     });
 
@@ -221,75 +290,92 @@ export default function UseCasePage() {
         <AuthGuard>
             <LayoutComponent>
                 <Grid.Col span={12}>
-                    <Paper p="lg" >
-                        {pageLoaded && <Box>
-                            <PaperTitle
-                                icon={IconArrowFork}
-                                title={t('useCaseTitlePage')}
-                                showSearch={!hasNoResults()}
-                                onSearchChange={handleSearchChange}
-                                btnIcon={IconPlus}
-                                btnClick={newUseCaseActions.open}
-                            />
-                            {!hasNoResults() && <>
-                                <Box>
-                                    <Table >
-                                        <TableHeader
-                                            sortBy={inputData.orderBy}
-                                            setSorting={setSorting}
-                                            columns={getColumns()} >
-                                        </TableHeader>
-                                        {!hasNoFilteredResults() &&
-                                            <Table.Tbody>{rows}</Table.Tbody>
-                                        }
-                                    </Table>
-                                    {hasNoFilteredResults() &&
-                                        <EmptyState
-                                            image="no-results"
-                                            title={t('useCaseNoResultsTitle')}
-                                            btnText={t('useCaseNoResultsBtn')}
-                                            btnHandle={handleResetFilter}>
-                                        </EmptyState>
-                                    }
-                                </Box>
-                                <Group justify="center" align="center">
-                                    {dataLoaded && dataLoaded.totalCount > 0 && <Pagination mt={50}
-                                        total={Math.ceil(dataLoaded.totalCount / inputData.pageSize)}
-                                        value={inputData.page}
-                                        size={'sm'} radius={'sm'}
-                                        onChange={onPageSelected}
-                                    />
-                                    }
-                                </Group>
-                            </>
-                            }
-                            {hasNoResults() &&
-                                <EmptyState
-                                    image="new-use-case"
-                                    title={t('useCaseCreateNewTitle')}
-                                    text={t('useCaseCreateNewText')}
-                                    suggestion={t('useCaseCreateNewSuggestion')}
-                                    btnText={t('useCaseCreateNewBtn')}
-                                    btnHandle={newUseCaseActions.open}
-                                ></EmptyState>
-                            }
-                        </Box>
-                        }
-                        {!pageLoaded && <Group mt={100} mb={100} justify="center" align="center">
-                            <Loader type="dots" />
-                        </Group>
-                        }
+                    <Paper p="lg">
+                        {pageLoaded && (
+                            <Box>
+                                <PaperTitle
+                                    icon={IconArrowFork}
+                                    title={t('useCaseTitlePage')}
+                                    showSearch={!hasNoResults()}
+                                    onSearchChange={handleSearchChange}
+                                    btnIcon={IconPlus}
+                                    btnClick={newUseCaseActions.open}
+                                />
+                                {!hasNoResults() && (
+                                    <>
+                                        <Box>
+                                            <Table>
+                                                <TableHeader
+                                                    sortBy={inputData.orderBy}
+                                                    setSorting={setSorting}
+                                                    columns={getColumns()}
+                                                ></TableHeader>
+                                                {!hasNoFilteredResults() && (
+                                                    <Table.Tbody>{rows}</Table.Tbody>
+                                                )}
+                                            </Table>
+                                            {hasNoFilteredResults() && (
+                                                <EmptyState
+                                                    image="no-results"
+                                                    title={t('useCaseNoResultsTitle')}
+                                                    btnText={t('useCaseNoResultsBtn')}
+                                                    btnHandle={handleResetFilter}
+                                                ></EmptyState>
+                                            )}
+                                        </Box>
+                                        <Group justify="center" align="center">
+                                            {dataLoaded && dataLoaded.totalCount > 0 && (
+                                                <Pagination
+                                                    mt={50}
+                                                    total={Math.ceil(
+                                                        dataLoaded.totalCount / inputData.pageSize,
+                                                    )}
+                                                    value={inputData.page}
+                                                    size={'sm'}
+                                                    radius={'sm'}
+                                                    onChange={onPageSelected}
+                                                />
+                                            )}
+                                        </Group>
+                                    </>
+                                )}
+                                {hasNoResults() && (
+                                    <EmptyState
+                                        image="new-use-case"
+                                        title={t('useCaseCreateNewTitle')}
+                                        text={t('useCaseCreateNewText')}
+                                        suggestion={t('useCaseCreateNewSuggestion')}
+                                        btnText={t('useCaseCreateNewBtn')}
+                                        btnHandle={newUseCaseActions.open}
+                                    ></EmptyState>
+                                )}
+                            </Box>
+                        )}
+                        {!pageLoaded && (
+                            <Group mt={100} mb={100} justify="center" align="center">
+                                <Loader type="dots" />
+                            </Group>
+                        )}
                     </Paper>
                 </Grid.Col>
-                <Drawer opened={newUseCaseOpen} padding={0}
+                <Drawer
+                    opened={newUseCaseOpen}
+                    padding={0}
                     onClose={newUseCaseActions.close}
-                    position='right' offset={10}
+                    position="right"
+                    offset={10}
                     overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
                     withCloseButton={false}
-                    radius="md">
+                    radius="md"
+                >
                     <NewUseCaseComponent />
                 </Drawer>
-                <Modal opened={deleteUseCaseOpen} onClose={deleteUseCaseActions.close} withCloseButton={false} overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}>
+                <Modal
+                    opened={deleteUseCaseOpen}
+                    onClose={deleteUseCaseActions.close}
+                    withCloseButton={false}
+                    overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+                >
                     <DeleteUseCaseComponent
                         title={t('deleteUseCaseTitle')}
                         text={t('deleteUsecaseDescription')}
@@ -299,6 +385,6 @@ export default function UseCasePage() {
                     ></DeleteUseCaseComponent>
                 </Modal>
             </LayoutComponent>
-        </AuthGuard >
+        </AuthGuard>
     );
 }

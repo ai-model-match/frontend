@@ -12,7 +12,9 @@ export default function NotFound() {
             <Container>
                 <div className={classes.code}>404</div>
                 <Title className={classes.title}>{t('notFoundTitle')}</Title>
-                <Text size="lg" ta="center" className={classes.description}>{t('notFoundDescription')}</Text>
+                <Text size="lg" ta="center" className={classes.description}>
+                    {t('notFoundDescription')}
+                </Text>
                 <Group justify="center">
                     <Button variant="white" size="md" onClick={() => navigate('/')}>
                         {t('notFoundButton')}

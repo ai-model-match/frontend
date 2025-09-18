@@ -1,13 +1,12 @@
-
 import { Box, Button, Group, Text, Textarea, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { assets } from "../../App";
+import { assets } from '../../App';
+import { getErrorMessage } from '../../core/err/err';
 import { callCreateUseCaseApi, useCasesOutputDto } from './use-case.api';
-
 
 export default function NewUseCaseComponent() {
     // Services
@@ -24,19 +23,19 @@ export default function NewUseCaseComponent() {
         if (useCaseCreated) {
             navigate(`/use-cases/${useCaseCreated.item.id}/steps`, { replace: true });
         }
-    }, [useCaseCreated]);
+    }, [useCaseCreated, navigate]);
 
     const form = useForm({
         initialValues: {
             title: '',
             code: '',
-            description: ''
+            description: '',
         },
         validate: {
-            title: (value: string) => value.trim().length != 0 ? null : t('fieldRequired'),
-            code: (value: string) => value.trim().length != 0 ? null : t('fieldRequired'),
-            description: (value: string) => value.trim().length != 0 ? null : t('fieldRequired')
-        }
+            title: (value: string) => (value.trim().length != 0 ? null : t('fieldRequired')),
+            code: (value: string) => (value.trim().length != 0 ? null : t('fieldRequired')),
+            description: (value: string) => (value.trim().length != 0 ? null : t('fieldRequired')),
+        },
     });
 
     // Handles
@@ -46,11 +45,11 @@ export default function NewUseCaseComponent() {
             const data = await callCreateUseCaseApi({
                 title: values.title,
                 code: values.code,
-                description: values.description
+                description: values.description,
             });
             setUseCaseCreated(data);
-        } catch (err: any) {
-            switch (err.message) {
+        } catch (err: unknown) {
+            switch (getErrorMessage(err)) {
                 case 'use-case-same-code-already-exists':
                     form.setFieldError('code', t('newUseCaseCodeInputAlreadyExists'));
                     break;
@@ -76,7 +75,9 @@ export default function NewUseCaseComponent() {
                     </ThemeIcon>
                     <Text size={'lg'}>{t('newUseCaseTitle')}</Text>
                 </Group>
-                <Box w={'100%'} p={80} pt={10} pb={10}><Box mt={20} component={Image} /></Box>
+                <Box w={'100%'} p={80} pt={10} pb={10}>
+                    <Box mt={20} component={Image} />
+                </Box>
                 <Group justify="space-between">
                     <Box w={'100%'} h={'100mah'}>
                         <TextInput
@@ -85,7 +86,7 @@ export default function NewUseCaseComponent() {
                             placeholder={t('newUseCaseTitleInputPlaceholder')}
                             key={form.key('title')}
                             {...form.getInputProps('title')}
-                            mb='sm'
+                            mb="sm"
                         />
                         <TextInput
                             withAsterisk
@@ -93,7 +94,7 @@ export default function NewUseCaseComponent() {
                             placeholder={t('newUseCaseCodeInputPlaceholder')}
                             key={form.key('code')}
                             {...form.getInputProps('code')}
-                            mb='sm'
+                            mb="sm"
                         />
                         <Textarea
                             withAsterisk
@@ -102,13 +103,13 @@ export default function NewUseCaseComponent() {
                             placeholder={t('newUseCaseDescriptionInputPlaceholder')}
                             key={form.key('description')}
                             {...form.getInputProps('description')}
-                            mb='sm'
+                            mb="sm"
                         />
                     </Box>
                 </Group>
             </Box>
             <Box>
-                <Button type='submit' mt={'lg'} loading={apiloading} fullWidth >
+                <Button type="submit" mt={'lg'} loading={apiloading} fullWidth>
                     {t('newUseCaseCreateBtn')}
                 </Button>
             </Box>

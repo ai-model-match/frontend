@@ -1,12 +1,12 @@
-import { Box, Button, Menu, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Box, Button, Menu, Text } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import classes from './language-selector.module.css';
 
 const availableLanguages = [
-    { code: "en", label: "English", flag: "🇬🇧" },
-    { code: "it", label: "Italiano", flag: "🇮🇹" },
-    { code: "es", label: "Español", flag: "🇪🇸" },
+    { code: 'en', label: 'English', flag: '🇬🇧' },
+    { code: 'it', label: 'Italiano', flag: '🇮🇹' },
+    { code: 'es', label: 'Español', flag: '🇪🇸' },
 ];
 
 type LanguageSelectorProps = {
@@ -21,9 +21,10 @@ export default function LanguageSelector({ absolute }: LanguageSelectorProps) {
     // Effects
     useEffect(() => {
         if (!i18n.isInitialized) return;
-        const selectedLanguage = availableLanguages.find((l) => l.code === i18n.language) ?? availableLanguages[0];
+        const selectedLanguage =
+            availableLanguages.find((l) => l.code === i18n.language) ?? availableLanguages[0];
         setLanguage(selectedLanguage);
-    }, []);
+    }, [i18n.isInitialized, i18n.language]);
 
     // Handlers
     const handleSelect = (code: string) => {
@@ -39,7 +40,7 @@ export default function LanguageSelector({ absolute }: LanguageSelectorProps) {
                         <Text size="xl">{language.flag}</Text>
                     </Button>
                 </Menu.Target>
-                <Menu.Dropdown >
+                <Menu.Dropdown>
                     {availableLanguages.map((lang) => (
                         <Menu.Item
                             key={lang.code}
@@ -50,7 +51,7 @@ export default function LanguageSelector({ absolute }: LanguageSelectorProps) {
                         </Menu.Item>
                     ))}
                 </Menu.Dropdown>
-            </Menu >
-        </Box >
+            </Menu>
+        </Box>
     );
 }

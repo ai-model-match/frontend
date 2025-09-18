@@ -16,13 +16,14 @@ export default function LogoutPage() {
                 if (auth.refreshToken) {
                     await callLogoutApi({ refreshToken: auth.refreshToken });
                 }
-            } catch (err: any) {
+            } catch (err: unknown) {
+                void err;
             } finally {
                 auth.logout();
                 navigate('/login', { replace: true });
             }
         })();
-    }, [auth.loaded]);
+    }, [auth, navigate]);
 
     // Content
     return <></>;

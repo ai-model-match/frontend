@@ -3,13 +3,13 @@ import Header from '../header/header.component';
 import { MenuComponent } from '../menu/menu.component';
 import classes from './layout.module.css';
 
-export default function LayoutComponent({ children }: { children: React.ReactNode; }) {
+export default function LayoutComponent({ children }: { children: React.ReactNode }) {
     return (
         <div>
             <Header></Header>
             <Box>
                 <Container fluid>
-                    <Grid gutter="md" columns={12} miw={950} >
+                    <Grid gutter="md" columns={12} miw={950}>
                         <Grid.Col span={{ base: 3, xl: 2 }} className={classes.menu}>
                             <MenuComponent />
                         </Grid.Col>
@@ -21,6 +21,6 @@ export default function LayoutComponent({ children }: { children: React.ReactNod
                     </Grid>
                 </Container>
             </Box>
-        </div >
+        </div>
     );
-};
+}

@@ -1,7 +1,7 @@
-import { Button, Group, Text, TextInput, ThemeIcon } from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Button, Group, Text, TextInput, ThemeIcon } from '@mantine/core';
+import { IconX } from '@tabler/icons-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface DeleteUseCaseComponentProps {
     title: string;
@@ -11,7 +11,13 @@ export interface DeleteUseCaseComponentProps {
     onClose: () => void;
 }
 
-export default function DeleteUseCaseComponent({ title, text, confirmTextRequired, onClose, onConfirm }: DeleteUseCaseComponentProps) {
+export default function DeleteUseCaseComponent({
+    title,
+    text,
+    confirmTextRequired,
+    onClose,
+    onConfirm,
+}: DeleteUseCaseComponentProps) {
     // Services
     const { t } = useTranslation();
     const [textConfirm, setTextConfirm] = useState<string>('');
@@ -27,8 +33,12 @@ export default function DeleteUseCaseComponent({ title, text, confirmTextRequire
                 </ThemeIcon>
                 <Text size={'lg'}>{title}</Text>
             </Group>
-            <Text size="sm" mt={10}>{text}</Text>
-            <Text size="sm" mt={10} fw={600}>{t('deleteUndo')}</Text>
+            <Text size="sm" mt={10}>
+                {text}
+            </Text>
+            <Text size="sm" mt={10} fw={600}>
+                {t('deleteUndo')}
+            </Text>
             {confirmTextRequired && (
                 <TextInput
                     mt={30}
