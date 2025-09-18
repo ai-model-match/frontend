@@ -76,7 +76,7 @@ export default function NewUseCaseComponent() {
                     </ThemeIcon>
                     <Text size={'lg'}>{t('newUseCaseTitle')}</Text>
                 </Group>
-                <Box w={'100%'} p={50} pt={20}><Box mt={30} component={Image} /></Box>
+                <Box w={'100%'} p={80} pt={10} pb={10}><Box mt={20} component={Image} /></Box>
                 <Group justify="space-between">
                     <Box w={'100%'} h={'100mah'}>
                         <TextInput

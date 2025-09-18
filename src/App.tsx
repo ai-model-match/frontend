@@ -33,6 +33,7 @@ export default function App() {
                             <Route path="/" element={<Navigate to="/dashboard" replace />} />
                             <Route path="/dashboard" element={<DashboardPage />} />
                             <Route path="/use-cases" element={<UseCasePage />} />
+                            <Route path="/use-cases/:id/steps" element={<DashboardPage />} />
                             <Route path="/logout" element={<LogoutPage />} />
 
                             {/* Public login page */}
