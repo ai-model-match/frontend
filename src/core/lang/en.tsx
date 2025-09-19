@@ -50,7 +50,7 @@ export const enTranslations = {
     newUseCaseDescriptionInputPlaceholder: 'Type the goal of this Use Case',
     newUseCaseCreateBtn: 'CREATE',
     newUseCaseCodeInputAlreadyExists: 'Oops! This code is already taken',
-    deleteUseCaseTitle: 'DELTE USE CASE',
+    deleteUseCaseTitle: 'DELETE USE CASE',
     deleteUsecaseDescription:
         'Are you sure you want to delete this use case? This will permanently remove all its steps, flows, and statistics.',
     updateUseCaseTitle: 'UPDATE THE USE CASE',

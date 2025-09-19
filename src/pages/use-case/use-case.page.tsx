@@ -140,6 +140,7 @@ export default function UseCasePage() {
 
     const onResetFilter = () => {
         setInputData(defaultInputData);
+        setSearchKeyValue('');
     };
 
     // Update the list of columns when the language changes
@@ -177,6 +178,48 @@ export default function UseCasePage() {
             },
         ];
     }, [t]);
+
+    // Utils
+    const isFilterApplied = (): boolean => {
+        return equal(inputData, defaultInputData);
+    };
+
+    const hasNoFilteredResults = (): boolean => {
+        return !!(
+            !isDataLoading &&
+            dataLoaded &&
+            dataLoaded.items.length == 0 &&
+            (dataLoaded.totalCount != 0 || !isFilterApplied())
+        );
+    };
+
+    const hasNoResults = (): boolean => {
+        return !!(!isDataLoading && dataLoaded && dataLoaded.totalCount == 0 && isFilterApplied());
+    };
+
+    const handleSearchChange = (value: string | undefined) => {
+        const newValue = value !== undefined && value.length >= 3 ? value : undefined;
+        setSearchKeyValue(value);
+        const orderBy = newValue ? 'relevance' : 'updated_at';
+        setInputData({
+            ...inputData,
+            searchKey: newValue,
+            page: 1,
+            orderBy: orderBy,
+            orderDir: 'desc',
+        });
+    };
+
+    const setSorting = useCallback(
+        (field: string, dir: string) => {
+            setInputData({
+                ...inputData,
+                orderDir: dir as 'asc' | 'desc',
+                orderBy: field as orderByOptions,
+            });
+        },
+        [setInputData, inputData],
+    );
 
     const tableRows = useMemo(() => {
         if (dataLoaded === undefined) return;
@@ -277,48 +320,6 @@ export default function UseCasePage() {
             );
         });
     }, [t, dataLoaded, navigate, handleDeleteRequest, handleUpdateRequest]);
-
-    // Utils
-    const isFilterApplied = (): boolean => {
-        return equal(inputData, defaultInputData);
-    };
-
-    const hasNoFilteredResults = (): boolean => {
-        return !!(
-            !isDataLoading &&
-            dataLoaded &&
-            dataLoaded.items.length == 0 &&
-            (dataLoaded.totalCount != 0 || !isFilterApplied())
-        );
-    };
-
-    const hasNoResults = (): boolean => {
-        return !!(!isDataLoading && dataLoaded && dataLoaded.totalCount == 0 && isFilterApplied());
-    };
-
-    const handleSearchChange = (value: string | undefined) => {
-        const newValue = value !== undefined && value.length >= 3 ? value : undefined;
-        setSearchKeyValue(value);
-        const orderBy = newValue ? 'relevance' : 'updated_at';
-        setInputData({
-            ...inputData,
-            searchKey: newValue,
-            page: 1,
-            orderBy: orderBy,
-            orderDir: 'desc',
-        });
-    };
-
-    const setSorting = useCallback(
-        (field: string, dir: string) => {
-            setInputData({
-                ...inputData,
-                orderDir: dir as 'asc' | 'desc',
-                orderBy: field as orderByOptions,
-            });
-        },
-        [setInputData, inputData],
-    );
 
     // Content
     return (
