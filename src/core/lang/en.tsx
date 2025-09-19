@@ -25,6 +25,7 @@ export const enTranslations = {
     useCaseDisable: 'Disable',
     useCaseCannotDelete: 'Cannot be deleted while it is enabled',
     useCaseDeleteAction: 'Delete',
+    useCaseUpdateAction: 'Edit',
     useCaseID: 'ID',
     useCaseTitle: 'Title',
     useCaseCode: 'Code',
@@ -52,4 +53,14 @@ export const enTranslations = {
     deleteUseCaseTitle: 'DELTE USE CASE',
     deleteUsecaseDescription:
         'Are you sure you want to delete this use case? This will permanently remove all its steps, flows, and statistics.',
+    updateUseCaseTitle: 'UPDATE THE USE CASE',
+    updateUseCaseTitleInput: 'Title',
+    updateUseCaseTitleInputPlaceholder: 'Type a title',
+    updateUseCaseCodeInput: 'Code',
+    updateUseCaseCodeCannotUpdate: 'Cannot be updated while it is enabled',
+    updateUseCaseCodeInputPlaceholder: 'Type a unique code',
+    updateUseCaseDescriptionInput: 'Description',
+    updateUseCaseDescriptionInputPlaceholder: 'Type the goal of this Use Case',
+    updateUseCaseCreateBtn: 'UPDATE',
+    updateUseCaseCodeInputAlreadyExists: 'Oops! This code is already taken',
 };

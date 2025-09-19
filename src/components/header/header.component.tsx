@@ -16,7 +16,7 @@ export default function Header() {
             <header className={classes.root}>
                 <Group justify="space-between" h="100%" gap={10}>
                     <Group gap={0} onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-                        <Image src="/icon.svg" alt="Login Icon" className={classes.logo} />
+                        <Image src="/icon.svg" alt="Logo Icon" className={classes.logo} />
                     </Group>
                     <Group gap={0} onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
                         <Title ta="left" order={4} mb={0}>

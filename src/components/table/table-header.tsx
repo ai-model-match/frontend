@@ -2,16 +2,18 @@ import { Table } from '@mantine/core';
 import { useState } from 'react';
 import Th from './table-header-th';
 
-type Columns = {
+export interface Columns {
     key: string;
     title: string;
     sortable: boolean;
-};
-type TableHeaderProps = {
+}
+
+export interface TableHeaderProps {
     sortBy: string;
-    setSorting: (key: string, dir: 'asc' | 'desc') => void;
     columns: Columns[];
-};
+    setSorting: (key: string, dir: 'asc' | 'desc') => void;
+}
+
 export default function TableHeader({ sortBy, setSorting, columns }: TableHeaderProps) {
     // Services
     const [reverseSortDirection, setReverseSortDirection] = useState(false);
@@ -20,7 +22,7 @@ export default function TableHeader({ sortBy, setSorting, columns }: TableHeader
     const setSortingHandler = (key: string) => {
         const newDirection = key === sortBy ? !reverseSortDirection : false;
         setReverseSortDirection(newDirection);
-        setSorting(key, reverseSortDirection ? 'desc' : 'asc');
+        setSorting(key, newDirection ? 'asc' : 'desc');
     };
 
     // Content

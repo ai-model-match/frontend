@@ -1,28 +1,67 @@
 import { Button, Group, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { IconX } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { getErrorMessage } from '../../core/err/err';
+import { callDeleteUseCaseApi, useCaseDto } from './use-case.api';
 
 export interface DeleteUseCaseComponentProps {
+    useCase: useCaseDto;
     title: string;
     text: string;
     confirmTextRequired?: boolean;
-    onConfirm: () => void;
+    onUseCaseDeleted: () => void;
     onClose: () => void;
 }
 
 export default function DeleteUseCaseComponent({
+    useCase,
     title,
     text,
     confirmTextRequired,
     onClose,
-    onConfirm,
+    onUseCaseDeleted,
 }: DeleteUseCaseComponentProps) {
     // Services
     const { t } = useTranslation();
-    const [textConfirm, setTextConfirm] = useState<string>('');
+    const navigate = useNavigate();
 
-    const isDisabled = confirmTextRequired !== undefined && textConfirm !== t('deleteMe');
+    const [textConfirm, setTextConfirm] = useState<string>();
+    const [isConfirmDisabled, setIsConfirmDisabled] = useState<boolean>(true);
+    const [apiloading, setApiLoading] = useState(false);
+    const [useCaseDeleted, setUseCaseDeleted] = useState<boolean>(false);
+
+    // Calculate if the confirm button can be enabled
+    useEffect(() => {
+        setIsConfirmDisabled(confirmTextRequired !== undefined && textConfirm !== t('deleteMe'));
+    }, [confirmTextRequired, textConfirm, t]);
+
+    useEffect(() => {
+        if (useCaseDeleted) {
+            onUseCaseDeleted();
+        }
+    }, [useCaseDeleted, onUseCaseDeleted]);
+
+    // Handles
+    const handleSubmit = async () => {
+        try {
+            setApiLoading(true);
+            await callDeleteUseCaseApi({ id: useCase.id });
+            setUseCaseDeleted(true);
+        } catch (err: unknown) {
+            switch (getErrorMessage(err)) {
+                case 'refresh-token-failed':
+                    navigate('/logout');
+                    break;
+                default:
+                    alert(t('appGenericError'));
+                    break;
+            }
+        } finally {
+            setApiLoading(false);
+        }
+    };
 
     // Content
     return (
@@ -45,7 +84,6 @@ export default function DeleteUseCaseComponent({
                     withAsterisk
                     required
                     label={t('deleteMeInput')}
-                    value={textConfirm}
                     onChange={(e) => setTextConfirm(e.currentTarget.value)}
                 />
             )}
@@ -53,7 +91,7 @@ export default function DeleteUseCaseComponent({
                 <Button onClick={onClose} variant="outline">
                     {t('btnCancel')}
                 </Button>
-                <Button onClick={onConfirm} disabled={isDisabled}>
+                <Button onClick={handleSubmit} disabled={isConfirmDisabled} loading={apiloading}>
                     {t('btnConfirm')}
                 </Button>
             </Group>

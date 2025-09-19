@@ -1,7 +1,7 @@
 import { Center, Group, Table, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-react';
 
-interface ThProps {
+export interface ThProps {
     children: React.ReactNode;
     reversed: boolean;
     sorted: boolean;

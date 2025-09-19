@@ -14,10 +14,10 @@ import {
     Tooltip,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconArrowFork, IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconArrowFork, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import equal from 'fast-deep-equal';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import EmptyState from '../../components/empty-state/empty-state';
@@ -30,12 +30,13 @@ import AuthGuard from '../../core/auth/auth.guard';
 import { getErrorMessage } from '../../core/err/err';
 import DeleteUseCaseComponent from './delete-use-case.component';
 import NewUseCaseComponent from './new-use-case.component';
+import UpdateUseCaseComponent from './update-use-case.component';
 import {
-    callDeleteUseCaseApi,
     callListUseCaseApi,
     listUseCaseInputDto,
-    listUseCasesOutputDto,
+    listUseCaseOutputDto,
     orderByOptions,
+    useCaseDto,
 } from './use-case.api';
 
 export default function UseCasePage() {
@@ -49,16 +50,25 @@ export default function UseCasePage() {
         pageSize: 5,
         orderDir: 'desc',
         orderBy: 'updated_at',
-        searchKey: null,
     };
 
-    const [newUseCaseOpen, newUseCaseActions] = useDisclosure(false);
-    const [deleteUseCaseOpen, deleteUseCaseActions] = useDisclosure(false);
+    const [newUseCaseOpen, { open: newUseCaseActionsOpen, close: newUseCaseActionsClose }] =
+        useDisclosure(false);
+    const [
+        updateUseCaseOpen,
+        { open: updateUseCaseActionsOpen, close: updateUseCaseActionsClose },
+    ] = useDisclosure(false);
+    const [
+        deleteUseCaseOpen,
+        { open: deleteUseCaseActionsOpen, close: deleteUseCaseActionsClose },
+    ] = useDisclosure(false);
     const [pageLoaded, setPageLoaded] = useState(false);
-    const [dataLoaded, setDataLoaded] = useState<listUseCasesOutputDto>();
+    const [dataLoaded, setDataLoaded] = useState<listUseCaseOutputDto>();
     const [inputData, setInputData] = useState<listUseCaseInputDto>(defaultInputData);
     const [isDataLoading, setIsDataLoading] = useState(true);
-    const [deleteUseCaseID, setDeleteUseCaseID] = useState<string>('');
+    const [selectedUseCase, setSelectedUseCase] = useState<useCaseDto | null>();
+    const [searchKeyValue, setSearchKeyValue] = useState<string>();
+    const [refreshKey, setRefreshKey] = useState(0);
 
     // Effects
     useEffect(() => {
@@ -83,25 +93,43 @@ export default function UseCasePage() {
                 setIsDataLoading(false);
             }
         })();
-    }, [auth.loaded, inputData, t, navigate]);
+    }, [auth.loaded, t, navigate, inputData, refreshKey]);
 
-    // Utils
-    const isFilterApplied = (): boolean => {
-        return equal(inputData, defaultInputData);
-    };
+    const onUseCaseCreated = useCallback(
+        (useCase: useCaseDto) => {
+            newUseCaseActionsClose();
+            navigate(`/use-cases/${useCase.id}/steps`, { replace: true });
+        },
+        [navigate, newUseCaseActionsClose],
+    );
 
-    const hasNoFilteredResults = (): boolean => {
-        return !!(
-            !isDataLoading &&
-            dataLoaded &&
-            dataLoaded.items.length == 0 &&
-            (dataLoaded.totalCount != 0 || !isFilterApplied())
-        );
-    };
+    const handleUpdateRequest = useCallback(
+        (id: string) => {
+            const useCase = dataLoaded?.items.find((x) => x.id === id);
+            setSelectedUseCase(useCase);
+            updateUseCaseActionsOpen();
+        },
+        [dataLoaded, updateUseCaseActionsOpen],
+    );
 
-    const hasNoResults = (): boolean => {
-        return !!(!isDataLoading && dataLoaded && dataLoaded.totalCount == 0 && isFilterApplied());
-    };
+    const onUseCaseUpdated = useCallback(() => {
+        updateUseCaseActionsClose();
+        setRefreshKey((prev) => prev + 1);
+    }, [setRefreshKey, updateUseCaseActionsClose]);
+
+    const handleDeleteRequest = useCallback(
+        (id: string) => {
+            const useCase = dataLoaded?.items.find((x) => x.id === id);
+            setSelectedUseCase(useCase);
+            deleteUseCaseActionsOpen();
+        },
+        [dataLoaded, deleteUseCaseActionsOpen],
+    );
+
+    const onUseCaseDeleted = useCallback(() => {
+        deleteUseCaseActionsClose();
+        setRefreshKey((prev) => prev + 1);
+    }, [setRefreshKey, deleteUseCaseActionsClose]);
 
     const onPageSelected = (selected: number) => {
         setInputData({
@@ -110,69 +138,12 @@ export default function UseCasePage() {
         });
     };
 
-    // Handlers
-    const handleResetFilter = () => {
+    const onResetFilter = () => {
         setInputData(defaultInputData);
     };
 
-    const handleSearchChange = (value: string) => {
-        const newValue = value !== null && value.length >= 3 ? value : null;
-        const orderBy = newValue ? 'relevance' : 'updated_at';
-        setInputData({
-            ...inputData,
-            searchKey: newValue,
-            page: 1,
-            orderBy: orderBy,
-            orderDir: 'desc',
-        });
-    };
-
-    const handleDeleteRequest = (id: string) => {
-        setDeleteUseCaseID(id);
-        deleteUseCaseActions.open();
-    };
-
-    const handleDelete = async () => {
-        deleteUseCaseActions.close();
-        try {
-            await callDeleteUseCaseApi({ id: deleteUseCaseID });
-        } catch (err: unknown) {
-            switch (getErrorMessage(err)) {
-                case 'refresh-token-failed':
-                    navigate('/logout');
-                    break;
-                default:
-                    alert(t('appGenericError'));
-                    break;
-            }
-        } finally {
-            setDeleteUseCaseID('');
-            let newPage = 1;
-            if (dataLoaded) {
-                const totalPages = Math.ceil((dataLoaded.totalCount - 1) / inputData.pageSize);
-                newPage = inputData.page > totalPages ? totalPages : inputData.page;
-            }
-            if (newPage === 0) {
-                setInputData(defaultInputData);
-            } else {
-                setInputData({
-                    ...inputData,
-                    page: newPage,
-                });
-            }
-        }
-    };
-
-    const setSorting = (field: string, dir: string) => {
-        setInputData({
-            ...inputData,
-            orderDir: dir as 'asc' | 'desc',
-            orderBy: field as orderByOptions,
-        });
-    };
-
-    // Columns
-    const getColumns = () => {
+    // Update the list of columns when the language changes
+    const tableColumns = useMemo(() => {
         return [
             {
                 key: 'id',
@@ -205,85 +176,149 @@ export default function UseCasePage() {
                 sortable: true,
             },
         ];
-    };
+    }, [t]);
 
-    // Rows
-    const rows = dataLoaded?.items.map((row) => {
-        return (
-            <Tr
-                key={row.id}
-                trKey={row.id}
-                tds={[
-                    {
-                        mw: 100,
-                        text: row.id,
-                        textWithCopy: true,
-                        textWithTooltip: true,
-                    },
-                    {
-                        text: row.code,
-                        textWithCopy: true,
-                        textWithTooltip: true,
-                    },
-                    {
-                        children: (
-                            <Text
-                                td={'underline'}
-                                style={{ cursor: 'pointer' }}
-                                size="sm"
-                                onClick={() =>
-                                    navigate(`/use-cases/${row.id}/steps`, { replace: true })
-                                }
-                            >
-                                {row.title}{' '}
-                            </Text>
-                        ),
-                    },
-                    {
-                        children: row.active ? (
-                            <Badge color="green" size="sm">
-                                {t('useCaseEnable')}
-                            </Badge>
-                        ) : (
-                            <Badge color="grey" size="sm">
-                                {t('useCaseDisable')}
-                            </Badge>
-                        ),
-                    },
-                    {
-                        text: format(new Date(row.createdAt), import.meta.env.VITE_DATE_FORMAT!),
-                    },
-                    {
-                        text: format(new Date(row.updatedAt), import.meta.env.VITE_DATE_FORMAT!),
-                    },
-                    {
-                        children: (
-                            <>
-                                <Tooltip
-                                    withArrow
-                                    style={{ fontSize: '12px' }}
-                                    label={
-                                        row.active
-                                            ? t('useCaseCannotDelete')
-                                            : t('useCaseDeleteAction')
+    const tableRows = useMemo(() => {
+        if (dataLoaded === undefined) return;
+        return dataLoaded.items.map((row) => {
+            return (
+                <Tr
+                    key={row.id}
+                    trKey={row.id}
+                    tds={[
+                        {
+                            mw: 100,
+                            text: row.id,
+                            textWithCopy: true,
+                            textWithTooltip: true,
+                        },
+                        {
+                            text: row.code,
+                            textWithCopy: true,
+                            textWithTooltip: true,
+                        },
+                        {
+                            children: (
+                                <Text
+                                    td={'underline'}
+                                    style={{ cursor: 'pointer' }}
+                                    size="sm"
+                                    onClick={() =>
+                                        navigate(`/use-cases/${row.id}/steps`, {
+                                            replace: true,
+                                        })
                                     }
                                 >
-                                    <ActionIcon
-                                        color="red"
-                                        variant="subtle"
-                                        onClick={() => handleDeleteRequest(row.id)}
-                                        disabled={row.active}
+                                    {row.title}{' '}
+                                </Text>
+                            ),
+                        },
+                        {
+                            children: row.active ? (
+                                <Badge color="green" size="sm">
+                                    {t('useCaseEnable')}
+                                </Badge>
+                            ) : (
+                                <Badge color="grey" size="sm">
+                                    {t('useCaseDisable')}
+                                </Badge>
+                            ),
+                        },
+                        {
+                            text: format(
+                                new Date(row.createdAt),
+                                import.meta.env.VITE_DATE_FORMAT!,
+                            ),
+                        },
+                        {
+                            text: format(
+                                new Date(row.updatedAt),
+                                import.meta.env.VITE_DATE_FORMAT!,
+                            ),
+                        },
+                        {
+                            children: (
+                                <>
+                                    <Tooltip
+                                        withArrow
+                                        style={{ fontSize: '12px' }}
+                                        label={t('useCaseUpdateAction')}
                                     >
-                                        <IconTrash size={18} />
-                                    </ActionIcon>
-                                </Tooltip>
-                            </>
-                        ),
-                    },
-                ]}
-            ></Tr>
+                                        <ActionIcon
+                                            variant="subtle"
+                                            onClick={() => handleUpdateRequest(row.id)}
+                                        >
+                                            <IconPencil size={18} />
+                                        </ActionIcon>
+                                    </Tooltip>
+                                    <Tooltip
+                                        withArrow
+                                        style={{ fontSize: '12px' }}
+                                        label={
+                                            row.active
+                                                ? t('useCaseCannotDelete')
+                                                : t('useCaseDeleteAction')
+                                        }
+                                    >
+                                        <ActionIcon
+                                            color="red"
+                                            variant="subtle"
+                                            onClick={() => handleDeleteRequest(row.id)}
+                                            disabled={row.active}
+                                        >
+                                            <IconTrash size={18} />
+                                        </ActionIcon>
+                                    </Tooltip>
+                                </>
+                            ),
+                        },
+                    ]}
+                ></Tr>
+            );
+        });
+    }, [t, dataLoaded, navigate, handleDeleteRequest, handleUpdateRequest]);
+
+    // Utils
+    const isFilterApplied = (): boolean => {
+        return equal(inputData, defaultInputData);
+    };
+
+    const hasNoFilteredResults = (): boolean => {
+        return !!(
+            !isDataLoading &&
+            dataLoaded &&
+            dataLoaded.items.length == 0 &&
+            (dataLoaded.totalCount != 0 || !isFilterApplied())
         );
-    });
+    };
+
+    const hasNoResults = (): boolean => {
+        return !!(!isDataLoading && dataLoaded && dataLoaded.totalCount == 0 && isFilterApplied());
+    };
+
+    const handleSearchChange = (value: string | undefined) => {
+        const newValue = value !== undefined && value.length >= 3 ? value : undefined;
+        setSearchKeyValue(value);
+        const orderBy = newValue ? 'relevance' : 'updated_at';
+        setInputData({
+            ...inputData,
+            searchKey: newValue,
+            page: 1,
+            orderBy: orderBy,
+            orderDir: 'desc',
+        });
+    };
+
+    const setSorting = useCallback(
+        (field: string, dir: string) => {
+            setInputData({
+                ...inputData,
+                orderDir: dir as 'asc' | 'desc',
+                orderBy: field as orderByOptions,
+            });
+        },
+        [setInputData, inputData],
+    );
 
     // Content
     return (
@@ -291,15 +326,21 @@ export default function UseCasePage() {
             <LayoutComponent>
                 <Grid.Col span={12}>
                     <Paper p="lg">
+                        {!pageLoaded && (
+                            <Group mt={100} mb={100} justify="center" align="center">
+                                <Loader type="dots" />
+                            </Group>
+                        )}
                         {pageLoaded && (
                             <Box>
                                 <PaperTitle
                                     icon={IconArrowFork}
                                     title={t('useCaseTitlePage')}
+                                    searchValue={searchKeyValue}
                                     showSearch={!hasNoResults()}
                                     onSearchChange={handleSearchChange}
                                     btnIcon={IconPlus}
-                                    btnClick={newUseCaseActions.open}
+                                    onBtnClick={newUseCaseActionsOpen}
                                 />
                                 {!hasNoResults() && (
                                     <>
@@ -308,10 +349,10 @@ export default function UseCasePage() {
                                                 <TableHeader
                                                     sortBy={inputData.orderBy}
                                                     setSorting={setSorting}
-                                                    columns={getColumns()}
+                                                    columns={tableColumns}
                                                 ></TableHeader>
                                                 {!hasNoFilteredResults() && (
-                                                    <Table.Tbody>{rows}</Table.Tbody>
+                                                    <Table.Tbody>{tableRows}</Table.Tbody>
                                                 )}
                                             </Table>
                                             {hasNoFilteredResults() && (
@@ -319,7 +360,7 @@ export default function UseCasePage() {
                                                     image="no-results"
                                                     title={t('useCaseNoResultsTitle')}
                                                     btnText={t('useCaseNoResultsBtn')}
-                                                    btnHandle={handleResetFilter}
+                                                    btnHandle={onResetFilter}
                                                 ></EmptyState>
                                             )}
                                         </Box>
@@ -346,42 +387,53 @@ export default function UseCasePage() {
                                         text={t('useCaseCreateNewText')}
                                         suggestion={t('useCaseCreateNewSuggestion')}
                                         btnText={t('useCaseCreateNewBtn')}
-                                        btnHandle={newUseCaseActions.open}
+                                        btnHandle={newUseCaseActionsOpen}
                                     ></EmptyState>
                                 )}
                             </Box>
-                        )}
-                        {!pageLoaded && (
-                            <Group mt={100} mb={100} justify="center" align="center">
-                                <Loader type="dots" />
-                            </Group>
                         )}
                     </Paper>
                 </Grid.Col>
                 <Drawer
                     opened={newUseCaseOpen}
                     padding={0}
-                    onClose={newUseCaseActions.close}
+                    onClose={newUseCaseActionsClose}
                     position="right"
                     offset={10}
                     overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
                     withCloseButton={false}
                     radius="md"
                 >
-                    <NewUseCaseComponent />
+                    <NewUseCaseComponent onUseCaseCreated={onUseCaseCreated} />
+                </Drawer>
+                <Drawer
+                    opened={updateUseCaseOpen}
+                    padding={0}
+                    onClose={updateUseCaseActionsClose}
+                    position="right"
+                    offset={10}
+                    overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+                    withCloseButton={false}
+                    radius="md"
+                >
+                    <UpdateUseCaseComponent
+                        useCase={selectedUseCase!}
+                        onUseCaseUpdated={onUseCaseUpdated}
+                    />
                 </Drawer>
                 <Modal
                     opened={deleteUseCaseOpen}
-                    onClose={deleteUseCaseActions.close}
+                    onClose={deleteUseCaseActionsClose}
                     withCloseButton={false}
                     overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
                 >
                     <DeleteUseCaseComponent
+                        useCase={selectedUseCase!}
                         title={t('deleteUseCaseTitle')}
                         text={t('deleteUsecaseDescription')}
                         confirmTextRequired
-                        onClose={deleteUseCaseActions.close}
-                        onConfirm={handleDelete}
+                        onClose={deleteUseCaseActionsClose}
+                        onUseCaseDeleted={onUseCaseDeleted}
                     ></DeleteUseCaseComponent>
                 </Modal>
             </LayoutComponent>

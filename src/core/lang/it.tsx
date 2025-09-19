@@ -25,6 +25,7 @@ export const itTranslations = {
     useCaseDisable: 'Disabilitato',
     useCaseCannotDelete: 'Impossibile eliminarlo mentre è abilitato',
     useCaseDeleteAction: 'Elimina',
+    useCaseUpdateAction: 'Modifica',
     useCaseID: 'ID',
     useCaseTitle: 'Titolo',
     useCaseCode: 'Codice',
@@ -52,4 +53,14 @@ export const itTranslations = {
     deleteUseCaseTitle: "ELIMINA CASO D'USO",
     deleteUsecaseDescription:
         "Sei sicuro di voler eliminare questo caso d'uso? Questa azione rimuoverà tutti i suoi step, flussi e statistiche.",
+    updateUseCaseTitle: "AGGIORNA IL CASO D'USO",
+    updateUseCaseTitleInput: 'Titolo',
+    updateUseCaseTitleInputPlaceholder: 'Inserisci un titolo',
+    updateUseCaseCodeInput: 'Codice',
+    updateUseCaseCodeCannotUpdate: 'Impossibile aggiornarlo mentre è abilitato',
+    updateUseCaseCodeInputPlaceholder: 'Inserisci un codice univoco',
+    updateUseCaseDescriptionInput: 'Descrizione',
+    updateUseCaseDescriptionInputPlaceholder: "Inserisci l'obiettivo di questo Caso d'Uso",
+    updateUseCaseCreateBtn: 'AGGIORNA',
+    updateUseCaseCodeInputAlreadyExists: 'Ops! Questo codice è già stato utilizzato',
 };

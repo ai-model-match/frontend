@@ -31,7 +31,21 @@ export default function LanguageSelector({ absolute }: LanguageSelectorProps) {
         setLanguage(availableLanguages.find((l) => l.code === code) ?? availableLanguages[0]);
         i18n.changeLanguage(code);
     };
+
     // Content
+
+    // Create menu items for each available language
+    const availableLanguagesMenuItems = availableLanguages.map((lang) => (
+        <Menu.Item
+            key={lang.code}
+            onClick={() => handleSelect(lang.code)}
+            leftSection={<Text size="lg">{lang.flag}</Text>}
+        >
+            {lang.label}
+        </Menu.Item>
+    ));
+
+    // Render the language selector with its available languages
     return (
         <Box className={absolute ? classes.boxAbsolute : ''}>
             <Menu shadow="lg" position="bottom-end" width={130} offset={5}>
@@ -40,17 +54,7 @@ export default function LanguageSelector({ absolute }: LanguageSelectorProps) {
                         <Text size="xl">{language.flag}</Text>
                     </Button>
                 </Menu.Target>
-                <Menu.Dropdown>
-                    {availableLanguages.map((lang) => (
-                        <Menu.Item
-                            key={lang.code}
-                            onClick={() => handleSelect(lang.code)}
-                            leftSection={<Text size="lg">{lang.flag}</Text>}
-                        >
-                            {lang.label}
-                        </Menu.Item>
-                    ))}
-                </Menu.Dropdown>
+                <Menu.Dropdown>{availableLanguagesMenuItems}</Menu.Dropdown>
             </Menu>
         </Box>
     );

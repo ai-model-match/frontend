@@ -1,52 +1,62 @@
 import { ActionIcon, Button, Group, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { type Icon, IconSearch, IconX } from '@tabler/icons-react';
 import debounce from 'lodash.debounce';
-import { useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-type PaperTitleProps = {
+export interface PaperTitleProps {
     icon: Icon;
     title: string;
     showSearch?: boolean;
-    onSearchChange?: (value: string) => void;
+    searchValue?: string;
+    onSearchChange?: (value: string | undefined) => void;
     btnIcon?: Icon;
-    btnClick?: () => void;
-};
+    onBtnClick?: () => void;
+}
 
 export default function PaperTitle({
     icon: Icon,
     title,
     showSearch,
+    searchValue,
     onSearchChange,
     btnIcon: BtnIcon,
-    btnClick,
+    onBtnClick: btnClick,
 }: PaperTitleProps) {
     // Services
     const { t } = useTranslation();
-    const [searchKeyValue, setSearchKeyValue] = useState<string>('');
+    const [searchKeyValue, setSearchKeyValue] = useState<string>();
 
-    // Callbacks
-    const debouncedSearch = useMemo(
-        () =>
-            debounce((value: string) => {
-                if (onSearchChange) {
-                    onSearchChange(value);
-                }
-            }, 300),
-        [onSearchChange],
-    );
+    // This is a function that does not change across rendering, making it stable
+    const debouncedSearch = useRef(
+        debounce((value: string | undefined) => {
+            // call callback if defined with the new value
+            if (onSearchChange) {
+                onSearchChange(value);
+            }
+        }, 300),
+    ).current;
 
     // Effects
+
+    // When the input searchValue changes, it could caused by the parent that want to force a specific search value
+    useEffect(() => {
+        setSearchKeyValue(searchValue);
+    }, [searchValue]);
+
+    // When the searchKeyValue change, call the debounced function
     useEffect(() => {
         debouncedSearch(searchKeyValue);
     }, [searchKeyValue, debouncedSearch]);
 
+    // If the showSearch change status, stop any in-execution debouncing
     useEffect(() => {
         if (!showSearch) {
-            setSearchKeyValue('');
+            debouncedSearch.cancel();
         }
-    }, [showSearch]);
+    }, [showSearch, debouncedSearch]);
 
+    // If the debouncedSearch change (e.g. unmounting), stop any in-execution debouncing
     useEffect(() => {
         return () => {
             debouncedSearch.cancel();
@@ -54,14 +64,18 @@ export default function PaperTitle({
     }, [debouncedSearch]);
 
     // Handlers
-    const handleClearBtn = () => {
-        setSearchKeyValue('');
+    const onClearBtnClick = () => {
+        setSearchKeyValue(undefined);
+    };
+
+    const onTextInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setSearchKeyValue(event.currentTarget.value);
     };
 
     // Content
     return (
         <Group justify="space-between" align="center" mb={30}>
-            <Group justify="left" align="flex-start">
+            <Group justify="left" align="center">
                 <ThemeIcon variant="filled" c={'white'} size={30}>
                     <Icon size={18} />
                 </ThemeIcon>
@@ -72,12 +86,12 @@ export default function PaperTitle({
                     <TextInput
                         id="searchField"
                         radius="xl"
-                        value={searchKeyValue}
-                        onChange={(event) => setSearchKeyValue(event.currentTarget.value)}
+                        value={searchKeyValue ?? ''}
+                        onChange={onTextInputChange}
                         leftSection={<IconSearch size={18} />}
                         rightSection={
                             searchKeyValue && (
-                                <ActionIcon onClick={handleClearBtn} radius={'xl'}>
+                                <ActionIcon onClick={onClearBtnClick} radius={'xl'}>
                                     <IconX size={18} />
                                 </ActionIcon>
                             )

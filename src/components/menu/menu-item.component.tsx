@@ -4,33 +4,56 @@ import { ComponentType, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import classes from './menu-item.module.css';
 
-interface LinksGroupProps {
-    icon: ComponentType<{ size?: number }>;
-    label: string;
-    link?: string;
-    items?: { label: string; link: string }[];
+export interface ComponentTypeIcon {
+    size?: number;
 }
 
-export function LinksGroup({ icon: Icon, label, link, items }: LinksGroupProps) {
+export interface MenuSubItem {
+    label: string;
+    link: string;
+}
+
+export interface MenuItem {
+    icon: ComponentType<ComponentTypeIcon>;
+    label: string;
+    link?: string;
+    subItems?: MenuSubItem[];
+}
+
+export interface MenuItemProps {
+    icon: ComponentType<ComponentTypeIcon>;
+    label: string;
+    link?: string;
+    subItems?: MenuSubItem[];
+}
+
+export default function MenuItemComponent({ icon: Icon, label, link, subItems }: MenuItemProps) {
     // Services
     const navigate = useNavigate();
     const location = useLocation();
     const [opened, setOpened] = useState(false);
-
-    // Data
-    const hasItems = Array.isArray(items);
-    const isSelected = link && location.pathname.startsWith(link);
+    const [selected, setSelected] = useState(false);
 
     // Effects
+
+    // Update if this item is selected, only if the link of the item or the pathname changes
     useEffect(() => {
-        // Check if one sub-item has been selected, so open the section menu to show it
-        if (hasItems && items?.some((item) => location.pathname.startsWith(item.link))) {
+        setSelected(link !== undefined && location.pathname.startsWith(link));
+    }, [link, location.pathname]);
+
+    // Check if this item has subItems and if one of them has been selected, open the section menu to show it
+    useEffect(() => {
+        if (subItems === undefined) return;
+        const subItemSelected = subItems.some((item) => location.pathname.startsWith(item.link));
+        if (subItemSelected) {
             setOpened(true);
         }
-    }, [location.pathname, hasItems, items]);
+    }, [location.pathname, subItems]);
 
-    // Sub-items Menu
-    const subLinks = (hasItems ? items : []).map((item) => (
+    // Content
+
+    // Create Sub-items Menu for rendering if they exist
+    const subMenuItems = (subItems !== undefined ? subItems : []).map((item) => (
         <Text<'a'>
             component="a"
             className={`${classes.link} ${location.pathname.startsWith(item.link) ? classes.activeLink : ''}`}
@@ -42,12 +65,21 @@ export function LinksGroup({ icon: Icon, label, link, items }: LinksGroupProps) 
         </Text>
     ));
 
-    // Menu items
+    // Handle the click on the item:
+    // If the item has a link, navigate to it
+    // Otherwise use it for opening the menu in case it has
+    const onClickHandler = () => {
+        if (link !== undefined) return navigate(link);
+        if (subItems !== undefined) return setOpened((status) => !status);
+    };
+
+    // Render item Menu and subItems if available
     return (
         <>
             <UnstyledButton
-                onClick={link != null ? () => navigate(link) : () => setOpened((o) => !o)}
-                className={`${classes.control} ${isSelected ? classes.active : ''}`}
+                // If the item has a link, on click navigate to it, otherwise use it for opening
+                onClick={onClickHandler}
+                className={`${classes.control} ${selected ? classes.active : ''}`}
             >
                 <Group justify="space-between" gap={0}>
                     <Box style={{ display: 'flex', alignItems: 'center' }}>
@@ -56,7 +88,7 @@ export function LinksGroup({ icon: Icon, label, link, items }: LinksGroupProps) 
                         </ThemeIcon>
                         <Box ml="md">{label}</Box>
                     </Box>
-                    {hasItems && (
+                    {subItems !== undefined && (
                         <IconChevronRight
                             className={classes.chevron}
                             stroke={1.5}
@@ -66,7 +98,7 @@ export function LinksGroup({ icon: Icon, label, link, items }: LinksGroupProps) 
                     )}
                 </Group>
             </UnstyledButton>
-            {hasItems ? <Collapse in={opened}> {subLinks}</Collapse> : null}
+            {subItems !== undefined ? <Collapse in={opened}>{subMenuItems}</Collapse> : null}
         </>
     );
 }

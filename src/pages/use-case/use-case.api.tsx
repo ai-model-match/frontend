@@ -23,17 +23,18 @@ export type listUseCaseInputDto = {
     pageSize: number;
     orderDir: 'asc' | 'desc';
     orderBy: orderByOptions;
-    searchKey: string | null;
+    searchKey?: string;
 };
 
-export type listUseCasesOutputDto = {
+export type listUseCaseOutputDto = {
     hasNext: boolean;
     totalCount: number;
     items: useCaseDto[];
 };
+
 export const callListUseCaseApi = async (
     input: listUseCaseInputDto,
-): Promise<listUseCasesOutputDto> => {
+): Promise<listUseCaseOutputDto> => {
     const response = await callAuthApi(`/api/v1/use-cases`, 'GET', input);
     if (!response) {
         throw new Error('list-use-case-failed');
@@ -49,16 +50,16 @@ export const callListUseCaseApi = async (
 export type createUseCaseInputDto = {
     title: string;
     code: string;
-    description?: string;
+    description: string;
 };
 
-export type useCasesOutputDto = {
+export type createUseCaseOutputDto = {
     item: useCaseDto;
 };
 
 export const callCreateUseCaseApi = async (
     input: createUseCaseInputDto,
-): Promise<useCasesOutputDto> => {
+): Promise<createUseCaseOutputDto> => {
     const response = await callAuthApi(`/api/v1/use-cases`, 'POST', input);
     if (!response) {
         throw new Error('use-case-created-failed');
@@ -85,4 +86,31 @@ export const callDeleteUseCaseApi = async (input: deleteUseCaseInputDto): Promis
         throw new Error(data.errors[0]);
     }
     return true;
+};
+
+export type updateUseCaseInputDto = {
+    id: string;
+    title: string;
+    code: string;
+    description: string;
+};
+
+export type updateUseCaseOutputDto = {
+    item: useCaseDto;
+};
+
+export const callUpdateUseCaseApi = async (
+    input: updateUseCaseInputDto,
+): Promise<updateUseCaseOutputDto> => {
+    const { id, ...rest } = input;
+    const response = await callAuthApi(`/api/v1/use-cases/${id}`, 'PUT', { ...rest });
+    if (!response) {
+        throw new Error('use-case-updated-failed');
+    }
+    if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.errors[0]);
+    }
+    const data = await response.json();
+    return data;
 };

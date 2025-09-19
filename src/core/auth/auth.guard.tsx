@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './auth.context';
 
-export default function AuthGuard({ children }: { children: React.ReactNode }) {
+export interface AuthGuardProps {
+    children: React.ReactNode;
+}
+
+export default function AuthGuard({ children }: AuthGuardProps) {
     // Services
     const navigate = useNavigate();
     const auth = useAuth();

@@ -17,6 +17,4 @@ export const getMenuData = (t: TFunction) => {
     ];
 };
 
-export const getFooterMenuData = (t: TFunction) => {
-    return [{ label: t('menuLogout'), icon: IconDoorExit, link: '/logout' }];
-};
+export const getFooterMenuData = (t: TFunction) => {};

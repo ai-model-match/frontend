@@ -1,7 +1,7 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type AuthContextType = {
-    loaded: boolean; // Indicates the Auth system loaded auth tokens from Local storage
+    loaded: boolean;
     username: string | null;
     accessToken: string | null;
     refreshToken: string | null;
@@ -11,8 +11,10 @@ type AuthContextType = {
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export interface AuthProviderProps {
+    children: React.ReactNode;
+}
+export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [username, setUsername] = useState<string | null>(null);
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const [refreshToken, setRefreshToken] = useState<string | null>(null);

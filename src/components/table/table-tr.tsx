@@ -1,7 +1,7 @@
 import { ActionIcon, CopyButton, Table, Text, Tooltip } from '@mantine/core';
 import { IconCheck, IconCopy } from '@tabler/icons-react';
 
-interface TdProps {
+export interface TdProps {
     mw?: number;
     children?: React.ReactNode;
     text?: string;
@@ -9,7 +9,7 @@ interface TdProps {
     textWithTooltip?: boolean;
 }
 
-interface TrProps {
+export interface TrProps {
     trKey: string;
     tds: TdProps[];
 }
