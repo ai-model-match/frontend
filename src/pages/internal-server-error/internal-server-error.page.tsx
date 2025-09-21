@@ -1,23 +1,23 @@
 import { Button, Container, Group, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import classes from './not-found.module.css';
+import classes from './internal-server-error.module.css';
 
-export default function NotFound() {
+export default function InternalServerErrorPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   return (
     <div className={classes.root}>
       <Container>
-        <div className={classes.code}>404</div>
-        <Title className={classes.title}>{t('notFoundTitle')}</Title>
+        <div className={classes.code}>500</div>
+        <Title className={classes.title}>{t('internalServerErrorTitle')}</Title>
         <Text size="lg" ta="center" className={classes.description}>
-          {t('notFoundDescription')}
+          {t('internalServerErrorDescription')}
         </Text>
         <Group justify="center">
-          <Button variant="white" size="md" color="indigo" onClick={() => navigate('/')}>
-            {t('notFoundButton')}
+          <Button variant="white" color="grape" size="md" onClick={() => navigate('/')}>
+            {t('internalServerErrorButton')}
           </Button>
         </Group>
       </Container>

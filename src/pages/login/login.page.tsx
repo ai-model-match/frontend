@@ -10,74 +10,66 @@ import classes from './login.module.css';
 import { callRefreshApi } from './refresh.api';
 
 export default function LoginPage() {
-    // Development
-    const effectRan = useRef(false);
+  // Development
+  const effectRan = useRef(false);
 
-    // Service
-    const navigate = useNavigate();
-    const { t } = useTranslation();
-    const auth = useAuth();
+  // Service
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const auth = useAuth();
 
-    // State
-    const [pageLoaded, setPageLoaded] = useState(false);
-    const [authenticated, setAuthenticated] = useState(false);
+  // State
+  const [pageLoaded, setPageLoaded] = useState(false);
 
-    // Effects
-    useEffect(() => {
-        if (authenticated) {
-            navigate('/dashboard', { replace: true });
+  useEffect(() => {
+    if (!auth.loaded) return;
+    if (effectRan.current) return;
+    effectRan.current = true;
+    (async () => {
+      try {
+        if (!auth.refreshToken) {
+          auth.logout();
+          setPageLoaded(true);
+          return;
         }
-    }, [authenticated, navigate]);
+        const data = await callRefreshApi({
+          refreshToken: auth.refreshToken,
+        });
+        auth.refresh(data.accessToken, data.refreshToken);
+        navigate('/dashboard', { replace: true });
+      } catch (err: unknown) {
+        switch (getErrorMessage(err)) {
+          case 'refresh-token-failed': {
+            auth.logout();
+            setPageLoaded(true);
+            break;
+          }
+          default: {
+            auth.logout();
+            navigate('/internal-server-error');
+            setPageLoaded(true);
+            break;
+          }
+        }
+      }
+    })();
+  }, [auth, t, navigate]);
 
-    useEffect(() => {
-        if (!auth.loaded) return;
-        if (effectRan.current) return;
-        effectRan.current = true;
-        (async () => {
-            try {
-                if (!auth.refreshToken) {
-                    auth.logout();
-                    setPageLoaded(true);
-                    return;
-                }
-                const data = await callRefreshApi({
-                    refreshToken: auth.refreshToken,
-                });
-                auth.refresh(data.accessToken, data.refreshToken);
-                setAuthenticated(true);
-            } catch (err: unknown) {
-                switch (getErrorMessage(err)) {
-                    case 'refresh-token-failed': {
-                        auth.logout();
-                        setPageLoaded(true);
-                        break;
-                    }
-                    default: {
-                        auth.logout();
-                        alert(t('appGenericError'));
-                        setPageLoaded(true);
-                        break;
-                    }
-                }
-            }
-        })();
-    }, [auth, t, navigate]);
-
-    // Content
-    return (
-        pageLoaded && (
-            <Box className={classes.root}>
-                <LanguageSelector absolute></LanguageSelector>
-                <Container className={classes.boxLogin}>
-                    <Paper p={'xl'}>
-                        <Image src="/icon.svg" alt="Login Icon" className={classes.boxLogo} />
-                        <Title className={classes.boxTitle} order={2}>
-                            {t('appName')}
-                        </Title>
-                        <LoginFormComponent />
-                    </Paper>
-                </Container>
-            </Box>
-        )
-    );
+  // Content
+  return (
+    pageLoaded && (
+      <Box className={classes.root}>
+        <LanguageSelector absolute></LanguageSelector>
+        <Container className={classes.boxLogin}>
+          <Paper p={'xl'}>
+            <Image src="/icon.svg" alt="Login Icon" className={classes.boxLogo} />
+            <Title className={classes.boxTitle} order={2}>
+              {t('appName')}
+            </Title>
+            <LoginFormComponent />
+          </Paper>
+        </Container>
+      </Box>
+    )
+  );
 }

@@ -5,21 +5,22 @@ import { enTranslations } from './en';
 import { itTranslations } from './it';
 
 const resources = {
-    en: { translation: enTranslations },
-    it: { translation: itTranslations },
+  en: { translation: enTranslations },
+  it: { translation: itTranslations },
 };
 
 const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
 
-i18n.use(LanguageDetector)
-    .use(initReactI18next)
-    .init({
-        resources,
-        fallbackLng: 'en',
-        interpolation: {
-            escapeValue: false,
-        },
-    });
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false,
+    },
+  });
 const detectedLang = i18n.language.split('-')[0];
 
 /* eslint-disable no-undef */
