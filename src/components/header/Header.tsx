@@ -2,8 +2,8 @@ import { ActionIcon, Box, Group, Image, Title } from '@mantine/core';
 import { IconBrandGithub, IconBrandOpenSource } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import LanguageSelector from '../language/language-selector.component';
-import classes from './header.module.css';
+import classes from './Header.module.css';
+import LanguageSelector from '../LanguageSelector/LanguageSelector';
 
 export default function Header() {
   // Services

@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/EmptyState';
 import { LineChart } from '@mantine/charts';
 import {
   ActionIcon,
@@ -22,12 +23,6 @@ import { IconArrowFork, IconCheck, IconCopy, IconPencil, IconPlus, IconRoute, Ic
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import EmptyState from '../../components/empty-state/empty-state';
-import LayoutComponent from '../../components/layout/layout.component';
-import PaperTitle from '../../components/paper-title/paper-title';
-import { useAuth } from '../../core/auth/auth.context';
-import AuthGuard from '../../core/auth/auth.guard';
-import { getErrorMessage } from '../../core/err/err';
 import DeleteUseCaseStepComponent from './components/delete-use-case-step.component';
 import NewUseCaseStepComponent from './components/new-use-case-step.component';
 import UpdateUseCaseStepComponent from './components/update-use-case-step.component';
@@ -41,6 +36,11 @@ import {
   useCaseDto,
   useCaseStepDto,
 } from './use-case-step.api';
+import LayoutComponent from '../../components/layout/layout.component';
+import PaperTitle from '../../components/paper-title/paper-title';
+import { useAuth } from '../../core/auth/auth.context';
+import AuthGuard from '../../core/auth/auth.guard';
+import { getErrorMessage } from '../../core/err/err';
 
 interface BreadcrumbItem {
   title: string;
@@ -146,7 +146,7 @@ export default function UseCaseStepPage() {
       apiStepResponse.totalCount++;
       setSelectedStepNumber(createdUseCaseStep.position - 1);
     },
-    [setApiStepRequest, apiStepRequest, apiStepResponse, newUseCaseStepActionsClose],
+    [setApiStepRequest, apiStepRequest, apiStepResponse, newUseCaseStepActionsClose]
   );
 
   const onUseCaseStepUpdated = useCallback(() => {
@@ -162,7 +162,7 @@ export default function UseCaseStepPage() {
       setSelectedStepNumber((prev) => Math.min(prev, Math.max(0, apiStepResponse.totalCount - 1)));
       setApiStepRequest({ ...apiStepRequest });
     },
-    [apiStepRequest, apiStepResponse, setApiStepRequest, setSelectedStepNumber, deleteUseCaseStepActionsClose],
+    [apiStepRequest, apiStepResponse, setApiStepRequest, setSelectedStepNumber, deleteUseCaseStepActionsClose]
   );
 
   const onStepItemClick = (index: number) => {
@@ -267,7 +267,12 @@ export default function UseCaseStepPage() {
           dataKey="date"
           series={[
             { name: 'Requests', label: 'Step Req.', color: 'brand.6' },
-            { name: 'UseCaseRequests', label: 'Use Case Req.', color: 'red.6', strokeDasharray: '5 5' },
+            {
+              name: 'UseCaseRequests',
+              label: 'Use Case Req.',
+              color: 'red.6',
+              strokeDasharray: '5 5',
+            },
           ]}
           curveType="bump"
           tickLine="xy"

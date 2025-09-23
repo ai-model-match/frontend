@@ -83,7 +83,7 @@ export type createUseCaseStepOutputDto = {
 };
 
 export const callCreateUseCaseStepApi = async (
-  input: createUseCaseStepInputDto,
+  input: createUseCaseStepInputDto
 ): Promise<createUseCaseStepOutputDto> => {
   const response = await callAuthApi(`/api/v1/use-case-steps`, 'POST', input);
   if (!response) {
@@ -126,10 +126,12 @@ export type updateUseCaseStepOutputDto = {
 };
 
 export const callUpdateUseCaseStepApi = async (
-  input: updateUseCaseStepInputDto,
+  input: updateUseCaseStepInputDto
 ): Promise<updateUseCaseStepOutputDto> => {
   const { id, ...rest } = input;
-  const response = await callAuthApi(`/api/v1/use-case-steps/${id}`, 'PUT', { ...rest });
+  const response = await callAuthApi(`/api/v1/use-case-steps/${id}`, 'PUT', {
+    ...rest,
+  });
   if (!response) {
     throw new Error('use-case-step-updated-failed');
   }

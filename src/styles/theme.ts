@@ -1,9 +1,6 @@
-// theme.ts
 import { createTheme, CSSVariablesResolver, MantineTheme, MantineThemeOverride } from '@mantine/core';
 
-// Define the theme
 export const mantineTheme: MantineThemeOverride = createTheme({
-  /** Font family */
   fontFamily: 'Ubuntu, sans-serif',
   colors: {
     dark: [
@@ -26,9 +23,9 @@ export const mantineTheme: MantineThemeOverride = createTheme({
       '#63e6be',
       '#38d9a9',
       '#20c997',
-      '#12b886', // Primary for Light
+      '#12b886',
       '#0ca678',
-      '#099268', // Primary for Dark
+      '#099268',
       '#087f5b',
     ],
   },

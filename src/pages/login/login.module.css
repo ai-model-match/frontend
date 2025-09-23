@@ -1,23 +1,23 @@
 .root {
-    display: flex;
-    min-height: 100vh;
-    background: var(--aimm-gradient-bg);
+  display: flex;
+  min-height: 100vh;
+  background: var(--aimm-gradient-bg);
 }
 
 .boxLogin {
-    min-width: 400px;
-    max-width: 400px;
-    margin: auto;
-    margin-top: 120px;
+  min-width: 400px;
+  max-width: 400px;
+  margin: auto;
+  margin-top: 120px;
 }
 
 .boxLogo {
-    text-align: center;
-    height: 80px;
-    object-fit: contain;
-    margin: auto;
-    max-width: 100%;
-    margin-bottom: var(--mantine-spacing-xl);
+  text-align: center;
+  height: 80px;
+  object-fit: contain;
+  margin: auto;
+  max-width: 100%;
+  margin-bottom: var(--mantine-spacing-xl);
 }
 
 .boxTitle {

@@ -36,7 +36,7 @@ export default function PaperTitle({
       if (onSearchChange) {
         onSearchChange(value);
       }
-    }, 300),
+    }, 300)
   ).current;
 
   // Effects

@@ -1,11 +1,12 @@
 import { Box, Button, Menu, Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import classes from './language-selector.module.css';
+import classes from './LanguageSelector.module.css';
 
 const availableLanguages = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
   { code: 'it', label: 'Italiano', flag: '🇮🇹' },
+
   { code: 'es', label: 'Español', flag: '🇪🇸' },
 ];
 

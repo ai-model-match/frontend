@@ -1,10 +1,9 @@
 import { ActionIcon, Badge, Code, CopyButton, Group, Text, Tooltip } from '@mantine/core';
 import { IconCheck, IconCopy, IconPencil, IconTrash } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
-
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Tr from '../../../components/table/table-tr';
+import { Tr } from '../../../components/table/table-tr';
 import { useAuth } from '../../../core/auth/auth.context';
 import { useCaseDto } from '../use-case.api';
 

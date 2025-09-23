@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../core/auth/auth.context';
 import { callLogoutApi } from './logout.api';
+import { useAuth } from '../../core/auth/auth.context';
 
 export default function LogoutPage() {
   // Services

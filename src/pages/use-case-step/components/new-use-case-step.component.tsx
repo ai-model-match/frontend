@@ -62,7 +62,7 @@ export default function NewUseCaseStepComponent({ useCaseId, onUseCaseStepCreate
   };
 
   // Content
-  const Image = assets[`./assets/new-use-case-step.svg`] as React.FC<React.SVGProps<SVGSVGElement>>;
+  const Image = assets[`./assets/new-use-case-step.svg`];
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>

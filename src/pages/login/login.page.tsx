@@ -2,12 +2,12 @@ import { Box, Container, Image, Paper, Title } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import LanguageSelector from '../../components/language/language-selector.component';
-import { useAuth } from '../../core/auth/auth.context';
-import { getErrorMessage } from '../../core/err/err';
 import LoginFormComponent from './components/login-form.component';
 import classes from './login.module.css';
 import { callRefreshApi } from './refresh.api';
+import LanguageSelector from '../../components/LanguageSelector/LanguageSelector';
+import { useAuth } from '../../core/auth/auth.context';
+import { getErrorMessage } from '../../core/err/err';
 
 export default function LoginPage() {
   // Development

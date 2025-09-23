@@ -1,7 +1,7 @@
 import { Box, Container, Grid } from '@mantine/core';
-import Header from '../header/header.component';
-import { MenuComponent } from '../menu/menu.component';
 import classes from './layout.module.css';
+import Header from '../Header/Header';
+import { Menu } from '../Menu/Menu';
 
 export default function LayoutComponent({ children }: { children: React.ReactNode }) {
   return (
@@ -11,7 +11,7 @@ export default function LayoutComponent({ children }: { children: React.ReactNod
         <Container fluid>
           <Grid gutter="md" columns={12} miw={1170}>
             <Grid.Col span={{ base: 3, xl: 2 }} className={classes.menu}>
-              <MenuComponent />
+              <Menu />
             </Grid.Col>
             <Grid.Col span={{ base: 9, xl: 10 }}>
               <Grid gutter="md" columns={12}>

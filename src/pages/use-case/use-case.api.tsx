@@ -91,7 +91,9 @@ export type updateUseCaseOutputDto = {
 
 export const callUpdateUseCaseApi = async (input: updateUseCaseInputDto): Promise<updateUseCaseOutputDto> => {
   const { id, ...rest } = input;
-  const response = await callAuthApi(`/api/v1/use-cases/${id}`, 'PUT', { ...rest });
+  const response = await callAuthApi(`/api/v1/use-cases/${id}`, 'PUT', {
+    ...rest,
+  });
   if (!response) {
     throw new Error('use-case-updated-failed');
   }

@@ -3,9 +3,9 @@ import { IconAdjustments, IconArrowFork, IconDoorExit, IconGauge } from '@tabler
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MenuItemComponent, { MenuItem } from './menu-item.component';
-import classes from './menu.module.css';
+import classes from './Menu.module.css';
 
-export function MenuComponent() {
+export function Menu() {
   // Data
   const { t, i18n } = useTranslation();
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);

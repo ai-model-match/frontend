@@ -14,7 +14,7 @@ export interface TrProps {
   tds: TdProps[];
 }
 
-export default function Tr({ trKey, tds }: TrProps) {
+export function Tr({ trKey, tds }: TrProps) {
   return (
     <Table.Tr key={trKey}>
       {tds.map((td, index) => {

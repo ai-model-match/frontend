@@ -70,7 +70,7 @@ export default function UpdateUseCaseStepComponent({
   };
 
   // Content
-  const Image = assets[`./assets/edit-use-case-step.svg`] as React.FC<React.SVGProps<SVGSVGElement>>;
+  const Image = assets[`./assets/edit-use-case-step.svg`];
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>

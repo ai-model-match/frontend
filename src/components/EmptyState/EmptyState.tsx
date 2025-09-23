@@ -1,7 +1,6 @@
 import { Box, Button, Stack, Text, Title } from '@mantine/core';
 import { assets } from '../../App';
-
-interface EmptyStateProps {
+export interface EmptyStateProps {
   title: string;
   text?: string;
   suggestion?: string;
@@ -10,9 +9,9 @@ interface EmptyStateProps {
   btnHandle?: () => void;
 }
 
-export default function EmptyState(props: EmptyStateProps) {
+export function EmptyState(props: EmptyStateProps) {
   // Import image based on name
-  const Image = assets[`./assets/${props.image}.svg`] as React.FC<React.SVGProps<SVGSVGElement>>;
+  const Image = assets[`./assets/${props.image}.svg`];
 
   // Content
   return (

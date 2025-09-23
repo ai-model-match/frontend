@@ -1,17 +1,11 @@
+import { EmptyState } from '@components/EmptyState';
 import { Box, Drawer, Fieldset, Grid, Group, Loader, Modal, Pagination, Paper, Table } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowFork, IconPlus } from '@tabler/icons-react';
-
 import equal from 'fast-deep-equal';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import EmptyState from '../../components/empty-state/empty-state';
-import LayoutComponent from '../../components/layout/layout.component';
-import PaperTitle from '../../components/paper-title/paper-title';
-import { useAuth } from '../../core/auth/auth.context';
-import AuthGuard from '../../core/auth/auth.guard';
-import { getErrorMessage } from '../../core/err/err';
 import ColumnUseCaseComponent from './components/column-use-case.component';
 import DeleteUseCaseComponent from './components/delete-use-case.component';
 import NewUseCaseComponent from './components/new-use-case.component';
@@ -24,6 +18,11 @@ import {
   orderByOptions,
   useCaseDto,
 } from './use-case.api';
+import LayoutComponent from '../../components/layout/layout.component';
+import PaperTitle from '../../components/paper-title/paper-title';
+import { useAuth } from '../../core/auth/auth.context';
+import AuthGuard from '../../core/auth/auth.guard';
+import { getErrorMessage } from '../../core/err/err';
 
 export default function UseCasePage() {
   // Services
@@ -102,7 +101,7 @@ export default function UseCasePage() {
       newUseCaseActionsClose();
       navigate(`/use-cases/${useCase.id}/steps`, { replace: true });
     },
-    [navigate, newUseCaseActionsClose],
+    [navigate, newUseCaseActionsClose]
   );
 
   const onUseCaseUpdated = useCallback(() => {
@@ -161,7 +160,7 @@ export default function UseCasePage() {
         orderBy: field as orderByOptions,
       });
     },
-    [setApiRequest, apiRequest],
+    [setApiRequest, apiRequest]
   );
 
   const isFilterApplied = (): boolean => {

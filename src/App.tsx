@@ -13,9 +13,9 @@ import InternalServerErrorPage from './pages/internal-server-error/internal-serv
 import LoginPage from './pages/login/login.page';
 import LogoutPage from './pages/logout/logout.page';
 import NotFound from './pages/not-found/not-found.page';
-import UseCaseStepPage from './pages/use-case-step/use-case-step.page';
 import UseCasePage from './pages/use-case/use-case.page';
-import { cssVariablesResolver, mantineTheme } from './theme';
+import UseCaseStepPage from './pages/use-case-step/use-case-step.page';
+import { cssVariablesResolver, mantineTheme } from './styles/theme';
 
 /*
 Import all assets to be used as components.
@@ -24,7 +24,7 @@ We can apply style of SVGs
 export const assets = import.meta.glob('./assets/*.svg', {
   eager: true,
   import: 'ReactComponent',
-});
+}) as Record<string, React.FC<React.SVGProps<SVGSVGElement>>>;
 
 export default function App() {
   return (

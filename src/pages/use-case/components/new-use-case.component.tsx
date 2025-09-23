@@ -60,7 +60,7 @@ export default function NewUseCaseComponent({ onUseCaseCreated }: NewUseCaseComp
   };
 
   // Content
-  const Image = assets[`./assets/new-use-case.svg`] as React.FC<React.SVGProps<SVGSVGElement>>;
+  const Image = assets[`./assets/new-use-case.svg`];
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>

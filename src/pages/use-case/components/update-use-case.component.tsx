@@ -15,6 +15,7 @@ interface UpdateUseCaseComponentProps {
 export default function UpdateUseCaseComponent({ useCase, onUseCaseUpdated }: UpdateUseCaseComponentProps) {
   // Services
   const navigate = useNavigate();
+
   const { t } = useTranslation();
 
   // States
@@ -62,7 +63,7 @@ export default function UpdateUseCaseComponent({ useCase, onUseCaseUpdated }: Up
   };
 
   // Content
-  const Image = assets[`./assets/edit-use-case.svg`] as React.FC<React.SVGProps<SVGSVGElement>>;
+  const Image = assets[`./assets/edit-use-case.svg`];
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>

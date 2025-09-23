@@ -1,30 +1,30 @@
 // eslint.config.js
 import js from '@eslint/js';
+import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
 
 export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
-
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: ['**/*.d.ts'],
     languageOptions: {
       parser: tseslint.parser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        ecmaFeatures: { jsx: true },
-      },
+      parserOptions: { ecmaVersion: 'latest', sourceType: 'module', ecmaFeatures: { jsx: true } },
     },
     plugins: {
       react: reactPlugin,
       'react-hooks': reactHooks,
       'jsx-a11y': jsxA11y,
       prettier: eslintPluginPrettier,
+      import: importPlugin,
+      'unused-imports': unusedImports,
     },
     rules: {
       'prettier/prettier': [
@@ -32,13 +32,48 @@ export default [
         {
           semi: true,
           singleQuote: true,
-          trailingComma: 'all',
+          trailingComma: 'es5',
           printWidth: 120,
           tabWidth: 2,
           endOfLine: 'auto',
           bracketSpacing: true,
           arrowParens: 'always',
         },
+      ],
+      'import/order': [
+        'error',
+        {
+          groups: ['external', 'builtin', 'internal', 'sibling', 'parent', 'index'],
+          pathGroups: [
+            {
+              pattern: 'components',
+              group: 'internal',
+            },
+            {
+              pattern: 'common',
+              group: 'internal',
+            },
+            {
+              pattern: 'routes/ **',
+              group: 'internal',
+            },
+            {
+              pattern: 'assets/**',
+              group: 'internal',
+              position: 'after',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['internal'],
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
       ],
 
       'react/react-in-jsx-scope': 'off',
