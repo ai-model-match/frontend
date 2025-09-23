@@ -23,6 +23,7 @@
     },
     "include": [
         "src",
-        "global.d.ts"
+        "envs.d.ts",
+        "modules.d.ts"
     ]
 }
