@@ -3,65 +3,38 @@ import { useForm } from '@mantine/form';
 import { IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { getErrorMessage } from '../../../core/err/err';
-import { callDeleteUseCaseApi, useCaseDto } from '../use-case.api';
 
-export interface DeleteUseCaseComponentProps {
-  useCase: useCaseDto;
+export interface UseCaseStatusConfirmComponentProps {
   title: string;
   text: string;
   confirmTextRequired?: boolean;
-  onUseCaseDeleted: (id: string) => void;
+  onConfirm: () => void;
   onCancel: () => void;
 }
 
-export default function DeleteUseCaseComponent({
-  useCase,
+export default function UseCaseStatusConfirmComponent({
   title,
   text,
   confirmTextRequired,
+  onConfirm,
   onCancel,
-  onUseCaseDeleted,
-}: DeleteUseCaseComponentProps) {
+}: UseCaseStatusConfirmComponentProps) {
   // Services
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const [textToConfirm, setTextToConfirm] = useState<string>();
   const [isConfirmDisabled, setIsConfirmDisabled] = useState<boolean>(true);
-  const [apiloading, setApiLoading] = useState(false);
 
   const form = useForm();
 
   // Calculate if the confirm button can be enabled
   useEffect(() => {
-    setIsConfirmDisabled(confirmTextRequired !== undefined && textToConfirm !== t('deleteMe'));
+    setIsConfirmDisabled(confirmTextRequired !== undefined && textToConfirm !== t('deactivateMe'));
   }, [confirmTextRequired, textToConfirm, t]);
-
-  // Handles
-  const handleSubmit = async () => {
-    try {
-      setApiLoading(true);
-      await callDeleteUseCaseApi({ id: useCase.id });
-      onUseCaseDeleted(useCase.id);
-    } catch (err: unknown) {
-      switch (getErrorMessage(err)) {
-        case 'refresh-token-failed':
-          navigate('/logout');
-          break;
-        default:
-          navigate('/internal-server-error');
-          break;
-      }
-    } finally {
-      setApiLoading(false);
-    }
-  };
 
   // Content
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(onConfirm)}>
       <Group justify="left" align="flex-start">
         <ThemeIcon variant="filled" c={'white'} size={30}>
           <IconX size={18} />
@@ -71,15 +44,12 @@ export default function DeleteUseCaseComponent({
       <Text size="sm" mt={10}>
         {text}
       </Text>
-      <Text size="sm" mt={10} fw={600}>
-        {t('deleteUndo')}
-      </Text>
       {confirmTextRequired && (
         <TextInput
           mt={30}
           withAsterisk
           required
-          label={t('deleteMeInput')}
+          label={t('deactivateMeInput')}
           onChange={(e) => setTextToConfirm(e.currentTarget.value)}
         />
       )}
@@ -87,7 +57,7 @@ export default function DeleteUseCaseComponent({
         <Button onClick={onCancel} variant="outline">
           {t('btnCancel')}
         </Button>
-        <Button type="submit" disabled={isConfirmDisabled} loading={apiloading} loaderProps={{ type: 'dots' }}>
+        <Button type="submit" disabled={isConfirmDisabled}>
           {t('btnConfirm')}
         </Button>
       </Group>

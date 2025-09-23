@@ -7,8 +7,8 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
 
 export default [
-  js.configs.recommended, // base ESLint rules
-  ...tseslint.configs.recommended, // TypeScript rules
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
 
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -30,30 +30,23 @@ export default [
       'prettier/prettier': [
         'error',
         {
-          semi: true, // always use semicolons
-          singleQuote: true, // use single quotes
-          trailingComma: 'all', // trailing commas where valid
-          printWidth: 120, // max line width
-          tabWidth: 2, // spaces per tab
-          endOfLine: 'auto', // handle cross-platform line endings
+          semi: true,
+          singleQuote: true,
+          trailingComma: 'all',
+          printWidth: 120,
+          tabWidth: 2,
+          endOfLine: 'auto',
           bracketSpacing: true,
           arrowParens: 'always',
         },
       ],
 
-      // ✅ React
-      'react/react-in-jsx-scope': 'off', // Not needed in React 17+
-      'react/prop-types': 'off', // Disable PropTypes if using TypeScript
-
-      // ✅ Hooks
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-
-      // ✅ TypeScript tweaks
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-
-      // ✅ Other good practices
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
     settings: {

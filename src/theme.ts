@@ -12,45 +12,45 @@ export const mantineTheme: MantineThemeOverride = createTheme({
       '#9b9b9b',
       '#818181',
       '#676767',
-      '#202020',
-      '#191919',
-      '#181818',
+      '#4d4d4dff',
+      '#383838ff',
+      '#1f1f1fff',
       '#080808',
       '#000000',
     ],
     red: ['#FFDCE1', '#FFB3B7', '#FF8990', '#FF6068', '#FF3641', '#FF0C1A', '#E6001B', '#CC001C', '#BA0024', '#9A001F'],
     brand: [
-      '#FFDCE1',
-      '#FFB3B7',
-      '#FF8990',
-      '#FF6068',
-      '#FF3641',
-      '#FF0C1A',
-      '#E6001B', // Primary for Light
-      '#CC001C',
-      '#BA0024', // Primary for Dark
-      '#9A001F',
+      '#e6fcf5',
+      '#c3fae8',
+      '#96f2d7',
+      '#63e6be',
+      '#38d9a9',
+      '#20c997',
+      '#12b886', // Primary for Light
+      '#0ca678',
+      '#099268', // Primary for Dark
+      '#087f5b',
     ],
   },
   other: {
-    darkBgGradientBgStart: '#9A001F',
-    darkBgGradientBgEnd: '#4E0010',
-    lightBgGradientBgStart: '#d2002a',
-    lightBgGradientBgEnd: '#6f0016',
+    darkBgGradientBgStart: '#099268',
+    darkBgGradientBgEnd: '#0b525b',
+    lightBgGradientBgStart: '#35a785ff',
+    lightBgGradientBgEnd: '#29707aff',
     bpPaperDark: '#252525',
-    bpPaperLight: '#f3f3f3',
+    bpPaperLight: '#efefef',
   },
   shadows: {
-    md: '1px 1px 3px rgba(0, 0, 0, .40)',
-    lg: '3px 3px 10px rgba(0, 0, 0, .40)',
-    xl: '5px 5px 3px rgba(0, 0, 0, .40)',
+    md: '0px 2px 5px rgba(0, 0, 0, .20)',
+    lg: '0px 2px 5px rgba(0, 0, 0, .20)',
+    xl: '0px 2px 5px rgba(0, 0, 0, .20)',
   },
   primaryColor: 'brand',
   defaultRadius: 'md',
   components: {
     Paper: {
       defaultProps: {
-        shadow: 'lg',
+        shadow: '',
         p: 'sm',
         bg: 'var(--aimm-bg-paper)',
       },
@@ -65,11 +65,24 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         padding: 'xs',
       },
     },
+    SegmentedControl: {
+      defaultProps: {
+        bg: `var(--aimm-segmented-control-bg)`,
+      },
+    },
     Code: {
       styles: (theme: MantineTheme) => ({
         root: {
-          color: theme.colors.brand[6],
-          border: `1px solid ${theme.colors.brand[6]}`,
+          overflow: 'hidden',
+          color: theme.colors.brand[7],
+          border: `1px solid ${theme.colors.brand[7]}`,
+        },
+      }),
+    },
+    Fieldset: {
+      styles: () => ({
+        root: {
+          overflow: 'hidden',
         },
       }),
     },
@@ -79,17 +92,19 @@ export const mantineTheme: MantineThemeOverride = createTheme({
 export const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
   variables: {},
   light: {
-    '--aimm-svg-color': theme.colors.brand[8],
+    '--aimm-svg-color': theme.colors.brand[7],
     '--aimm-bg-paper': theme.other.bpPaperLight,
     '--aimm-gradient-bg-start': theme.other.lightBgGradientBgStart,
     '--aimm-gradient-bg-end': theme.other.lightBgGradientBgEnd,
     '--aimm-gradient-bg': `linear-gradient(135deg, ${theme.other.lightBgGradientBgStart} 0%, ${theme.other.lightBgGradientBgEnd} 70%)`,
+    '--aimm-segmented-control-bg': theme.white,
   },
   dark: {
-    '--aimm-svg-color': theme.colors.brand[8],
+    '--aimm-svg-color': theme.colors.brand[7],
     '--aimm-bg-paper': theme.other.bpPaperDark,
     '--aimm-gradient-bg-start': theme.other.darkBgGradientBgStart,
     '--aimm-gradient-bg-end': theme.other.darkBgGradientBgEnd,
     '--aimm-gradient-bg': `linear-gradient(135deg, ${theme.other.darkBgGradientBgStart} 0%, ${theme.other.darkBgGradientBgEnd} 70%)`,
+    '--aimm-segmented-control-bg': theme.colors.dark[6],
   },
 });

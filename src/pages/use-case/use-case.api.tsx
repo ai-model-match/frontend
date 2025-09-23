@@ -29,7 +29,7 @@ export type listUseCaseOutputDto = {
 export const callListUseCaseApi = async (input: listUseCaseInputDto): Promise<listUseCaseOutputDto> => {
   const response = await callAuthApi(`/api/v1/use-cases`, 'GET', input);
   if (!response) {
-    throw new Error('list-use-case-failed');
+    throw new Error('use-case-list-failed');
   }
   if (!response.ok) {
     const data = await response.json();

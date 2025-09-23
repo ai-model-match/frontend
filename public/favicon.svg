@@ -7,9 +7,31 @@
    viewBox="0 0 135.46666 135.46667"
    version="1.1"
    id="svg1"
+   sodipodi:docname="favicon.svg"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.8125"
+     inkscape:cx="657.23077"
+     inkscape:cy="-24.615385"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
   <defs
      id="defs1">
     <linearGradient
@@ -18,12 +40,12 @@
          id="stop8"
          stop-color="#ff1e27"
          offset="0"
-         style="stop-color:#f3003f;stop-opacity:1;" />
+         style="stop-color:#35a785;stop-opacity:1;" />
       <stop
          id="stop7"
          stop-color="#7d141d"
          offset="1"
-         style="stop-color:#800008;stop-opacity:1;" />
+         style="stop-color:#0b525b;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        id="linearGradient6">
@@ -31,12 +53,12 @@
          id="stop5"
          stop-color="#7d141d"
          offset="0"
-         style="stop-color:#800008;stop-opacity:1;" />
+         style="stop-color:#0b525b;stop-opacity:1;" />
       <stop
          id="stop6"
          stop-color="#ff1e27"
          offset="1"
-         style="stop-color:#f3003f;stop-opacity:1;" />
+         style="stop-color:#35a785;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        id="linearGradient2">
@@ -55,12 +77,12 @@
          id="SvgjsStop1016"
          stop-color="#7d141d"
          offset="0"
-         style="stop-color:#800008;stop-opacity:1;" />
+         style="stop-color:#0b525b;stop-opacity:1;" />
       <stop
          id="SvgjsStop1017"
          stop-color="#ff1e27"
          offset="1"
-         style="stop-color:#f3003f;stop-opacity:1;" />
+         style="stop-color:#35a785;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        xlink:href="#linearGradient6"

@@ -36,11 +36,11 @@ export default function RowUseCaseComponent({
         },
         {
           children: (
-            <Group gap={2}>
+            <Group wrap="nowrap" gap={2}>
               <Code mr={0}>{useCase.code}</Code>
               <CopyButton value={useCase.code} timeout={1000}>
                 {({ copied, copy }) => (
-                  <ActionIcon color={copied ? 'teal' : 'gray'} variant="subtle" onClick={copy}>
+                  <ActionIcon color={copied ? 'var(--mantine-color-teal-7)' : 'gray'} variant="subtle" onClick={copy}>
                     {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
                   </ActionIcon>
                 )}
@@ -66,12 +66,12 @@ export default function RowUseCaseComponent({
         },
         {
           children: useCase.active ? (
-            <Badge color="green" size="sm">
-              {t('useCaseEnable')}
+            <Badge color="var(--mantine-color-teal-7)" size="sm">
+              {t('useCaseStatusActive')}
             </Badge>
           ) : (
             <Badge color="grey" size="sm">
-              {t('useCaseDisable')}
+              {t('useCaseStatusInactive')}
             </Badge>
           ),
         },
@@ -83,7 +83,7 @@ export default function RowUseCaseComponent({
         },
         {
           children: auth.canWrite() && (
-            <>
+            <Group wrap="nowrap" gap={0}>
               <Tooltip withArrow style={{ fontSize: '12px' }} label={t('useCaseUpdateAction')}>
                 <ActionIcon variant="subtle" onClick={() => handleUpdateRequest(useCase.id)}>
                   <IconPencil size={18} />
@@ -103,7 +103,7 @@ export default function RowUseCaseComponent({
                   <IconTrash size={18} />
                 </ActionIcon>
               </Tooltip>
-            </>
+            </Group>
           ),
         },
       ]}

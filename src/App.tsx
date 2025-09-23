@@ -1,8 +1,11 @@
 import '@fontsource/ubuntu';
+import '@mantine/charts/styles.css';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 import './core/lang/i18n';
 
 import { DirectionProvider, MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './core/auth/auth.context';
 import DashboardPage from './pages/dashboard/dashboard.page';
@@ -27,6 +30,7 @@ export default function App() {
   return (
     <DirectionProvider>
       <MantineProvider theme={mantineTheme} cssVariablesResolver={cssVariablesResolver} defaultColorScheme="auto">
+        <Notifications />
         <AuthProvider>
           <BrowserRouter>
             <Routes>

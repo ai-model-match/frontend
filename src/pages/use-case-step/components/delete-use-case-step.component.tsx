@@ -5,25 +5,25 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { getErrorMessage } from '../../../core/err/err';
-import { callDeleteUseCaseApi, useCaseDto } from '../use-case.api';
+import { callDeleteUseCaseStepApi, useCaseStepDto } from '../use-case-step.api';
 
-export interface DeleteUseCaseComponentProps {
-  useCase: useCaseDto;
+export interface DeleteUseCaseStepComponentProps {
+  useCaseStep: useCaseStepDto;
   title: string;
   text: string;
   confirmTextRequired?: boolean;
-  onUseCaseDeleted: (id: string) => void;
+  onUseCaseStepDeleted: (id: string) => void;
   onCancel: () => void;
 }
 
-export default function DeleteUseCaseComponent({
-  useCase,
+export default function DeleteUseCaseStepComponent({
+  useCaseStep,
   title,
   text,
   confirmTextRequired,
   onCancel,
-  onUseCaseDeleted,
-}: DeleteUseCaseComponentProps) {
+  onUseCaseStepDeleted,
+}: DeleteUseCaseStepComponentProps) {
   // Services
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -36,15 +36,15 @@ export default function DeleteUseCaseComponent({
 
   // Calculate if the confirm button can be enabled
   useEffect(() => {
-    setIsConfirmDisabled(confirmTextRequired !== undefined && textToConfirm !== t('deleteMe'));
+    setIsConfirmDisabled(confirmTextRequired === true && textToConfirm !== t('deleteMe'));
   }, [confirmTextRequired, textToConfirm, t]);
 
   // Handles
   const handleSubmit = async () => {
     try {
       setApiLoading(true);
-      await callDeleteUseCaseApi({ id: useCase.id });
-      onUseCaseDeleted(useCase.id);
+      await callDeleteUseCaseStepApi({ id: useCaseStep.id });
+      onUseCaseStepDeleted(useCaseStep.id);
     } catch (err: unknown) {
       switch (getErrorMessage(err)) {
         case 'refresh-token-failed':

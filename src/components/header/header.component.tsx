@@ -12,7 +12,7 @@ export default function Header() {
 
   // Content
   return (
-    <Box miw={950}>
+    <Box miw={1200}>
       <header className={classes.root}>
         <Group justify="space-between" h="100%" gap={10}>
           <Group gap={0} onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>

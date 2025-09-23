@@ -1,4 +1,4 @@
-import { Box, Drawer, Grid, Group, Loader, Modal, Pagination, Paper, Table } from '@mantine/core';
+import { Box, Drawer, Fieldset, Grid, Group, Loader, Modal, Pagination, Paper, Table } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconArrowFork, IconPlus } from '@tabler/icons-react';
 
@@ -205,8 +205,8 @@ export default function UseCasePage() {
                   onBtnClick={auth.canWrite() ? newUseCaseActionsOpen : undefined}
                 />
                 {!hasNoResults() && (
-                  <>
-                    <Box>
+                  <Box mb={'xl'}>
+                    <Fieldset>
                       <Table>
                         <ColumnUseCaseComponent sortBy={apiRequest.orderBy} onSortingChanged={onSortingChanged} />
                         {!hasNoFilteredResults() && (
@@ -230,7 +230,7 @@ export default function UseCasePage() {
                           btnHandle={onFilterReset}
                         ></EmptyState>
                       )}
-                    </Box>
+                    </Fieldset>
                     <Group justify="center" align="center">
                       {apiResponse && apiResponse.totalCount > 0 && (
                         <Pagination
@@ -243,17 +243,27 @@ export default function UseCasePage() {
                         />
                       )}
                     </Group>
-                  </>
+                  </Box>
                 )}
                 {hasNoResults() && (
-                  <EmptyState
-                    image="new-use-case"
-                    title={t('useCaseCreateNewTitle')}
-                    text={t('useCaseCreateNewText')}
-                    suggestion={t('useCaseCreateNewSuggestion')}
-                    btnText={t('useCaseCreateNewBtn')}
-                    btnHandle={newUseCaseActionsOpen}
-                  ></EmptyState>
+                  <Fieldset>
+                    {auth.canWrite() ? (
+                      <EmptyState
+                        image="new-use-case"
+                        title={t('useCaseCreateNewTitle')}
+                        text={t('useCaseCreateNewText')}
+                        suggestion={t('useCaseCreateNewSuggestion')}
+                        btnText={t('useCaseCreateNewBtn')}
+                        btnHandle={newUseCaseActionsOpen}
+                      ></EmptyState>
+                    ) : (
+                      <EmptyState
+                        image="new-use-case"
+                        title={t('useCaseCreateNewTitleDisabled')}
+                        text={t('useCaseCreateNewTextDisabled')}
+                      ></EmptyState>
+                    )}
+                  </Fieldset>
                 )}
               </Box>
             )}

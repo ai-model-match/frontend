@@ -77,6 +77,7 @@ export default function NewUseCaseComponent({ onUseCaseCreated }: NewUseCaseComp
           <Box w={'100%'} h={'100mah'}>
             <TextInput
               withAsterisk
+              maxLength={30}
               label={t('newUseCaseTitleInput')}
               placeholder={t('newUseCaseTitleInputPlaceholder')}
               key={form.key('title')}
@@ -85,6 +86,7 @@ export default function NewUseCaseComponent({ onUseCaseCreated }: NewUseCaseComp
             />
             <TextInput
               withAsterisk
+              maxLength={30}
               label={t('newUseCaseCodeInput')}
               placeholder={t('newUseCaseCodeInputPlaceholder')}
               key={form.key('code')}
@@ -93,6 +95,7 @@ export default function NewUseCaseComponent({ onUseCaseCreated }: NewUseCaseComp
             />
             <Textarea
               withAsterisk
+              maxLength={500}
               rows={5}
               label={t('newUseCaseDescriptionInput')}
               placeholder={t('newUseCaseDescriptionInputPlaceholder')}
@@ -104,7 +107,7 @@ export default function NewUseCaseComponent({ onUseCaseCreated }: NewUseCaseComp
         </Group>
       </Box>
       <Box>
-        <Button type="submit" mt={'lg'} loading={apiloading} fullWidth>
+        <Button type="submit" mt={'lg'} loading={apiloading} loaderProps={{ type: 'dots' }} fullWidth>
           {t('newUseCaseCreateBtn')}
         </Button>
       </Box>

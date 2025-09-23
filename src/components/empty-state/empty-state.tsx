@@ -6,8 +6,8 @@ interface EmptyStateProps {
   text?: string;
   suggestion?: string;
   image: string;
-  btnText: string;
-  btnHandle: () => void;
+  btnText?: string;
+  btnHandle?: () => void;
 }
 
 export default function EmptyState(props: EmptyStateProps) {
@@ -33,9 +33,13 @@ export default function EmptyState(props: EmptyStateProps) {
           {props.suggestion}
         </Text>
       )}
-      <Button mt={20} mb={40} onClick={props.btnHandle}>
-        {props.btnText}
-      </Button>
+      {props.btnText && props.btnHandle ? (
+        <Button mt={20} mb={40} onClick={props.btnHandle}>
+          {props.btnText}
+        </Button>
+      ) : (
+        <Box mb={40} />
+      )}
     </Stack>
   );
 }

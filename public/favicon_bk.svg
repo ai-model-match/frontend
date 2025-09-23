@@ -2,36 +2,14 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="450"
-   height="254.92784"
-   viewBox="0 0 119.06249 67.44966"
+   width="512"
+   height="512"
+   viewBox="0 0 135.46666 135.46667"
    version="1.1"
    id="svg1"
-   sodipodi:docname="icon.svg"
-   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="1.6318343"
-     inkscape:cx="286.79382"
-     inkscape:cy="72.311263"
-     inkscape:window-width="1920"
-     inkscape:window-height="1027"
-     inkscape:window-x="0"
-     inkscape:window-y="25"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
   <defs
      id="defs1">
     <linearGradient
@@ -40,12 +18,12 @@
          id="stop8"
          stop-color="#ff1e27"
          offset="0"
-         style="stop-color:#35a785;stop-opacity:1;" />
+         style="stop-color:#f3003f;stop-opacity:1;" />
       <stop
          id="stop7"
          stop-color="#7d141d"
          offset="1"
-         style="stop-color:#0b525b;stop-opacity:1;" />
+         style="stop-color:#800008;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        id="linearGradient6">
@@ -53,12 +31,12 @@
          id="stop5"
          stop-color="#7d141d"
          offset="0"
-         style="stop-color:#0b525b;stop-opacity:1;" />
+         style="stop-color:#800008;stop-opacity:1;" />
       <stop
          id="stop6"
          stop-color="#ff1e27"
          offset="1"
-         style="stop-color:#35a785;stop-opacity:1;" />
+         style="stop-color:#f3003f;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        id="linearGradient2">
@@ -77,12 +55,12 @@
          id="SvgjsStop1016"
          stop-color="#7d141d"
          offset="0"
-         style="stop-color:#0b525b;stop-opacity:1;" />
+         style="stop-color:#800008;stop-opacity:1;" />
       <stop
          id="SvgjsStop1017"
          stop-color="#ff1e27"
          offset="1"
-         style="stop-color:#35a785;stop-opacity:1;" />
+         style="stop-color:#f3003f;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        xlink:href="#linearGradient6"
@@ -123,8 +101,7 @@
   </defs>
   <g
      id="layer2"
-     style="display:none"
-     transform="translate(-8.2020842,-34.008506)">
+     style="display:none">
     <rect
        style="display:inline;vector-effect:non-scaling-stroke;fill:url(#linearGradient3);fill-opacity:1;stroke:none;stroke-width:0.451913;stroke-dasharray:none;stroke-opacity:1;-inkscape-stroke:hairline"
        id="rect2"
@@ -135,8 +112,7 @@
   </g>
   <g
      id="g3"
-     style="display:inline"
-     transform="translate(-8.2020842,-34.008506)">
+     style="display:inline">
     <rect
        style="display:inline;vector-effect:non-scaling-stroke;fill:#000000;fill-opacity:0;stroke:none;stroke-width:0.451913;stroke-dasharray:none;stroke-opacity:1;-inkscape-stroke:hairline"
        id="rect3"
@@ -147,7 +123,7 @@
   </g>
   <g
      id="layer1"
-     transform="matrix(1.7889787,0,0,1.7889787,-11.468844,-37.275266)">
+     transform="matrix(1.7889787,0,0,1.7889787,-3.2667603,-3.2667604)">
     <polyline
        points="77.614,35.736 82.189,27.811 95,50 82.189,72.189 77.614,64.264 85.85,50 77.614,35.736 "
        style="clip-rule:evenodd;overflow:visible;fill:url(#linearGradient8);fill-rule:evenodd"

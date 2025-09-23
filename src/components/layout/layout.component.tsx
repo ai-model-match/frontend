@@ -9,7 +9,7 @@ export default function LayoutComponent({ children }: { children: React.ReactNod
       <Header></Header>
       <Box>
         <Container fluid>
-          <Grid gutter="md" columns={12} miw={950}>
+          <Grid gutter="md" columns={12} miw={1170}>
             <Grid.Col span={{ base: 3, xl: 2 }} className={classes.menu}>
               <MenuComponent />
             </Grid.Col>

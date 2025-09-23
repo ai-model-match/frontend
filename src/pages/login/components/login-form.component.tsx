@@ -78,7 +78,7 @@ export default function LoginFormComponent() {
           {...form.getInputProps('password')}
           mb="xl"
         />
-        <Button type="submit" mt={'lg'} loading={apiloading} fullWidth>
+        <Button type="submit" mt={'lg'} loading={apiloading} loaderProps={{ type: 'dots' }} fullWidth>
           {t('loginBtnLogin')}
         </Button>
       </form>

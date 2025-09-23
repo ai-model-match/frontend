@@ -36,7 +36,7 @@ export default function Tr({ trKey, tds }: TrProps) {
                 )}
                 <CopyButton value={td.text} timeout={1000}>
                   {({ copied, copy }) => (
-                    <ActionIcon color={copied ? 'teal' : 'gray'} variant="subtle" onClick={copy}>
+                    <ActionIcon color={copied ? 'var(--mantine-color-teal-7)' : 'gray'} variant="subtle" onClick={copy}>
                       {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
                     </ActionIcon>
                   )}

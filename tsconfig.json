@@ -23,7 +23,6 @@
     },
     "include": [
         "src",
-        "global.d.ts",
-        "vite-env.d.ts"
+        "global.d.ts"
     ]
 }
