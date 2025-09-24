@@ -492,6 +492,7 @@ export default function UseCaseStepPage() {
           >
             <UpdateUseCaseStepComponent
               totalItemsCount={apiStepResponse.totalCount}
+              useCase={apiUseCaseResponse.item}
               useCaseStep={selectedUseCaseStep!}
               onUseCaseStepUpdated={onUseCaseStepUpdated}
             />

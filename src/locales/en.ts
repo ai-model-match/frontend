@@ -108,7 +108,7 @@ export const enTranslations = {
   newUseCaseStepCodeInputAlreadyExists: 'Oops! This code is already taken',
   deleteUseCaseStepTitle: 'DELETE STEP',
   deleteUsecaseStepDescription:
-    'Are you sure you want to delete this Step? Flows and statistics will be affected and incoming requests will no longer be processed by this Step',
+    'Are you sure you want to delete this Step? Flows and statistics will be affected and incoming requests will no longer be processed by this Step.',
   updateUseCaseStepTitle: 'UPDATE THE STEP',
   updateUseCaseStepTitleInput: 'Title',
   updateUseCaseStepTitleInputPlaceholder: 'Type a title',
@@ -122,4 +122,6 @@ export const enTranslations = {
   updateUseCaseStepNotAllowed: 'Use Case Not Ready',
   updateUseCaseStepNotAllowedDescription:
     'You cannot activate this Use Case because there isn’t any Flow associated with it to handle incoming traffic. Please create a Flow before activating.',
+  updateUseCaseStepCodeWarning:
+    'Changing the ’Code’ may prevent handling of incoming requests linked to this Step.',
 };

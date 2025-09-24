@@ -67,7 +67,7 @@ export default function NewUseCaseStepComponent({
   };
 
   // Content
-  const Image = assets[`./assets/new-use-case-step.svg`];
+  const Image = assets[`../assets/new-use-case-step.svg`];
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>

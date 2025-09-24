@@ -77,7 +77,7 @@ export default function UpdateUseCaseComponent({
   };
 
   // Content
-  const Image = assets[`./assets/edit-use-case.svg`];
+  const Image = assets[`../assets/edit-use-case.svg`];
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>

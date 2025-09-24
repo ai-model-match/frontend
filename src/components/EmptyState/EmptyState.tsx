@@ -18,7 +18,7 @@ export function EmptyState({
   btnText,
   btnHandle,
 }: EmptyStateProps) {
-  const Image = assets[`./assets/${imageName}.svg`];
+  const Image = assets[`../assets/${imageName}.svg`];
 
   return (
     <Stack align="center" gap="xs">

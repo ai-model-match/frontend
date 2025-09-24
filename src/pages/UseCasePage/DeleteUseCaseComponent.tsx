@@ -66,7 +66,7 @@ export default function DeleteUseCaseComponent({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Group justify="left" align="flex-start">
-        <ThemeIcon variant="filled" c={'white'} size={30}>
+        <ThemeIcon variant="filled" color={'red'} size={30}>
           <IconX size={18} />
         </ThemeIcon>
         <Text size={'lg'}>{title}</Text>

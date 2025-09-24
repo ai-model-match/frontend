@@ -1,5 +1,7 @@
+import { UseCase } from '@entities/useCase';
 import { UseCaseStep } from '@entities/useCaseStep';
 import {
+  Alert,
   Box,
   Button,
   Group,
@@ -12,7 +14,7 @@ import {
 import { useForm } from '@mantine/form';
 import { useCaseStepService } from '@services/useCaseStepService';
 import { assets } from '@styles/assets';
-import { IconEdit } from '@tabler/icons-react';
+import { IconEdit, IconExclamationCircle } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,11 +22,13 @@ import { useNavigate } from 'react-router-dom';
 
 interface UpdateUseCaseStepComponentProps {
   totalItemsCount: number;
+  useCase: UseCase;
   useCaseStep: UseCaseStep;
   onUseCaseStepUpdated: (useCaseStep: UseCaseStep) => void;
 }
 export default function UpdateUseCaseStepComponent({
   totalItemsCount,
+  useCase,
   useCaseStep,
   onUseCaseStepUpdated,
 }: UpdateUseCaseStepComponentProps) {
@@ -81,7 +85,7 @@ export default function UpdateUseCaseStepComponent({
   };
 
   // Content
-  const Image = assets[`./assets/edit-use-case-step.svg`];
+  const Image = assets[`../assets/edit-use-case-step.svg`];
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>
@@ -94,6 +98,17 @@ export default function UpdateUseCaseStepComponent({
         <Box w={'100%'} p={80} pt={10} pb={10}>
           <Box mt={20} component={Image} />
         </Box>
+        {useCase.active && (
+          <Alert
+            variant="light"
+            color="yellow"
+            p={'xs'}
+            mb={'md'}
+            icon={<IconExclamationCircle />}
+          >
+            {t('updateUseCaseStepCodeWarning')}
+          </Alert>
+        )}
         <Group justify="space-between">
           <Box w={'100%'} h={'100mah'}>
             <TextInput

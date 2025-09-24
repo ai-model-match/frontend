@@ -109,7 +109,7 @@ export const itTranslations = {
   newUseCaseStepCodeInputAlreadyExists: 'Ops! Questo codice è già stato utilizzato',
   deleteUseCaseStepTitle: 'ELIMINA LO STEP',
   deleteUsecaseStepDescription:
-    'Sei sicuro di voler cancellare questo Step? I flussi e statistiche verranno impattati e le richieste in ingresso non saranno più elaborate da questo Step',
+    'Sei sicuro di voler cancellare questo Step? I flussi e statistiche verranno impattati e le richieste in ingresso non saranno più elaborate da questo Step.',
   updateUseCaseStepTitle: 'AGGIORNA LO STEP',
   updateUseCaseStepTitleInput: 'Titolo',
   updateUseCaseStepTitleInputPlaceholder: 'Inserisci un titolo',
@@ -123,4 +123,6 @@ export const itTranslations = {
   updateUseCaseStepNotAllowed: 'Caso d’Uso non pronto',
   updateUseCaseStepNotAllowedDescription:
     'Non puoi attivare questo Caso d’Uso perché non esiste alcun Flusso associato per gestire il traffico in ingresso. Crea un Flusso prima dell’attivazione.',
+  updateUseCaseStepCodeWarning:
+    'La modifica del ’Codice’ potrebbe impedire la gestione delle richieste in ingresso riferite a questo Step.',
 };
