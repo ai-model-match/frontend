@@ -16,7 +16,11 @@ export default [
     ignores: ['**/*.d.ts'],
     languageOptions: {
       parser: tseslint.parser,
-      parserOptions: { ecmaVersion: 'latest', sourceType: 'module', ecmaFeatures: { jsx: true } },
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+      },
     },
     plugins: {
       react: reactPlugin,
@@ -33,7 +37,7 @@ export default [
           semi: true,
           singleQuote: true,
           trailingComma: 'es5',
-          printWidth: 120,
+          printWidth: 90,
           tabWidth: 2,
           endOfLine: 'auto',
           bracketSpacing: true,
@@ -46,15 +50,47 @@ export default [
           groups: ['external', 'builtin', 'internal', 'sibling', 'parent', 'index'],
           pathGroups: [
             {
+              pattern: 'context',
+              group: 'internal',
+            },
+            {
+              pattern: 'locales',
+              group: 'internal',
+            },
+            {
+              pattern: 'types',
+              group: 'internal',
+            },
+            {
+              pattern: 'styles',
+              group: 'internal',
+            },
+            {
+              pattern: 'dtos',
+              group: 'internal',
+            },
+            {
+              pattern: 'utils',
+              group: 'internal',
+            },
+            {
+              pattern: 'entities',
+              group: 'internal',
+            },
+            {
+              pattern: 'guards',
+              group: 'internal',
+            },
+            {
+              pattern: 'services',
+              group: 'internal',
+            },
+            {
               pattern: 'components',
               group: 'internal',
             },
             {
-              pattern: 'common',
-              group: 'internal',
-            },
-            {
-              pattern: 'routes/ **',
+              pattern: 'pages',
               group: 'internal',
             },
             {
@@ -73,7 +109,12 @@ export default [
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
         'warn',
-        { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
       ],
 
       'react/react-in-jsx-scope': 'off',

@@ -1,35 +1,30 @@
+import './locales/i18n';
 import '@fontsource/ubuntu';
 import '@mantine/charts/styles.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
-import './core/lang/i18n';
 
 import { DirectionProvider, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { cssVariablesResolver, mantineTheme } from '@styles/theme';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './core/auth/auth.context';
-import DashboardPage from './pages/dashboard/dashboard.page';
-import InternalServerErrorPage from './pages/internal-server-error/internal-server-error.page';
-import LoginPage from './pages/login/login.page';
-import LogoutPage from './pages/logout/logout.page';
-import NotFound from './pages/not-found/not-found.page';
-import UseCasePage from './pages/use-case/use-case.page';
-import UseCaseStepPage from './pages/use-case-step/use-case-step.page';
-import { cssVariablesResolver, mantineTheme } from './styles/theme';
+import { AuthProvider } from './context/AuthContext';
+import DashboardPage from './pages/DashboardPage/DashboardPage';
+import InternalServerErrorPage from './pages/InternalServerErrorPage/InternalServerErrorPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import LogoutPage from './pages/LogoutPage/LogoutPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import UseCasePage from './pages/UseCasePage/UseCasePage';
+import UseCaseStepPage from './pages/UseCaseStepPage/UseCaseStepPage';
 
-/*
-Import all assets to be used as components.
-We can apply style of SVGs
-*/
-export const assets = import.meta.glob('./assets/*.svg', {
-  eager: true,
-  import: 'ReactComponent',
-}) as Record<string, React.FC<React.SVGProps<SVGSVGElement>>>;
-
-export default function App() {
+export function App() {
   return (
     <DirectionProvider>
-      <MantineProvider theme={mantineTheme} cssVariablesResolver={cssVariablesResolver} defaultColorScheme="auto">
+      <MantineProvider
+        theme={mantineTheme}
+        cssVariablesResolver={cssVariablesResolver}
+        defaultColorScheme="auto"
+      >
         <Notifications />
         <AuthProvider>
           <BrowserRouter>
@@ -43,8 +38,11 @@ export default function App() {
 
               {/* Public login page */}
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/internal-server-error" element={<InternalServerErrorPage />} />
-              <Route path="*" element={<NotFound />} />
+              <Route
+                path="/internal-server-error"
+                element={<InternalServerErrorPage />}
+              />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </BrowserRouter>
         </AuthProvider>

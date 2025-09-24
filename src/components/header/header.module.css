@@ -3,8 +3,3 @@
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
 }
-
-.logo {
-  height: 30px;
-  object-fit: contain;
-}

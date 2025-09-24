@@ -1,4 +1,9 @@
-import { createTheme, CSSVariablesResolver, MantineTheme, MantineThemeOverride } from '@mantine/core';
+import {
+  createTheme,
+  CSSVariablesResolver,
+  MantineTheme,
+  MantineThemeOverride,
+} from '@mantine/core';
 
 export const mantineTheme: MantineThemeOverride = createTheme({
   fontFamily: 'Ubuntu, sans-serif',
@@ -15,7 +20,18 @@ export const mantineTheme: MantineThemeOverride = createTheme({
       '#080808',
       '#000000',
     ],
-    red: ['#FFDCE1', '#FFB3B7', '#FF8990', '#FF6068', '#FF3641', '#FF0C1A', '#E6001B', '#CC001C', '#BA0024', '#9A001F'],
+    red: [
+      '#FFDCE1',
+      '#FFB3B7',
+      '#FF8990',
+      '#FF6068',
+      '#FF3641',
+      '#FF0C1A',
+      '#E6001B',
+      '#CC001C',
+      '#BA0024',
+      '#9A001F',
+    ],
     brand: [
       '#e6fcf5',
       '#c3fae8',

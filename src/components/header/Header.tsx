@@ -1,48 +1,26 @@
-import { ActionIcon, Box, Group, Image, Title } from '@mantine/core';
+import { LanguageSelector } from '@components/LanguageSelector';
+import { Box, Group } from '@mantine/core';
 import { IconBrandGithub, IconBrandOpenSource } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import classes from './Header.module.css';
-import LanguageSelector from '../LanguageSelector/LanguageSelector';
+import { HeaderExternalLink } from './HeaderExternalLink';
+import { HaderLogo } from './HeaderLogo';
 
-export default function Header() {
-  // Services
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-
-  // Content
+export function Header() {
   return (
     <Box miw={1200}>
       <header className={classes.root}>
         <Group justify="space-between" h="100%" gap={10}>
-          <Group gap={0} onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <Image src="/icon.svg" alt="Logo Icon" className={classes.logo} />
-          </Group>
-          <Group gap={0} onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <Title ta="left" order={4} mb={0}>
-              {t('appName')}
-            </Title>
-          </Group>
-          <Group h="100%" flex={1} gap={0}></Group>
+          <HaderLogo />
+          <Group h="100%" flex={1} gap={0} />
           <Group gap={10}>
-            <ActionIcon
-              component="a"
-              target="_blank"
-              href="https://github.com/ai-model-match"
-              size="md"
-              variant="light"
-            >
-              <IconBrandGithub size={24} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon
-              component="a"
-              target="_blank"
-              href="https://en.wikipedia.org/wiki/Open_source"
-              size="md"
-              variant="light"
-            >
-              <IconBrandOpenSource size={24} stroke={1.5} />
-            </ActionIcon>
+            <HeaderExternalLink
+              link="https://github.com/ai-model-match"
+              icon={IconBrandGithub}
+            />
+            <HeaderExternalLink
+              link="https://en.wikipedia.org/wiki/Open_source"
+              icon={IconBrandOpenSource}
+            />
             <LanguageSelector />
           </Group>
         </Group>
