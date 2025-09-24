@@ -11,7 +11,6 @@ import {
 import { UseCase } from '@entities/useCase';
 import { UseCaseStep } from '@entities/useCaseStep';
 import { AuthGuard } from '@guards/AuthGuard';
-import { LineChart } from '@mantine/charts';
 import {
   ActionIcon,
   Anchor,
@@ -51,6 +50,7 @@ import DeleteUseCaseStepComponent from './DeleteUseCaseStepComponent';
 import NewUseCaseStepComponent from './NewUseCaseStepComponent';
 import UpdateUseCaseStepComponent from './UpdateUseCaseStepComponent';
 import UseCaseStatusComponent from './UseCaseStatusComponent';
+import { UseCaseStepGraphComponent } from './UseCaseStepGraphComponent';
 
 interface BreadcrumbItem {
   title: string;
@@ -264,74 +264,7 @@ export default function UseCaseStepPage() {
           {item.description}
         </Text>
         <Divider my={20} />
-        <LineChart
-          h={300}
-          w={500}
-          withLegend
-          data={[
-            {
-              date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toLocaleDateString(
-                'en-GB',
-                {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                }
-              ),
-              Requests: 2890,
-              UseCaseRequests: 3503,
-            },
-            {
-              date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toLocaleDateString(
-                'en-GB',
-                {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                }
-              ),
-              Requests: 2103,
-              UseCaseRequests: 4301,
-            },
-            {
-              date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toLocaleDateString(
-                'en-GB',
-                {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                }
-              ),
-              Requests: 4532,
-              UseCaseRequests: 6291,
-            },
-            {
-              date: new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toLocaleDateString(
-                'en-GB',
-                {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                }
-              ),
-              Requests: 2991,
-              UseCaseRequests: 5399,
-            },
-          ]}
-          dataKey="date"
-          series={[
-            { name: 'Requests', label: 'Step Req.', color: 'brand.6' },
-            {
-              name: 'UseCaseRequests',
-              label: 'Use Case Req.',
-              color: 'red.6',
-              strokeDasharray: '5 5',
-            },
-          ]}
-          curveType="bump"
-          tickLine="xy"
-          gridAxis="y"
-        />
+        <UseCaseStepGraphComponent />
       </>
     );
   };
