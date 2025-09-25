@@ -75,7 +75,11 @@ export function MenuItem({ icon: Icon, label, link, subItems }: MenuItemProps) {
       >
         <Group justify="space-between" gap={0}>
           <Box style={{ display: 'flex', alignItems: 'center' }}>
-            <ThemeIcon variant="filled" c={'white'} size={30}>
+            <ThemeIcon
+              variant="filled"
+              bd="1px solid var(--mantine-color-brand-4)"
+              size={30}
+            >
               <Icon size={18} />
             </ThemeIcon>
             <Box ml="md">{label}</Box>

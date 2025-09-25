@@ -24,7 +24,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { OrderDir } from '@services/api.type';
 import { useCaseService } from '@services/useCaseService';
-import { IconArrowFork, IconPlus } from '@tabler/icons-react';
+import { IconTargetArrow, IconPlus } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import equal from 'fast-deep-equal';
 import { useCallback, useEffect, useState } from 'react';
@@ -100,6 +100,10 @@ export default function UseCasePage() {
       }
     })();
   }, [auth.loaded, navigate, apiRequest]);
+
+  const handleGoToFlowsRequest = (id: string) => {
+    navigate(`/use-cases/${id}/flows`, { replace: true });
+  };
 
   const handleUpdateRequest = (id: string) => {
     const useCase = apiResponse?.items.find((x) => x.id === id);
@@ -219,7 +223,7 @@ export default function UseCasePage() {
               <Box>
                 <PaperTitle
                   mb={30}
-                  icon={IconArrowFork}
+                  icon={IconTargetArrow}
                   title={t('useCaseTitlePage')}
                   searchValue={searchKeyValue}
                   showSearch={!hasNoResults()}
@@ -241,6 +245,7 @@ export default function UseCasePage() {
                               <RowUseCaseComponent
                                 key={useCase.id}
                                 useCase={useCase}
+                                handleGoToFlowsRequest={handleGoToFlowsRequest}
                                 handleUpdateRequest={handleUpdateRequest}
                                 handleDeleteRequest={handleDeleteRequest}
                               />

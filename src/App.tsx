@@ -6,6 +6,7 @@ import '@mantine/notifications/styles.css';
 
 import { DirectionProvider, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import FlowPage from '@pages/FlowPage/FlowPage';
 import { cssVariablesResolver, mantineTheme } from '@styles/theme';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -34,6 +35,7 @@ export function App() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/use-cases" element={<UseCasePage />} />
               <Route path="/use-cases/:id/steps" element={<UseCaseStepPage />} />
+              <Route path="/use-cases/:id/flows" element={<FlowPage />} />
               <Route path="/logout" element={<LogoutPage />} />
 
               {/* Public login page */}

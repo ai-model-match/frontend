@@ -27,11 +27,13 @@ export const itTranslations = {
   loginBtnLogin: 'ACCEDI',
   menuDashboard: 'Dashboard',
   menuUseCases: 'Casi d’Uso',
+  menuFlows: 'Flussi',
   menuLogout: 'Esci',
   useCaseTitlePage: 'CASI D’USO',
   useCaseCannotDelete: 'Impossibile eliminarlo mentre è attivo',
   useCaseDeleteAction: 'Elimina',
   useCaseUpdateAction: 'Modifica',
+  useCaseFlowsAction: 'Vai ai Flussi',
   useCaseID: 'ID',
   useCaseTitle: 'Titolo',
   useCaseCode: 'Codice',
@@ -125,4 +127,5 @@ export const itTranslations = {
     'Non puoi attivare questo Caso d’Uso perché non esiste alcun Flusso associato per gestire il traffico in ingresso. Crea un Flusso prima dell’attivazione.',
   updateUseCaseStepCodeWarning:
     'La modifica del ’Codice’ potrebbe impedire la gestione delle richieste in ingresso riferite a questo Step.',
+  flowTitlePage: 'FLUSSI',
 };

@@ -1,26 +1,30 @@
 import { Header } from '@components/Header';
 import { Menu } from '@components/Menu/Menu';
-import { Box, Container, Grid } from '@mantine/core';
-import classes from './Layout.module.css';
+import {
+  AppShell,
+  AppShellHeader,
+  AppShellMain,
+  AppShellNavbar,
+  Container,
+  Grid,
+} from '@mantine/core';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <Header></Header>
-      <Box>
-        <Container fluid>
-          <Grid gutter="md" columns={12} miw={1170}>
-            <Grid.Col span={{ base: 3, xl: 2 }} className={classes.menu}>
-              <Menu />
-            </Grid.Col>
-            <Grid.Col span={{ base: 9, xl: 10 }}>
-              <Grid gutter="md" columns={12}>
-                {children}
-              </Grid>
-            </Grid.Col>
+    <AppShell header={{ height: 70 }} navbar={{ width: 250, breakpoint: '' }}>
+      <AppShellHeader bd={0}>
+        <Header />
+      </AppShellHeader>
+      <AppShellNavbar p="xs" pt={0} bd={0}>
+        <Menu />
+      </AppShellNavbar>
+      <AppShellMain>
+        <Container fluid miw={950}>
+          <Grid gutter="md" columns={12}>
+            {children}
           </Grid>
         </Container>
-      </Box>
-    </>
+      </AppShellMain>
+    </AppShell>
   );
 }

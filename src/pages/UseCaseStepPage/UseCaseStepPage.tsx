@@ -34,7 +34,7 @@ import { OrderDir } from '@services/api.type';
 import { useCaseService } from '@services/useCaseService';
 import { useCaseStepService } from '@services/useCaseStepService';
 import {
-  IconArrowFork,
+  IconTargetArrow,
   IconCheck,
   IconCopy,
   IconPencil,
@@ -282,11 +282,11 @@ export default function UseCaseStepPage() {
         {pageLoaded && apiUseCaseResponse && apiStepResponse && (
           <Grid.Col span={12}>
             <Paper p="lg">
-              <Group justify="space-between" align="center" gap={0} mb={30}>
+              <Group justify="space-between" align="center" gap={0} mb={0}>
                 <Group gap={2}>
                   <PaperTitle
                     mb={0}
-                    icon={IconArrowFork}
+                    icon={IconTargetArrow}
                     title={apiUseCaseResponse.item.title}
                   />
                   <Code>{apiUseCaseResponse.item.code}</Code>
@@ -309,6 +309,9 @@ export default function UseCaseStepPage() {
                   />
                 )}
               </Group>
+              <Text size="sm" mt={15} mb={40} mr={200}>
+                {apiUseCaseResponse.item.description}
+              </Text>
               <Grid>
                 {apiStepResponse.items.length > 0 && (
                   <>

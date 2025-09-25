@@ -2,18 +2,26 @@ import { TableTr } from '@components/Table';
 import { useAuth } from '@context/AuthContext';
 import { UseCase } from '@entities/useCase';
 import { ActionIcon, Badge, Code, CopyButton, Group, Text, Tooltip } from '@mantine/core';
-import { IconCheck, IconCopy, IconPencil, IconTrash } from '@tabler/icons-react';
+import {
+  IconArrowFork,
+  IconCheck,
+  IconCopy,
+  IconPencil,
+  IconTrash,
+} from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 export interface RowUseCaseComponentProps {
   useCase: UseCase;
+  handleGoToFlowsRequest: (id: string) => void;
   handleUpdateRequest: (id: string) => void;
   handleDeleteRequest: (id: string) => void;
 }
 export default function RowUseCaseComponent({
   useCase,
+  handleGoToFlowsRequest,
   handleUpdateRequest,
   handleDeleteRequest,
 }: RowUseCaseComponentProps) {
@@ -90,6 +98,18 @@ export default function RowUseCaseComponent({
               <Tooltip
                 withArrow
                 style={{ fontSize: '12px' }}
+                label={t('useCaseFlowsAction')}
+              >
+                <ActionIcon
+                  variant="subtle"
+                  onClick={() => handleGoToFlowsRequest(useCase.id)}
+                >
+                  <IconArrowFork size={18} />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip
+                withArrow
+                style={{ fontSize: '12px' }}
                 label={t('useCaseUpdateAction')}
               >
                 <ActionIcon
@@ -99,6 +119,7 @@ export default function RowUseCaseComponent({
                   <IconPencil size={18} />
                 </ActionIcon>
               </Tooltip>
+
               <Tooltip
                 withArrow
                 style={{ fontSize: '12px' }}

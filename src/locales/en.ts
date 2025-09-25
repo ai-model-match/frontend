@@ -27,11 +27,13 @@ export const enTranslations = {
   loginBtnLogin: 'LOGIN',
   menuDashboard: 'Dashboard',
   menuUseCases: 'Use Cases',
+  menuFlows: 'Flows',
   menuLogout: 'Logout',
   useCaseTitlePage: 'USE CASES',
   useCaseCannotDelete: 'Cannot be deleted while it is active',
   useCaseDeleteAction: 'Delete',
   useCaseUpdateAction: 'Edit',
+  useCaseFlowsAction: 'Go to Flows',
   useCaseID: 'ID',
   useCaseTitle: 'Title',
   useCaseCode: 'Code',
@@ -124,4 +126,5 @@ export const enTranslations = {
     'You cannot activate this Use Case because there isn’t any Flow associated with it to handle incoming traffic. Please create a Flow before activating.',
   updateUseCaseStepCodeWarning:
     'Changing the ’Code’ may prevent handling of incoming requests linked to this Step.',
+  flowTitlePage: 'FLOWS',
 };

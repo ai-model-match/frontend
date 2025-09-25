@@ -1,7 +1,7 @@
 import { Paper, ScrollArea } from '@mantine/core';
 import {
+  IconTargetArrow,
   IconAdjustments,
-  IconArrowFork,
   IconDoorExit,
   IconGauge,
 } from '@tabler/icons-react';
@@ -21,7 +21,7 @@ export function Menu() {
       { label: t('menuDashboard'), icon: IconGauge, link: '/dashboard' },
       {
         label: t('menuUseCases'),
-        icon: IconArrowFork,
+        icon: IconTargetArrow,
         link: '/use-cases',
       },
       {
