@@ -15,7 +15,7 @@ export function HaderLogo() {
       style={{ cursor: 'pointer' }}
     >
       <Image src="/icon.svg" alt="Logo Icon" className={classes.logo} />
-      <Title textWrap="nowrap" order={4} mb={0}>
+      <Title textWrap="nowrap" order={3} mb={0}>
         {t('appName')}
       </Title>
     </Group>

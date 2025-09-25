@@ -11,14 +11,14 @@ export interface TableThProps {
 export function TableTh({ children, reversed, sorted, onSort }: TableThProps) {
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
   return (
-    <Table.Th>
+    <Table.Th h={'50'}>
       <UnstyledButton onClick={onSort}>
         <Group justify="space-between">
-          <Text fw={600} fz="sm">
+          <Text fw={600} fz="md">
             {children}
           </Text>
           <Center>
-            <Icon size={16} stroke={1.5} />
+            <Icon size={18} />
           </Center>
         </Group>
       </UnstyledButton>

@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 export interface PaperTitleProps {
   mb: number;
   icon: Icon;
+  iconColor?: string;
   title: string;
   showSearch?: boolean;
   searchValue?: string;
@@ -18,6 +19,7 @@ export interface PaperTitleProps {
 export function PaperTitle({
   mb,
   icon: Icon,
+  iconColor = 'brand',
   title,
   showSearch,
   searchValue,
@@ -78,23 +80,23 @@ export function PaperTitle({
   return (
     <Group justify="space-between" align="center" mb={mb}>
       <Group justify="left" align="center">
-        <ThemeIcon variant="filled" c={'white'} size={30}>
-          <Icon size={18} />
+        <ThemeIcon variant="filled" color={iconColor} size={36}>
+          <Icon stroke={1} />
         </ThemeIcon>
-        <Text size={'lg'}>{title}</Text>
+        <Text size={'xl'}>{title}</Text>
       </Group>
-      <Group justify="right" align="flex-end">
+      <Group justify="flex-end" align="center">
         {showSearch && (
           <TextInput
             id="searchField"
             radius="xl"
             value={searchKeyValue ?? ''}
             onChange={onTextInputChange}
-            leftSection={<IconSearch size={18} />}
+            leftSection={<IconSearch size={22} />}
             rightSection={
               searchKeyValue && (
                 <ActionIcon onClick={onClearBtnClick} radius={'xl'}>
-                  <IconX size={18} />
+                  <IconX size={22} />
                 </ActionIcon>
               )
             }
@@ -104,7 +106,7 @@ export function PaperTitle({
           />
         )}
         {BtnIcon && btnClick && (
-          <Button size="xs" p={5} mb={3} onClick={btnClick}>
+          <Button size="sm" p={2} mb={3} w={'40'} onClick={btnClick}>
             <BtnIcon />
           </Button>
         )}

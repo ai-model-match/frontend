@@ -35,7 +35,7 @@ export function LanguageSelector({ absolutePosition }: LanguageSelectorProps) {
   // Content
   return (
     <Box className={absolutePosition ? classes.boxAbsolute : ''}>
-      <Menu shadow="lg" position="bottom-end" width={130} offset={5}>
+      <Menu shadow="lg" position="bottom-end" width={150} offset={5}>
         <Menu.Target>
           <Button variant="default">
             <Text size="xl">{language.flag}</Text>

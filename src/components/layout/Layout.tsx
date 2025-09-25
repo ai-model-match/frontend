@@ -11,7 +11,7 @@ import {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <AppShell header={{ height: 70 }} navbar={{ width: 250, breakpoint: '' }}>
+    <AppShell header={{ height: 70 }} navbar={{ width: 260, breakpoint: '' }}>
       <AppShellHeader bd={0}>
         <Header />
       </AppShellHeader>

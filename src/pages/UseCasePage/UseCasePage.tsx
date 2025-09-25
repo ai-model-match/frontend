@@ -120,7 +120,7 @@ export default function UseCasePage() {
   const onUseCaseCreated = useCallback(
     (useCase: UseCase) => {
       newUseCaseActionsClose();
-      navigate(`/use-cases/${useCase.id}/steps`, { replace: true });
+      navigate(`/use-cases/${useCase.id}`, { replace: true });
     },
     [navigate, newUseCaseActionsClose]
   );
@@ -228,7 +228,7 @@ export default function UseCasePage() {
                   searchValue={searchKeyValue}
                   showSearch={!hasNoResults()}
                   onSearchChange={onSearchTextChanged}
-                  btnIcon={auth.canWrite() ? IconPlus : undefined}
+                  btnIcon={auth.canWrite() && !hasNoResults() ? IconPlus : undefined}
                   onBtnClick={auth.canWrite() ? newUseCaseActionsOpen : undefined}
                 />
                 {!hasNoResults() && (
@@ -265,11 +265,10 @@ export default function UseCasePage() {
                     <Group justify="center" align="center">
                       {apiResponse && apiResponse.totalCount > 0 && (
                         <Pagination
-                          mt={50}
+                          mt={40}
                           total={Math.ceil(apiResponse.totalCount / apiRequest.pageSize)}
                           value={apiRequest.page}
-                          size={'sm'}
-                          radius={'sm'}
+                          size={'md'}
                           onChange={onPageSelected}
                         />
                       )}
@@ -336,7 +335,7 @@ export default function UseCasePage() {
           <DeleteUseCaseComponent
             useCase={selectedUseCase!}
             title={t('deleteUseCaseTitle')}
-            text={t('deleteUsecaseDescription')}
+            text={t('deleteUseCaseDescription')}
             confirmTextRequired
             onCancel={deleteUseCaseActionsClose}
             onUseCaseDeleted={onUseCaseDeleted}

@@ -6,7 +6,7 @@
   margin-bottom: calc(var(--mantine-spacing-xs) * 0.5);
   border-radius: var(--mantine-radius-default);
   color: light-dark(var(--mantine-color-white), var(--mantine-color-text));
-  font-size: var(--mantine-font-size-sm);
+  font-size: var(--mantine-font-size-md);
 
   @mixin hover {
     background-color: light-dark(var(--mantine-color-brand-4), var(--aimm-bg-paper));
@@ -24,7 +24,7 @@
   border-left: 1px solid var(--mantine-color-brand-4);
   border-top-right-radius: var(--mantine-radius-default);
   border-bottom-right-radius: var(--mantine-radius-default);
-  font-size: var(--mantine-font-size-sm);
+  font-size: var(--mantine-font-size-md);
   color: light-dark(var(--mantine-color-white), var(--mantine-color-text));
 
   @mixin hover {

@@ -91,7 +91,7 @@ export default function UpdateUseCaseStepComponent({
       <Box>
         <Group justify="left" align="flex-start">
           <ThemeIcon variant="filled" c={'white'} size={30}>
-            <IconEdit size={18} />
+            <IconEdit size={22} />
           </ThemeIcon>
           <Text size={'lg'}>{t('updateUseCaseStepTitle')}</Text>
         </Group>

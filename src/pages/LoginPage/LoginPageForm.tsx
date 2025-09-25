@@ -61,7 +61,7 @@ export function LoginPageForm() {
     <Box>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
-          leftSection={<IconUser size={16} />}
+          leftSection={<IconUser size={22} />}
           withAsterisk
           label="Username"
           placeholder={t('loginTypeUsername')}
@@ -70,17 +70,16 @@ export function LoginPageForm() {
           mb="sm"
         />
         <PasswordInput
-          leftSection={<IconKey size={16} />}
+          leftSection={<IconKey size={22} />}
           withAsterisk
           label={'Password'}
           placeholder={t('loginTypePassword')}
           key={form.key('password')}
           {...form.getInputProps('password')}
-          mb="xl"
         />
         <Button
           type="submit"
-          mt={'lg'}
+          mt={'xl'}
           loading={apiloading}
           loaderProps={{ type: 'dots' }}
           fullWidth

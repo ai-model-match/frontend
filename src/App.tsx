@@ -34,7 +34,7 @@ export function App() {
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/use-cases" element={<UseCasePage />} />
-              <Route path="/use-cases/:id/steps" element={<UseCaseStepPage />} />
+              <Route path="/use-cases/:id" element={<UseCaseStepPage />} />
               <Route path="/use-cases/:id/flows" element={<FlowPage />} />
               <Route path="/logout" element={<LogoutPage />} />
 

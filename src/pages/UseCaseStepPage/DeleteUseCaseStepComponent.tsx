@@ -1,8 +1,8 @@
 import { UseCaseStep } from '@entities/useCaseStep';
-import { Button, Group, Text, TextInput, ThemeIcon } from '@mantine/core';
+import { Alert, Button, Group, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useCaseStepService } from '@services/useCaseStepService';
-import { IconX } from '@tabler/icons-react';
+import { IconExclamationCircle, IconX } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -64,20 +64,27 @@ export default function DeleteUseCaseStepComponent({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Group justify="left" align="flex-start">
-        <ThemeIcon variant="filled" color={'red'} size={30}>
-          <IconX size={18} />
+        <ThemeIcon variant="filled" color={'red'} size={34}>
+          <IconX />
         </ThemeIcon>
-        <Text size={'lg'}>{title}</Text>
+        <Text size={'xl'}>{title}</Text>
       </Group>
-      <Text size="sm" mt={10}>
+      <Text size="md" mt={10}>
         {text}
       </Text>
-      <Text size="sm" mt={10} fw={600}>
-        {t('deleteUndo')}
-      </Text>
+      {!confirmTextRequired && (
+        <Text size="md" mt={10} fw={600}>
+          {t('deleteUndo')}
+        </Text>
+      )}
+      {confirmTextRequired && (
+        <Alert color="yellow" p={'xs'} mt={'md'} icon={<IconExclamationCircle />}>
+          {t('deleteUseCaseStepCodeWarning')}
+        </Alert>
+      )}
       {confirmTextRequired && (
         <TextInput
-          mt={30}
+          mt={'md'}
           withAsterisk
           required
           label={t('deleteMeInput')}
@@ -90,6 +97,7 @@ export default function DeleteUseCaseStepComponent({
         </Button>
         <Button
           type="submit"
+          color="red"
           disabled={isConfirmDisabled}
           loading={apiloading}
           loaderProps={{ type: 'dots' }}

@@ -3,7 +3,7 @@ import { useAuth } from '@context/AuthContext';
 import { UseCase } from '@entities/useCase';
 import { ActionIcon, Badge, Code, CopyButton, Group, Text, Tooltip } from '@mantine/core';
 import {
-  IconArrowFork,
+  IconArrowRampRight,
   IconCheck,
   IconCopy,
   IconPencil,
@@ -36,7 +36,7 @@ export default function RowUseCaseComponent({
       trKey={useCase.id}
       tds={[
         {
-          mw: 100,
+          mw: 120,
           text: useCase.id,
           textWithCopy: true,
           textWithTooltip: true,
@@ -52,7 +52,7 @@ export default function RowUseCaseComponent({
                     variant="subtle"
                     onClick={copy}
                   >
-                    {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+                    {copied ? <IconCheck size={22} /> : <IconCopy size={22} />}
                   </ActionIcon>
                 )}
               </CopyButton>
@@ -64,9 +64,8 @@ export default function RowUseCaseComponent({
             <Text
               td={'underline'}
               style={{ cursor: 'pointer' }}
-              size="sm"
               onClick={() =>
-                navigate(`/use-cases/${useCase.id}/steps`, {
+                navigate(`/use-cases/${useCase.id}`, {
                   replace: true,
                 })
               }
@@ -77,13 +76,9 @@ export default function RowUseCaseComponent({
         },
         {
           children: useCase.active ? (
-            <Badge color="var(--mantine-color-teal-7)" size="sm">
-              {t('useCaseStatusActive')}
-            </Badge>
+            <Badge color="var(--mantine-color-teal-7)">{t('useCaseStatusActive')}</Badge>
           ) : (
-            <Badge color="grey" size="sm">
-              {t('useCaseStatusInactive')}
-            </Badge>
+            <Badge color="grey">{t('useCaseStatusInactive')}</Badge>
           ),
         },
         {
@@ -93,49 +88,45 @@ export default function RowUseCaseComponent({
           text: format(new Date(useCase.updatedAt), import.meta.env.VITE_DATE_FORMAT!),
         },
         {
-          children: auth.canWrite() && (
+          mw: 100,
+          children: (
             <Group wrap="nowrap" gap={0}>
-              <Tooltip
-                withArrow
-                style={{ fontSize: '12px' }}
-                label={t('useCaseFlowsAction')}
-              >
+              <Tooltip withArrow label={t('useCaseFlowsAction')}>
                 <ActionIcon
                   variant="subtle"
                   onClick={() => handleGoToFlowsRequest(useCase.id)}
                 >
-                  <IconArrowFork size={18} />
+                  <IconArrowRampRight size={22} />
                 </ActionIcon>
               </Tooltip>
-              <Tooltip
-                withArrow
-                style={{ fontSize: '12px' }}
-                label={t('useCaseUpdateAction')}
-              >
-                <ActionIcon
-                  variant="subtle"
-                  onClick={() => handleUpdateRequest(useCase.id)}
-                >
-                  <IconPencil size={18} />
-                </ActionIcon>
-              </Tooltip>
+              {auth.canWrite() && (
+                <>
+                  <Tooltip withArrow label={t('useCaseUpdateAction')}>
+                    <ActionIcon
+                      variant="subtle"
+                      onClick={() => handleUpdateRequest(useCase.id)}
+                    >
+                      <IconPencil size={22} />
+                    </ActionIcon>
+                  </Tooltip>
 
-              <Tooltip
-                withArrow
-                style={{ fontSize: '12px' }}
-                label={
-                  useCase.active ? t('useCaseCannotDelete') : t('useCaseDeleteAction')
-                }
-              >
-                <ActionIcon
-                  color="red"
-                  variant="subtle"
-                  onClick={() => handleDeleteRequest(useCase.id)}
-                  disabled={useCase.active}
-                >
-                  <IconTrash size={18} />
-                </ActionIcon>
-              </Tooltip>
+                  <Tooltip
+                    withArrow
+                    label={
+                      useCase.active ? t('useCaseCannotDelete') : t('useCaseDeleteAction')
+                    }
+                  >
+                    <ActionIcon
+                      color="red"
+                      variant="subtle"
+                      onClick={() => handleDeleteRequest(useCase.id)}
+                      disabled={useCase.active}
+                    >
+                      <IconTrash size={22} />
+                    </ActionIcon>
+                  </Tooltip>
+                </>
+              )}
             </Group>
           ),
         },

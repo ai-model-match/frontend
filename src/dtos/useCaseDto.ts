@@ -52,20 +52,12 @@ export type DeleteUseCaseOutputDto = {
 
 export type UpdateUseCaseInputDto = {
   id: string;
-  title: string;
-  code: string;
-  description: string;
+  title?: string;
+  code?: string;
+  description?: string;
+  active?: boolean;
 };
 
 export type UpdateUseCaseOutputDto = {
-  item: UseCase;
-};
-
-export type UpdateUseCaseStatusInputDto = {
-  id: string;
-  active: boolean;
-};
-
-export type UpdateUseCaseStatusOutputDto = {
   item: UseCase;
 };

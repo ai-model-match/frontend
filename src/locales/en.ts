@@ -34,6 +34,9 @@ export const enTranslations = {
   useCaseDeleteAction: 'Delete',
   useCaseUpdateAction: 'Edit',
   useCaseFlowsAction: 'Go to Flows',
+  useCaseActivateAction: 'Activate',
+  useCaseDeactivateAction: 'Deactivate',
+  useCaseRolloutStrategyAction: 'Go to Rollout Strategy',
   useCaseID: 'ID',
   useCaseTitle: 'Title',
   useCaseCode: 'Code',
@@ -67,7 +70,7 @@ export const enTranslations = {
   deactivateUsecaseDescription:
     'Are you sure you want to deactivate this Use Case? Incoming requests will no longer be processed by this Use Case.',
   deleteUseCaseTitle: 'DELETE USE CASE',
-  deleteUsecaseDescription:
+  deleteUseCaseDescription:
     'Are you sure you want to delete this Use Case? This will permanently remove all its steps, flows, and statistics.',
   updateUseCaseTitle: 'UPDATE THE USE CASE',
   updateUseCaseTitleInput: 'Title',
@@ -98,6 +101,8 @@ export const enTranslations = {
   useCaseStepCreateNewTitleDisabled: 'No Steps yet...',
   useCaseStepCreateNewTextDisabled:
     'Don’t worry! As soon as someone creates a new Step, you’ll see it appear here',
+  useCaseGraphStepRequests: 'Step Requests',
+  useCaseGraphRequests: 'Use Case Requests',
   newUseCaseStepTitle: 'CREATE A NEW STEP',
   newUseCaseStepTitleInput: 'Title',
   newUseCaseStepTitleInputPlaceholder: 'Type a title',
@@ -125,6 +130,30 @@ export const enTranslations = {
   updateUseCaseStepNotAllowedDescription:
     'You cannot activate this Use Case because there isn’t any Flow associated with it to handle incoming traffic. Please create a Flow before activating.',
   updateUseCaseStepCodeWarning:
-    'Changing the ’Code’ may prevent handling of incoming requests linked to this Step.',
-  flowTitlePage: 'FLOWS',
+    'Changing the ’Code’ field may affect the proper functioning of active Flows linked to this Use Case.',
+  deleteUseCaseStepCodeWarning:
+    'Deleting the Step may affect the proper functioning of active Flows linked to this Use Case.',
+  flowActiveTitlePage: 'ACTIVE FLOWS',
+  flowInactiveTitlePage: 'INACTIVE FLOWS',
+  flowCurrentServePct: 'Handled requests: <strong>{{pct}}%</strong>',
+  deleteFlowTitle: 'DELETE FLOW',
+  deleteFlowDescription:
+    'Are you sure you want to delete this Flow? This will permanently remove all its steps and statistics.',
+  updateFlowTitle: 'UPDATE THE FLOW',
+  updateFlowTitleInput: 'Title',
+  updateFlowTitleInputPlaceholder: 'Type a title',
+  updateFlowDescriptionInput: 'Description',
+  updateFlowDescriptionInputPlaceholder: 'Type the description of this Flow',
+  updateFlowCreateBtn: 'UPDATE',
+  updateFlowPctAlert:
+    'Updating this percentage may change the percentages of other active Flows to ensure 100% coverage of requests.',
+  flowCreateNewTitle: 'It’s Flow time!',
+  flowCreateNewText:
+    'You’ve set your goal with a Use Case, now create a Flow to define your strategy to achieve it.',
+  flowCreateNewSuggestion:
+    'For example: Do you want to focus on reducing latency, or maximizing accuracy, or cost efficiency while achieving your goal? 🚀',
+  flowCreateNewBtn: 'START NOW',
+  flowCreateNewTitleDisabled: 'No Flows yet...',
+  flowCreateNewTextDisabled:
+    'Don’t worry! As soon as someone creates a new Flow, you’ll see it appear here',
 };

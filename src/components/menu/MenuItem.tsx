@@ -80,15 +80,14 @@ export function MenuItem({ icon: Icon, label, link, subItems }: MenuItemProps) {
               bd="1px solid var(--mantine-color-brand-4)"
               size={30}
             >
-              <Icon size={18} />
+              <Icon size={22} />
             </ThemeIcon>
             <Box ml="md">{label}</Box>
           </Box>
           {subItems !== undefined && (
             <IconChevronRight
               className={classes.chevron}
-              stroke={1.5}
-              size={16}
+              size={22}
               style={{ transform: opened ? 'rotate(-90deg)' : 'none' }}
             />
           )}

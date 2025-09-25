@@ -34,6 +34,9 @@ export const itTranslations = {
   useCaseDeleteAction: 'Elimina',
   useCaseUpdateAction: 'Modifica',
   useCaseFlowsAction: 'Vai ai Flussi',
+  useCaseActivateAction: 'Attiva',
+  useCaseDeactivateAction: 'Disattiva',
+  useCaseRolloutStrategyAction: 'Vai alla Strategia di Rilascio',
   useCaseID: 'ID',
   useCaseTitle: 'Titolo',
   useCaseCode: 'Codice',
@@ -67,7 +70,7 @@ export const itTranslations = {
   deactivateUsecaseDescription:
     'Sei sicuro di voler disattivare questo Caso d’Uso? Le richieste in ingresso non saranno più elaborate da questo Caso d’Uso.',
   deleteUseCaseTitle: 'ELIMINA CASO D’USO',
-  deleteUsecaseDescription:
+  deleteUseCaseDescription:
     'Sei sicuro di voler cancellare questo Caso d’Uso? Tutti i suoi step, flussi e statistiche verranno rimossi per sempre.',
   updateUseCaseTitle: 'AGGIORNA IL CASO D’USO',
   updateUseCaseTitleInput: 'Titolo',
@@ -98,6 +101,8 @@ export const itTranslations = {
   useCaseStepCreateNewTitleDisabled: 'Ancora nessuno Step...',
   useCaseStepCreateNewTextDisabled:
     'Non preoccuparti! Appena qualcuno creerà un nuovo Step, lo vedrai comparire qui',
+  useCaseGraphStepRequests: 'Richieste Step',
+  useCaseGraphRequests: 'Richieste Use Case',
   newUseCaseStepTitle: 'CREA UN NUOVO STEP',
   newUseCaseStepTitleInput: 'Titolo',
   newUseCaseStepTitleInputPlaceholder: 'Inserisci un titolo',
@@ -107,7 +112,7 @@ export const itTranslations = {
   newUseCaseStepDescriptionInputPlaceholder:
     'Inserisci l’obiettivo di questo specifico Step',
   newUseCaseStepCreateBtn: 'CREA',
-  newUseCaseStepCreateDescription: 'Crea qui un nuovo step',
+  newUseCaseStepCreateDescription: 'Crea qui un nuovo Step',
   newUseCaseStepCodeInputAlreadyExists: 'Ops! Questo codice è già stato utilizzato',
   deleteUseCaseStepTitle: 'ELIMINA LO STEP',
   deleteUsecaseStepDescription:
@@ -126,6 +131,30 @@ export const itTranslations = {
   updateUseCaseStepNotAllowedDescription:
     'Non puoi attivare questo Caso d’Uso perché non esiste alcun Flusso associato per gestire il traffico in ingresso. Crea un Flusso prima dell’attivazione.',
   updateUseCaseStepCodeWarning:
-    'La modifica del ’Codice’ potrebbe impedire la gestione delle richieste in ingresso riferite a questo Step.',
-  flowTitlePage: 'FLUSSI',
+    'La modifica del campo ’Codice’ potrebbe compromettere il corretto funzionamento dei Flussi attivi collegati a questo Caso d’Uso.',
+  deleteUseCaseStepCodeWarning:
+    'L’eliminazione dello Step potrebbe compromettere il corretto funzionamento dei Flussi attivi collegati a questo Caso d’Uso.',
+  flowActiveTitlePage: 'FLUSSI ATTIVI',
+  flowInactiveTitlePage: 'FLUSSI INATTIVI',
+  flowCurrentServePct: 'Richieste gestite: <strong>{{pct}}%</strong>',
+  deleteFlowTitle: 'ELIMINA FLUSSO',
+  deleteFlowDescription:
+    'Sei sicuro di voler cancellare questo Flusso? Questo rimuoverà permanentemente tutti i suoi Steps e statistiche.',
+  updateFlowTitle: 'AGGIORNA IL FLUSSO',
+  updateFlowTitleInput: 'Titolo',
+  updateFlowTitleInputPlaceholder: 'Inserisci un titolo',
+  updateFlowDescriptionInput: 'Descrizione',
+  updateFlowDescriptionInputPlaceholder: 'Inserisci la descrizione di questo Flusso',
+  updateFlowCreateBtn: 'AGGIORNA',
+  updateFlowPctAlert:
+    'Aggiornando questa percentuale potrebbe modificare le percentuali di altri Flussi attivi per assicurare il 100% di copertura delle richieste.',
+  flowCreateNewTitle: 'È il momento del Flow!',
+  flowCreateNewText:
+    'Hai definito il tuo obiettivo con un Use Case, ora crea un Flow per stabilire la strategia per raggiungerlo.',
+  flowCreateNewSuggestion:
+    'Ad esempio: vuoi concentrarti sulla riduzione della latenza, sulla massimizzazione dell’accuratezza o sull’efficienza dei costi mentre raggiungi il tuo obiettivo? 🚀',
+  flowCreateNewBtn: 'INIZIA ORA',
+  flowCreateNewTitleDisabled: 'Ancora nessun Flow...',
+  flowCreateNewTextDisabled:
+    'Nessun problema! Non appena qualcuno creerà un nuovo Flow, lo vedrai comparire qui.',
 };

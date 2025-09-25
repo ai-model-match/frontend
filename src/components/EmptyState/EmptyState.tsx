@@ -25,16 +25,16 @@ export function EmptyState({
       <Box w={200} maw={200}>
         <Box mt={30} component={Image} />
       </Box>
-      <Title order={3} mt={30} mb={0} maw={550}>
+      <Title order={3} mt={30} mb={10} maw={550}>
         {title}
       </Title>
       {text && (
-        <Text size="sm" ta={'center'} maw={400}>
+        <Text size="md" ta={'center'} maw={500}>
           {text}
         </Text>
       )}
       {suggestion && (
-        <Text maw={400} fs={'italic'} size="sm" ta={'center'} mt={20}>
+        <Text maw={500} fs={'italic'} size="md" ta={'center'} mt={20}>
           {suggestion}
         </Text>
       )}

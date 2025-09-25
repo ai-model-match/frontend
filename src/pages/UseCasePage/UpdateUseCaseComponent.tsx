@@ -83,7 +83,7 @@ export default function UpdateUseCaseComponent({
       <Box>
         <Group justify="left" align="flex-start">
           <ThemeIcon variant="filled" c={'white'} size={30}>
-            <IconEdit size={18} />
+            <IconEdit size={22} />
           </ThemeIcon>
           <Text size={'lg'}>{t('updateUseCaseTitle')}</Text>
         </Group>
@@ -102,11 +102,7 @@ export default function UpdateUseCaseComponent({
               mb="sm"
             />
             {useCase.active && (
-              <Tooltip
-                withArrow
-                style={{ fontSize: '12px' }}
-                label={t('updateUseCaseCodeCannotUpdate')}
-              >
+              <Tooltip withArrow label={t('updateUseCaseCodeCannotUpdate')}>
                 <TextInput
                   withAsterisk
                   maxLength={30}

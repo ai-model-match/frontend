@@ -73,7 +73,7 @@ export default function NewUseCaseStepComponent({
       <Box>
         <Group justify="left" align="flex-start">
           <ThemeIcon variant="filled" c={'white'} size={30}>
-            <IconPlus size={18} />
+            <IconPlus size={22} />
           </ThemeIcon>
           <Text size={'lg'}>{t('newUseCaseStepTitle')}</Text>
         </Group>

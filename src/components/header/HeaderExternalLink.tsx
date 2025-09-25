@@ -8,7 +8,7 @@ export interface HeaderExternalLinkProps {
 export function HeaderExternalLink({ link, icon: Icon }: HeaderExternalLinkProps) {
   return (
     <ActionIcon component="a" target="_blank" href={link} size="md" variant="light">
-      <Icon size={24} stroke={1.5} />
+      <Icon />
     </ActionIcon>
   );
 }

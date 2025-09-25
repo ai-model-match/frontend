@@ -1,6 +1,6 @@
 import { useAuth } from '@context/AuthContext';
 import { UseCase } from '@entities/useCase';
-import { Modal, SegmentedControl } from '@mantine/core';
+import { Modal, SegmentedControl, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useCaseService } from '@services/useCaseService';
@@ -53,7 +53,7 @@ export default function UseCaseStatusComponent({
   const callAPI = async () => {
     try {
       setApiLoading(true);
-      const data = await useCaseService.updateUseCaseStatus({
+      const data = await useCaseService.updateUseCase({
         id: useCase.id,
         active: !useCase.active,
       });
@@ -67,8 +67,8 @@ export default function UseCaseStatusComponent({
             position: 'top-right',
             withCloseButton: true,
             autoClose: 5000,
-            title: t('updateUseCaseStepNotAllowed'),
-            message: t('updateUseCaseStepNotAllowedDescription'),
+            title: <Text size="lg">{t('updateUseCaseStepNotAllowed')}</Text>,
+            message: <Text size="md">{t('updateUseCaseStepNotAllowedDescription')}</Text>,
             color: 'red',
             withBorder: true,
             loading: false,
@@ -89,6 +89,7 @@ export default function UseCaseStatusComponent({
   return (
     <>
       <SegmentedControl
+        size="md"
         withItemsBorders
         disabled={apiloading || !auth.canWrite()}
         value={useCase.active ? USE_CASE_ACTIVE : USE_CASE_INACTIVE}

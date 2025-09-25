@@ -1,6 +1,9 @@
 import { LineChart } from '@mantine/charts';
+import { useTranslation } from 'react-i18next';
 
 export function UseCaseStepGraphComponent() {
+  const { t } = useTranslation();
+
   return (
     <LineChart
       h={300}
@@ -58,10 +61,10 @@ export function UseCaseStepGraphComponent() {
       ]}
       dataKey="date"
       series={[
-        { name: 'Requests', label: 'Step Req.', color: 'brand.6' },
+        { name: 'Requests', label: t('useCaseGraphStepRequests'), color: 'brand.6' },
         {
           name: 'UseCaseRequests',
-          label: 'Use Case Req.',
+          label: t('useCaseGraphRequests'),
           color: 'red.6',
           strokeDasharray: '5 5',
         },

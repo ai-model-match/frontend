@@ -1,22 +1,27 @@
-import { UseCase } from '@entities/useCase';
+import { Flow } from '@entities/flow';
 import { Box, Button, Group, Text, Textarea, TextInput, ThemeIcon } from '@mantine/core';
+import { Alert, Slider } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useCaseService } from '@services/useCaseService';
+import { flowService } from '@services/flowService';
 import { assets } from '@styles/assets';
-import { IconPlus } from '@tabler/icons-react';
+import { IconEdit } from '@tabler/icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-interface NewUseCaseComponentProps {
-  onUseCaseCreated: (useCase: UseCase) => void;
+interface UpdateFlowComponentProps {
+  flow: Flow;
+  onFlowUpdated: (flow: Flow) => void;
 }
-export default function NewUseCaseComponent({
-  onUseCaseCreated,
-}: NewUseCaseComponentProps) {
+export default function UpdateFlowComponent({
+  flow,
+  onFlowUpdated,
+}: UpdateFlowComponentProps) {
   // Services
   const navigate = useNavigate();
+
   const { t } = useTranslation();
 
   // States
@@ -24,13 +29,12 @@ export default function NewUseCaseComponent({
 
   const form = useForm({
     initialValues: {
-      title: '',
-      code: '',
-      description: '',
+      title: flow.title,
+      description: flow.description,
+      currentServePct: flow.currentServePct,
     },
     validate: {
       title: (value: string) => (value.trim().length != 0 ? null : t('fieldRequired')),
-      code: (value: string) => (value.trim().length != 0 ? null : t('fieldRequired')),
       description: (value: string) =>
         value.trim().length != 0 ? null : t('fieldRequired'),
     },
@@ -40,16 +44,17 @@ export default function NewUseCaseComponent({
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiLoading(true);
-      const data = await useCaseService.createUseCase({
+      const data = await flowService.updateFlow({
+        id: flow.id,
         title: values.title,
-        code: values.code,
         description: values.description,
+        currentServePct: values.currentServePct,
       });
-      onUseCaseCreated(data.item);
+      onFlowUpdated(data.item);
     } catch (err: unknown) {
       switch (getErrorMessage(err)) {
-        case 'use-case-same-code-already-exists':
-          form.setFieldError('code', t('newUseCaseCodeInputAlreadyExists'));
+        case 'flow-same-code-already-exists':
+          form.setFieldError('code', t('updateFlowCodeInputAlreadyExists'));
           break;
         case 'refresh-token-failed':
           navigate('/logout');
@@ -64,17 +69,17 @@ export default function NewUseCaseComponent({
   };
 
   // Content
-  const Image = assets[`../assets/new-use-case.svg`];
+  const Image = assets[`../assets/edit-flow.svg`];
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>
         <Group justify="left" align="flex-start">
           <ThemeIcon variant="filled" c={'white'} size={30}>
-            <IconPlus size={22} />
+            <IconEdit size={22} />
           </ThemeIcon>
-          <Text size={'lg'}>{t('newUseCaseTitle')}</Text>
+          <Text size={'lg'}>{t('updateFlowTitle')}</Text>
         </Group>
-        <Box w={'100%'} p={80} pt={10} pb={10}>
+        <Box w={'85%'} p={80} pt={10} pb={10}>
           <Box mt={20} component={Image} />
         </Box>
         <Group justify="space-between">
@@ -82,29 +87,46 @@ export default function NewUseCaseComponent({
             <TextInput
               withAsterisk
               maxLength={30}
-              label={t('newUseCaseTitleInput')}
-              placeholder={t('newUseCaseTitleInputPlaceholder')}
+              label={t('updateFlowTitleInput')}
+              placeholder={t('updateFlowTitleInputPlaceholder')}
               key={form.key('title')}
               {...form.getInputProps('title')}
-              mb="sm"
-            />
-            <TextInput
-              withAsterisk
-              maxLength={30}
-              label={t('newUseCaseCodeInput')}
-              placeholder={t('newUseCaseCodeInputPlaceholder')}
-              key={form.key('code')}
-              {...form.getInputProps('code')}
               mb="sm"
             />
             <Textarea
               withAsterisk
               maxLength={500}
               rows={5}
-              label={t('newUseCaseDescriptionInput')}
-              placeholder={t('newUseCaseDescriptionInputPlaceholder')}
+              label={t('updateFlowDescriptionInput')}
+              placeholder={t('updateFlowDescriptionInputPlaceholder')}
               key={form.key('description')}
               {...form.getInputProps('description')}
+              mb="sm"
+            />
+            {flow.active && (
+              <Alert icon={<IconAlertCircle size={22} />} color="yellow" mb="sm">
+                {t('updateFlowPctAlert')}
+              </Alert>
+            )}
+            <Slider
+              my="xl"
+              color={
+                form.getInputProps('currentServePct').value >= 30
+                  ? 'brand'
+                  : form.getInputProps('currentServePct').value >= 10
+                    ? 'yellow'
+                    : 'red'
+              }
+              label={() => form.getInputProps('currentServePct').value + ' %'}
+              key={form.key('currentServePct')}
+              {...form.getInputProps('currentServePct')}
+              marks={[
+                { value: 0, label: '0%' },
+                { value: 50, label: '50%' },
+                { value: 100, label: '100%' },
+              ]}
+              value={flow.active ? form.getInputProps('currentServePct').value : 0}
+              disabled={!flow.active}
               mb="sm"
             />
           </Box>
@@ -113,12 +135,12 @@ export default function NewUseCaseComponent({
       <Box>
         <Button
           type="submit"
-          mt={'lg'}
+          mt={40}
           loading={apiloading}
           loaderProps={{ type: 'dots' }}
           fullWidth
         >
-          {t('newUseCaseCreateBtn')}
+          {t('updateFlowCreateBtn')}
         </Button>
       </Box>
     </form>

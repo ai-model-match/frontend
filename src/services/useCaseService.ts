@@ -9,8 +9,6 @@ import type {
   GetUseCaseInputDto,
   GetUseCaseOutputDto,
   DeleteUseCaseOutputDto,
-  UpdateUseCaseStatusInputDto,
-  UpdateUseCaseStatusOutputDto,
 } from '@dtos/useCaseDto';
 import { Method } from './api.type';
 import { callAuthApi } from './authApi';
@@ -74,24 +72,6 @@ export const useCaseService = {
     });
     if (!response) {
       throw new Error('use-case-update-failed');
-    }
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.errors[0]);
-    }
-    const data = await response.json();
-    return data;
-  },
-
-  async updateUseCaseStatus(
-    input: UpdateUseCaseStatusInputDto
-  ): Promise<UpdateUseCaseStatusOutputDto> {
-    const { id, ...rest } = input;
-    const response = await callAuthApi(`/api/v1/use-cases/${id}`, Method.PUT, {
-      ...rest,
-    });
-    if (!response) {
-      throw new Error('use-case-updated-status-failed');
     }
     if (!response.ok) {
       const data = await response.json();

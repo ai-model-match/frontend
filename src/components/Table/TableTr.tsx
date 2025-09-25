@@ -16,21 +16,21 @@ export interface TableTrProps {
 
 export function TableTr({ trKey, tds }: TableTrProps) {
   return (
-    <Table.Tr key={trKey}>
+    <Table.Tr key={trKey} h={'50'}>
       {tds.map((td, index) => {
         return (
           <Table.Td key={index} style={{ maxWidth: td.mw }}>
             {td.text && td.textWithCopy && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 {td.textWithTooltip && (
-                  <Tooltip withArrow style={{ fontSize: '12px' }} label={td.text}>
-                    <Text size="sm" truncate="end">
+                  <Tooltip withArrow style={{ fontSize: 'md' }} label={td.text}>
+                    <Text size="md" truncate="end">
                       {td.text}
                     </Text>
                   </Tooltip>
                 )}
                 {!td.textWithTooltip && (
-                  <Text size="sm" truncate="end">
+                  <Text size="md" truncate="end">
                     {td.text}
                   </Text>
                 )}
@@ -41,7 +41,7 @@ export function TableTr({ trKey, tds }: TableTrProps) {
                       variant="subtle"
                       onClick={copy}
                     >
-                      {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+                      {copied ? <IconCheck size={22} /> : <IconCopy size={22} />}
                     </ActionIcon>
                   )}
                 </CopyButton>
@@ -50,14 +50,14 @@ export function TableTr({ trKey, tds }: TableTrProps) {
             {td.text && !td.textWithCopy && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 {td.textWithTooltip && (
-                  <Tooltip withArrow style={{ fontSize: '12px' }} label={td.text}>
-                    <Text size="sm" truncate="end">
+                  <Tooltip withArrow label={td.text}>
+                    <Text size="md" truncate="end">
                       {td.text}
                     </Text>
                   </Tooltip>
                 )}
                 {!td.textWithTooltip && (
-                  <Text size="sm" truncate="end">
+                  <Text size="md" truncate="end">
                     {td.text}
                   </Text>
                 )}

@@ -10,8 +10,7 @@ export function Header() {
     <Box miw={1200} component="header" className={classes.root}>
       <Group justify="space-between" h="100%" gap={10}>
         <HaderLogo />
-        <Group flex={1} gap={0} />
-        <Group gap={10}>
+        <Group justify="flex-end" gap={10}>
           <HeaderExternalLink
             link="https://github.com/ai-model-match"
             icon={IconBrandGithub}

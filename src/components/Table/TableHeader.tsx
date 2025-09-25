@@ -1,4 +1,5 @@
 import { Table } from '@mantine/core';
+import { OrderDir } from '@services/api.type';
 import { useState } from 'react';
 import { TableTh } from './TableTh';
 
@@ -11,7 +12,7 @@ export interface TableHeaderColumnProps {
 export interface TableHeaderProps {
   sortBy: string;
   columns: TableHeaderColumnProps[];
-  onSortingChange: (key: string, dir: 'asc' | 'desc') => void;
+  onSortingChange: (key: string, dir: OrderDir) => void;
 }
 
 export function TableHeader({ sortBy, onSortingChange, columns }: TableHeaderProps) {
@@ -22,7 +23,7 @@ export function TableHeader({ sortBy, onSortingChange, columns }: TableHeaderPro
   const setSortingHandler = (key: string) => {
     const newDirection = key === sortBy ? !sortDirection : false;
     setReverseSortDirection(newDirection);
-    onSortingChange(key, newDirection ? 'asc' : 'desc');
+    onSortingChange(key, newDirection ? OrderDir.ASC : OrderDir.DESC);
   };
 
   // Content

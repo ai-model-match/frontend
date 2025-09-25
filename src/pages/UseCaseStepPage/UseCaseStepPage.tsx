@@ -15,6 +15,7 @@ import {
   ActionIcon,
   Anchor,
   Breadcrumbs,
+  Button,
   Code,
   CopyButton,
   Divider,
@@ -41,6 +42,8 @@ import {
   IconPlus,
   IconRoute,
   IconTrash,
+  IconRobot,
+  IconArrowRampRight,
 } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { useCallback, useEffect, useState } from 'react';
@@ -65,7 +68,6 @@ export default function UseCaseStepPage() {
     pageSize: 200,
     orderDir: OrderDir.ASC,
     orderBy: UseCaseStepOrderByOptions.Position,
-    searchKey: null,
   };
   // Services
   const auth = useAuth();
@@ -202,10 +204,10 @@ export default function UseCaseStepPage() {
   const breadcrumbItemsRender = () =>
     breadcrumbItems.map((item) => {
       if (item.href == '#') {
-        return <Text size="sm">{item.title}</Text>;
+        return <Text size="md">{item.title}</Text>;
       } else {
         return (
-          <Anchor size="sm" component={NavLink} to={item.href}>
+          <Anchor size="md" component={NavLink} to={item.href}>
             {item.title}
           </Anchor>
         );
@@ -226,41 +228,33 @@ export default function UseCaseStepPage() {
                   variant="subtle"
                   onClick={copy}
                 >
-                  {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+                  {copied ? <IconCheck size={22} /> : <IconCopy size={22} />}
                 </ActionIcon>
               )}
             </CopyButton>
           </Group>
           <Group gap={0} wrap="nowrap">
             {auth.canWrite() && (
-              <Tooltip
-                withArrow
-                style={{ fontSize: '12px' }}
-                label={t('useCaseStepUpdateAction')}
-              >
+              <Tooltip withArrow label={t('useCaseStepUpdateAction')}>
                 <ActionIcon variant="subtle" onClick={() => handleUpdateRequest(item.id)}>
-                  <IconPencil size={18} />
+                  <IconPencil size={22} />
                 </ActionIcon>
               </Tooltip>
             )}
             {auth.canWrite() && (
-              <Tooltip
-                withArrow
-                style={{ fontSize: '12px' }}
-                label={t('useCaseStepDeleteAction')}
-              >
+              <Tooltip withArrow label={t('useCaseStepDeleteAction')}>
                 <ActionIcon
                   color="red"
                   variant="subtle"
                   onClick={() => handleDeleteRequest(item.id)}
                 >
-                  <IconTrash size={18} />
+                  <IconTrash size={22} />
                 </ActionIcon>
               </Tooltip>
             )}
           </Group>
         </Group>
-        <Text size="sm" mt={15}>
+        <Text size="md" mt={15}>
           {item.description}
         </Text>
         <Divider my={20} />
@@ -275,7 +269,31 @@ export default function UseCaseStepPage() {
         {pageLoaded && apiUseCaseResponse && (
           <Grid.Col span={12}>
             <Paper p="lg">
-              <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+              <Group justify="space-between" align="center" gap={0} mb={0}>
+                <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+                <Group justify="flex-end" align="center" gap={10} mb={0}>
+                  <Button
+                    variant="light"
+                    leftSection={<IconArrowRampRight size={22} />}
+                    onClick={() =>
+                      navigate('/use-cases/' + apiUseCaseResponse.item.id + '/flows')
+                    }
+                  >
+                    {t('useCaseFlowsAction')}
+                  </Button>
+                  <Button
+                    variant="light"
+                    leftSection={<IconRobot size={22} />}
+                    onClick={() =>
+                      navigate(
+                        '/use-cases/' + apiUseCaseResponse.item.id + '/rollout-strategy'
+                      )
+                    }
+                  >
+                    {t('useCaseRolloutStrategyAction')}
+                  </Button>
+                </Group>
+              </Group>
             </Paper>
           </Grid.Col>
         )}
@@ -297,7 +315,7 @@ export default function UseCaseStepPage() {
                         variant="subtle"
                         onClick={copy}
                       >
-                        {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
+                        {copied ? <IconCheck size={22} /> : <IconCopy size={22} />}
                       </ActionIcon>
                     )}
                   </CopyButton>
@@ -309,7 +327,7 @@ export default function UseCaseStepPage() {
                   />
                 )}
               </Group>
-              <Text size="sm" mt={15} mb={40} mr={200}>
+              <Text size="md" mt={15} mb={50} mr={200}>
                 {apiUseCaseResponse.item.description}
               </Text>
               <Grid>
@@ -318,6 +336,7 @@ export default function UseCaseStepPage() {
                     <Grid.Col span={4}>
                       <Fieldset legend={'Steps'}>
                         <Stepper
+                          size="lg"
                           active={selectedStepNumber}
                           orientation="vertical"
                           onStepClick={onStepItemClick}

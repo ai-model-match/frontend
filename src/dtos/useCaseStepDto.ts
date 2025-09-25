@@ -14,7 +14,7 @@ export type ListUseCaseStepsInputDto = {
   pageSize: number;
   orderDir: OrderDir;
   orderBy: UseCaseStepOrderByOptions;
-  searchKey: string | null;
+  searchKey?: string;
 };
 
 export type ListUseCaseStepsOutputDto = {
@@ -44,10 +44,10 @@ export type DeleteUseCaseStepOutputDto = {
 
 export type UpdateUseCaseStepInputDto = {
   id: string;
-  title: string;
-  code: string;
-  description: string;
-  position: number;
+  title?: string;
+  code?: string;
+  description?: string;
+  position?: number;
 };
 
 export type UpdateUseCaseStepOutputDto = {

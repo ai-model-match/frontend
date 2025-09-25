@@ -73,9 +73,30 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         mb: 'xl',
       },
     },
+    TextInput: {
+      defaultProps: {
+        size: 'md',
+      },
+    },
+    PasswordInput: {
+      defaultProps: {
+        size: 'md',
+      },
+    },
+    Textarea: {
+      defaultProps: {
+        size: 'md',
+      },
+    },
+    Button: {
+      defaultProps: {
+        size: 'md',
+      },
+    },
     Modal: {
       defaultProps: {
-        padding: 'xs',
+        padding: 'md',
+        size: 'lg',
       },
     },
     SegmentedControl: {
@@ -83,9 +104,15 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         bg: `var(--aimm-segmented-control-bg)`,
       },
     },
+    Card: {
+      defaultProps: {
+        bg: `var(--aimm-segmented-control-bg)`,
+      },
+    },
     Code: {
       styles: (theme: MantineTheme) => ({
         root: {
+          fontSize: 'var(--mantine-font-size-sm)',
           overflow: 'hidden',
           color: theme.colors.brand[7],
           border: `1px solid ${theme.colors.brand[7]}`,

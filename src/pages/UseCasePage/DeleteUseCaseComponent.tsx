@@ -66,15 +66,15 @@ export default function DeleteUseCaseComponent({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Group justify="left" align="flex-start">
-        <ThemeIcon variant="filled" color={'red'} size={30}>
-          <IconX size={18} />
+        <ThemeIcon variant="filled" color={'red'} size={34}>
+          <IconX />
         </ThemeIcon>
-        <Text size={'lg'}>{title}</Text>
+        <Text size={'xl'}>{title}</Text>
       </Group>
-      <Text size="sm" mt={10}>
+      <Text size="md" mt={10}>
         {text}
       </Text>
-      <Text size="sm" mt={10} fw={600}>
+      <Text size="md" mt={10} fw={600}>
         {t('deleteUndo')}
       </Text>
       {confirmTextRequired && (
@@ -92,6 +92,7 @@ export default function DeleteUseCaseComponent({
         </Button>
         <Button
           type="submit"
+          color="red"
           disabled={isConfirmDisabled}
           loading={apiloading}
           loaderProps={{ type: 'dots' }}
