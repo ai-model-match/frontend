@@ -31,7 +31,7 @@ export function App() {
           <BrowserRouter>
             <Routes>
               {/* Protected main page */}
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<Navigate to="/use-cases" replace />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/use-cases" element={<UseCasePage />} />
               <Route path="/use-cases/:id" element={<UseCaseStepPage />} />
