@@ -13,6 +13,7 @@ export function FlowNewCardComponent({ onClick }: FlowNewCardComponentProps) {
       bd={'1px dashed var(--mantine-color-gray-6)'}
       component="button"
       color="var(--aimm-segmented-control-bg)"
+      c={'brand'}
       h={300}
       w={'100%'}
       style={{ cursor: 'pointer' }}

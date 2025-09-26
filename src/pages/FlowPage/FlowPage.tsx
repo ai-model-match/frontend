@@ -23,7 +23,11 @@ import { useDisclosure, useInterval } from '@mantine/hooks';
 import { OrderDir } from '@services/api.type';
 import { flowService } from '@services/flowService';
 import { useCaseService } from '@services/useCaseService';
-import { IconAdjustmentsHorizontal, IconArrowRampRight } from '@tabler/icons-react';
+import {
+  IconAdjustmentsHorizontal,
+  IconArrowRampRight,
+  IconSettingsAutomation,
+} from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -229,7 +233,18 @@ export default function FlowPage() {
         {pageLoaded && apiUseCaseResponse && (
           <Grid.Col span={12}>
             <Paper p="lg">
-              <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+              <Group justify="space-between" align="center" gap={10} mb={0}>
+                <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+                <Button
+                  variant="light"
+                  leftSection={<IconSettingsAutomation size={22} />}
+                  onClick={() =>
+                    navigate(`/use-cases/${apiUseCaseResponse.item.id}/rollout-strategy`)
+                  }
+                >
+                  {t('useCaseRolloutStrategyAction')}
+                </Button>
+              </Group>
             </Paper>
           </Grid.Col>
         )}
@@ -252,13 +267,16 @@ export default function FlowPage() {
                     icon={IconArrowRampRight}
                     title={t('flowActiveTitlePage')}
                   />
-                  <Button
-                    variant="light"
-                    leftSection={<IconAdjustmentsHorizontal size={22} />}
-                    onClick={handleUpdateBulkRequest}
-                  >
-                    {t('flowUpdatePctBulkBtn')}
-                  </Button>
+                  {auth.canWrite() && (
+                    <Button
+                      variant="light"
+                      leftSection={<IconAdjustmentsHorizontal size={22} />}
+                      color="orange"
+                      onClick={handleUpdateBulkRequest}
+                    >
+                      {t('flowUpdatePctBulkBtn')}
+                    </Button>
+                  )}
                 </Group>
                 <Grid>
                   {apiFlowResponse.items

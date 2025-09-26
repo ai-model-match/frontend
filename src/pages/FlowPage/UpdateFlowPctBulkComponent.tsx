@@ -1,6 +1,15 @@
 import { Flow } from '@entities/flow';
 import { UseCase } from '@entities/useCase';
-import { Box, Button, Group, Slider, Stack, Text, ThemeIcon } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Fieldset,
+  Group,
+  Slider,
+  Stack,
+  Text,
+  ThemeIcon,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { flowService } from '@services/flowService';
 import { assets } from '@styles/assets';
@@ -80,40 +89,42 @@ export default function UpdateFlowPctBulkComponent({
           <Box mt={20} component={Image} />
         </Box>
         <Group justify="space-between">
-          <Stack align="stretch" justify="flex-start" w={'100%'} gap={15} p={15}>
-            {flows.map((flow) => (
-              <>
-                <Text key={flow.id} mt={'xl'}>
-                  {flow.title}
-                </Text>
-                <Slider
-                  color={
-                    form.getInputProps(flow.id).value >= 30
-                      ? 'brand'
-                      : form.getInputProps(flow.id).value >= 10
-                        ? 'yellow'
-                        : 'red'
-                  }
-                  label={() => form.getInputProps(flow.id).value + ' %'}
-                  key={form.key(flow.id)}
-                  {...form.getInputProps(flow.id)}
-                  marks={[
-                    { value: 0, label: '0%' },
-                    { value: 50, label: '50%' },
-                    { value: 100, label: '100%' },
-                  ]}
-                  value={flow.active ? form.getInputProps(flow.id).value : 0}
-                  mb="sm"
-                />
-              </>
-            ))}
-          </Stack>
+          <Fieldset flex={1} mt={30}>
+            <Stack align="stretch" justify="flex-start" w={'100%'} gap={15} p={15}>
+              {flows.map((flow) => (
+                <>
+                  <Text key={flow.id} mt={'xl'}>
+                    {flow.title}
+                  </Text>
+                  <Slider
+                    color={
+                      form.getInputProps(flow.id).value >= 30
+                        ? 'brand'
+                        : form.getInputProps(flow.id).value >= 10
+                          ? 'yellow'
+                          : 'red'
+                    }
+                    label={() => form.getInputProps(flow.id).value + ' %'}
+                    key={form.key(flow.id)}
+                    {...form.getInputProps(flow.id)}
+                    marks={[
+                      { value: 0, label: '0%' },
+                      { value: 100, label: '100%' },
+                    ]}
+                    value={flow.active ? form.getInputProps(flow.id).value : 0}
+                    mb="sm"
+                  />
+                </>
+              ))}
+            </Stack>
+          </Fieldset>
         </Group>
       </Box>
       <Box>
         <Button
           type="submit"
-          mt={40}
+          mt={20}
+          color="orange"
           loading={apiLoading}
           loaderProps={{ type: 'dots' }}
           fullWidth

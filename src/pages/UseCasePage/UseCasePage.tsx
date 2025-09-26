@@ -137,7 +137,7 @@ export default function UseCasePage() {
     const maxPage = Math.ceil(totalItems / apiRequest.pageSize);
     const newPage = Math.min(apiRequest.page, maxPage);
     if (newPage < 1) {
-      setApiRequest(defaultApiRequest);
+      setApiRequest({ ...defaultApiRequest });
       setSearchKeyValue('');
     } else {
       setApiRequest({ ...apiRequest, page: newPage });

@@ -1,10 +1,5 @@
 import { Paper, ScrollArea } from '@mantine/core';
-import {
-  IconTargetArrow,
-  IconAdjustments,
-  IconDoorExit,
-  IconGauge,
-} from '@tabler/icons-react';
+import { IconTargetArrow, IconDoorExit } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import classes from './Menu.module.css';
@@ -18,17 +13,17 @@ export function Menu() {
 
   useEffect(() => {
     setMenuItems([
-      { label: t('menuDashboard'), icon: IconGauge, link: '/dashboard' },
+      //{ label: t('menuDashboard'), icon: IconGauge, link: '/dashboard' },
       {
         label: t('menuUseCases'),
         icon: IconTargetArrow,
         link: '/use-cases',
       },
-      {
+      /*{
         label: 'TDB',
         icon: IconAdjustments,
         subItems: [{ label: 'Tbd 1', link: '/not-found' }],
-      },
+      },*/
     ]);
     setFooterMenuItems([{ label: t('menuLogout'), icon: IconDoorExit, link: '/logout' }]);
   }, [t]);

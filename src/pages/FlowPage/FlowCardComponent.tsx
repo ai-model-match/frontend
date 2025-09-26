@@ -45,6 +45,7 @@ export function FlowCardComponent({
               maw={'calc(100% - 116px)'}
               truncate="end"
               size="lg"
+              td="underline"
               component={NavLink}
               to={`/use-cases/${useCase.id}/flows/${flow.id}`}
             >
@@ -117,9 +118,9 @@ export function FlowCardComponent({
             label={(value) => value + ' %'}
             value={flow.currentServePct}
             disabled={!flow.active}
+            style={{ pointerEvents: 'none', cursor: 'default' }}
             marks={[
               { value: 0, label: '0%' },
-              { value: 50, label: '50%' },
               { value: 100, label: '100%' },
             ]}
           />

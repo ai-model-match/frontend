@@ -42,7 +42,6 @@ import {
   IconPlus,
   IconRoute,
   IconTrash,
-  IconRobot,
   IconArrowRampRight,
 } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
@@ -271,28 +270,15 @@ export default function UseCaseStepPage() {
             <Paper p="lg">
               <Group justify="space-between" align="center" gap={0} mb={0}>
                 <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
-                <Group justify="flex-end" align="center" gap={10} mb={0}>
-                  <Button
-                    variant="light"
-                    leftSection={<IconArrowRampRight size={22} />}
-                    onClick={() =>
-                      navigate('/use-cases/' + apiUseCaseResponse.item.id + '/flows')
-                    }
-                  >
-                    {t('useCaseFlowsAction')}
-                  </Button>
-                  <Button
-                    variant="light"
-                    leftSection={<IconRobot size={22} />}
-                    onClick={() =>
-                      navigate(
-                        '/use-cases/' + apiUseCaseResponse.item.id + '/rollout-strategy'
-                      )
-                    }
-                  >
-                    {t('useCaseRolloutStrategyAction')}
-                  </Button>
-                </Group>
+                <Button
+                  variant="light"
+                  leftSection={<IconArrowRampRight size={22} />}
+                  onClick={() =>
+                    navigate('/use-cases/' + apiUseCaseResponse.item.id + '/flows')
+                  }
+                >
+                  {t('useCaseFlowsAction')}
+                </Button>
               </Group>
             </Paper>
           </Grid.Col>
