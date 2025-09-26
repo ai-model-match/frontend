@@ -2,9 +2,9 @@ import { useAuth } from '@context/AuthContext';
 import { UseCase } from '@entities/useCase';
 import { Modal, SegmentedControl, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 import { useCaseService } from '@services/useCaseService';
 import { getErrorMessage } from '@utils/errUtils';
+import { sendErrorNotification } from '@utils/notificationUtils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -62,16 +62,10 @@ export default function UseCaseStatusComponent({
     } catch (err: unknown) {
       switch (getErrorMessage(err)) {
         case 'use-case-cannot-be-activated-without-active-flow':
-          notifications.show({
+          sendErrorNotification({
             id: 'use-case-cannot-be-activated-without-active-flow',
-            position: 'top-right',
-            withCloseButton: true,
-            autoClose: 5000,
             title: <Text size="lg">{t('updateUseCaseStepNotAllowed')}</Text>,
             message: <Text size="md">{t('updateUseCaseStepNotAllowedDescription')}</Text>,
-            color: 'red',
-            withBorder: true,
-            loading: false,
           });
           break;
         case 'refresh-token-failed':

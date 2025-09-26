@@ -27,8 +27,12 @@ import { getErrorMessage } from '@utils/errUtils';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import ActivateFlowComponent from './ActivateFlowComponent';
+import DeactivateFlowComponent from './DeactivateFlowComponent';
 import DeleteFlowComponent from './DeleteFlowComponent';
 import { FlowCardComponent } from './FlowCardComponent';
+import { FlowNewCardComponent } from './FlowNewCardComponent';
+import NewFlowComponent from './NewFlowComponent';
 import UpdateFlowComponent from './UpdateFlowComponent';
 interface BreadcrumbItem {
   title: string;
@@ -58,6 +62,16 @@ export default function FlowPage() {
   // Delete Flow panel status
   const [deleteFlowOpen, { open: deleteFlowActionsOpen, close: deleteFlowActionsClose }] =
     useDisclosure(false);
+  // Deactivate Flow panel status
+  const [
+    deactivateFlowOpen,
+    { open: deactivateFlowActionsOpen, close: deactivateFlowActionsClose },
+  ] = useDisclosure(false);
+  // Activate Flow panel status
+  const [
+    activateFlowOpen,
+    { open: activateFlowActionsOpen, close: activateFlowActionsClose },
+  ] = useDisclosure(false);
   const [pageLoaded, setPageLoaded] = useState(false);
   const [apiUseCaseResponse, setApiUseCaseResponse] = useState<GetUseCaseOutputDto>();
   const [apiFlowRequest, setApiFlowRequest] =
@@ -148,31 +162,47 @@ export default function FlowPage() {
   const handleDeactivateRequest = (id: string) => {
     const flow = apiFlowResponse?.items.find((x) => x.id === id);
     setSelectedFlow(flow);
-    // deleteFlowActionsOpen();
-    alert('Not implemented yet');
+    deactivateFlowActionsOpen();
   };
 
   const handleActivateRequest = (id: string) => {
     const flow = apiFlowResponse?.items.find((x) => x.id === id);
     setSelectedFlow(flow);
-    // deleteFlowActionsOpen();
-    alert('Not implemented yet');
+    activateFlowActionsOpen();
   };
+
+  const onFlowCreated = useCallback(
+    (_: Flow) => {
+      newFlowActionsClose();
+      setApiFlowRequest((prev) => ({ ...prev }));
+    },
+    [setApiFlowRequest, newFlowActionsClose]
+  );
 
   const onFlowUpdated = useCallback(() => {
     updateFlowActionsClose();
-    setApiFlowRequest({ ...apiFlowRequest });
-  }, [apiFlowRequest, setApiFlowRequest, updateFlowActionsClose]);
+    setApiFlowRequest((prev) => ({ ...prev }));
+  }, [setApiFlowRequest, updateFlowActionsClose]);
 
   const onFlowDeleted = useCallback(
     (id: string) => {
       deleteFlowActionsClose();
       apiFlowResponse.items = apiFlowResponse.items.filter((x) => x.id !== id);
       apiFlowResponse.totalCount--;
-      setApiFlowRequest({ ...apiFlowRequest });
+      setApiFlowRequest((prev) => ({ ...prev }));
     },
-    [apiFlowRequest, apiFlowResponse, setApiFlowRequest, deleteFlowActionsClose]
+    [apiFlowResponse, setApiFlowRequest, deleteFlowActionsClose]
   );
+
+  const onFlowDeactivated = useCallback(() => {
+    deactivateFlowActionsClose();
+    setApiFlowRequest((prev) => ({ ...prev }));
+  }, [setApiFlowRequest, deactivateFlowActionsClose]);
+
+  const onFlowActivated = useCallback(() => {
+    activateFlowActionsClose();
+    setApiFlowRequest((prev) => ({ ...prev }));
+  }, [setApiFlowRequest, activateFlowActionsClose]);
 
   return (
     <AuthGuard>
@@ -226,7 +256,7 @@ export default function FlowPage() {
           {pageLoaded &&
             apiUseCaseResponse &&
             apiFlowResponse &&
-            apiFlowResponse.items.filter((x) => !x.active).length > 0 && (
+            apiFlowResponse.items.length > 0 && (
               <Paper p="lg" mb="lg">
                 <Group justify="space-between" align="center" gap={0} mb={0}>
                   <PaperTitle
@@ -251,6 +281,11 @@ export default function FlowPage() {
                         />
                       </Grid.Col>
                     ))}
+                  {auth.canWrite() && (
+                    <Grid.Col span={4} key={'new-flow-id'}>
+                      <FlowNewCardComponent onClick={newFlowActionsOpen} />
+                    </Grid.Col>
+                  )}
                 </Grid>
               </Paper>
             )}
@@ -280,6 +315,23 @@ export default function FlowPage() {
               </Paper>
             )}
         </Grid.Col>
+        {apiUseCaseResponse && (
+          <Drawer
+            opened={newFlowOpen}
+            padding={0}
+            onClose={newFlowActionsClose}
+            position="right"
+            offset={10}
+            overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+            withCloseButton={false}
+            radius="md"
+          >
+            <NewFlowComponent
+              useCaseId={apiUseCaseResponse.item.id}
+              onFlowCreated={onFlowCreated}
+            />
+          </Drawer>
+        )}
         <Drawer
           opened={updateFlowOpen}
           padding={0}
@@ -292,20 +344,53 @@ export default function FlowPage() {
         >
           <UpdateFlowComponent flow={selectedFlow!} onFlowUpdated={onFlowUpdated} />
         </Drawer>
-        <Modal
-          opened={deleteFlowOpen}
-          onClose={deleteFlowActionsClose}
-          withCloseButton={false}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        >
-          <DeleteFlowComponent
-            flow={selectedFlow!}
-            title={t('deleteFlowTitle')}
-            text={t('deleteFlowDescription')}
-            onCancel={deleteFlowActionsClose}
-            onFlowDeleted={onFlowDeleted}
-          ></DeleteFlowComponent>
-        </Modal>
+        {selectedFlow && (
+          <>
+            <Modal
+              opened={deleteFlowOpen}
+              onClose={deleteFlowActionsClose}
+              withCloseButton={false}
+              overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+            >
+              <DeleteFlowComponent
+                flow={selectedFlow!}
+                title={t('deleteFlowTitle')}
+                text={t('deleteFlowDescription')}
+                onCancel={deleteFlowActionsClose}
+                onFlowDeleted={onFlowDeleted}
+              ></DeleteFlowComponent>
+            </Modal>
+            <Modal
+              opened={deactivateFlowOpen}
+              onClose={deactivateFlowActionsClose}
+              withCloseButton={false}
+              overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+            >
+              <DeactivateFlowComponent
+                flow={selectedFlow!}
+                title={t('deactivateFlowTitle')}
+                text={t('deactivateFlowDescription')}
+                confirmTextRequired={selectedFlow!.currentServePct > 0}
+                onCancel={deactivateFlowActionsClose}
+                onFlowDeactivated={onFlowDeactivated}
+              ></DeactivateFlowComponent>
+            </Modal>
+            <Modal
+              opened={activateFlowOpen}
+              onClose={activateFlowActionsClose}
+              withCloseButton={false}
+              overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+            >
+              <ActivateFlowComponent
+                flow={selectedFlow!}
+                title={t('activateFlowTitle')}
+                text={t('activateFlowDescription')}
+                onCancel={activateFlowActionsClose}
+                onFlowActivated={onFlowActivated}
+              ></ActivateFlowComponent>
+            </Modal>
+          </>
+        )}
       </Layout>
     </AuthGuard>
   );

@@ -127,16 +127,16 @@ export const itTranslations = {
   updateUseCaseStepPositionInput: 'Posizione',
   updateUseCaseStepCreateBtn: 'AGGIORNA',
   updateUseCaseStepCodeInputAlreadyExists: 'Ops! Questo codice è già stato utilizzato',
-  updateUseCaseStepNotAllowed: 'Caso d’Uso non pronto',
+  updateUseCaseStepNotAllowed: 'Il Caso d’Uso non può essere attivato',
   updateUseCaseStepNotAllowedDescription:
-    'Non puoi attivare questo Caso d’Uso perché non esiste alcun Flusso associato per gestire il traffico in ingresso. Crea un Flusso prima dell’attivazione.',
+    'Non puoi attivare questo Caso d’Uso perché non esiste alcun Flusso attivo associato per gestire il traffico in ingresso. Crea o attiva un Flusso e riprova.',
   updateUseCaseStepCodeWarning:
     'La modifica del campo ’Codice’ potrebbe compromettere il corretto funzionamento dei Flussi attivi collegati a questo Caso d’Uso.',
   deleteUseCaseStepCodeWarning:
     'L’eliminazione dello Step potrebbe compromettere il corretto funzionamento dei Flussi attivi collegati a questo Caso d’Uso.',
   flowActiveTitlePage: 'FLUSSI ATTIVI',
   flowInactiveTitlePage: 'FLUSSI INATTIVI',
-  flowCurrentServePct: 'Richieste gestite: <strong>{{pct}}%</strong>',
+  flowCurrentServePct: 'Richieste in ingresso gestite: <strong>{{pct}}%</strong>',
   deleteFlowTitle: 'ELIMINA FLUSSO',
   deleteFlowDescription:
     'Sei sicuro di voler cancellare questo Flusso? Questo rimuoverà permanentemente tutti i suoi Steps e statistiche.',
@@ -148,13 +148,29 @@ export const itTranslations = {
   updateFlowCreateBtn: 'AGGIORNA',
   updateFlowPctAlert:
     'Aggiornando questa percentuale potrebbe modificare le percentuali di altri Flussi attivi per assicurare il 100% di copertura delle richieste.',
-  flowCreateNewTitle: 'È il momento del Flow!',
+  flowCreateNewTitle: 'È il momento del Flusso!',
   flowCreateNewText:
-    'Hai definito il tuo obiettivo con un Use Case, ora crea un Flow per stabilire la strategia per raggiungerlo.',
+    'Hai definito il tuo obiettivo con un Use Case, ora crea un Flusso per stabilire la strategia per raggiungerlo.',
   flowCreateNewSuggestion:
     'Ad esempio: vuoi concentrarti sulla riduzione della latenza, sulla massimizzazione dell’accuratezza o sull’efficienza dei costi mentre raggiungi il tuo obiettivo? 🚀',
   flowCreateNewBtn: 'INIZIA ORA',
-  flowCreateNewTitleDisabled: 'Ancora nessun Flow...',
+  flowCreateNewTitleDisabled: 'Ancora nessun Flusso...',
   flowCreateNewTextDisabled:
-    'Nessun problema! Non appena qualcuno creerà un nuovo Flow, lo vedrai comparire qui.',
+    'Nessun problema! Non appena qualcuno creerà un nuovo Flusso, lo vedrai comparire qui.',
+  newFlowTitle: 'CREA UN NUOVO FLUSSO',
+  newFlowTitleInput: 'Titolo',
+  newFlowTitleInputPlaceholder: 'Inserisci un titolo',
+  newFlowDescriptionInput: 'Descrizione',
+  newFlowDescriptionInputPlaceholder: 'Descrivi la strategica di questo Flusso',
+  newFlowCreateBtn: 'CREA',
+  flowNewCardBtn: 'Crea un nuovo Flusso',
+  activateFlowTitle: 'ATTIVA FLUSSO',
+  activateFlowDescription:
+    'Sei sicuro di voler attivare questo Flusso? Questo permetterà a tutti i suoi Steps di elaborare le richieste in ingresso.',
+  deactivateFlowTitle: 'DISATTIVA FLUSSO',
+  deactivateFlowDescription:
+    'Sei sicuro di voler disattivare questo Flusso? Questo impedirà a tutti i suoi Steps di elaborare le richieste in ingresso. Altri Flussi saranno adattati per coprire il 100% del traffico in ingresso.',
+  deactivateFlowNotAllowed: 'Il Flusso non può essere disattivato',
+  deactivateFlowNotAllowedDescription:
+    'Non puoi disattivare l’ultimo Flusso attivo quando il Caso d’Uso é attivo. Attiva o crea un altro Flusso prima di disattivare questo o disattiva il Caso d’Uso.',
 };

@@ -3,11 +3,12 @@ import { Flow } from '@entities/flow';
 import { UseCase } from '@entities/useCase';
 import {
   ActionIcon,
-  Badge,
+  Box,
   Card,
   Divider,
   Group,
   Slider,
+  Stack,
   Text,
   Tooltip,
 } from '@mantine/core';
@@ -36,91 +37,94 @@ export function FlowCardComponent({
   const auth = useAuth();
 
   return (
-    <Card withBorder>
-      <Group justify="space-between" align="center">
-        <Group justify="flex-start" align="center">
-          <Text
-            fw={500}
-            td="underline"
-            component={NavLink}
-            to={`/use-cases/${useCase.id}/flows/${flow.id}`}
-          >
-            {flow.title}
-          </Text>
-          {flow.active ? (
-            <Badge color="var(--mantine-color-teal-7)" size="md">
-              {t('useCaseStatusActive')}
-            </Badge>
-          ) : (
-            <Badge color="grey" size="md">
-              {t('useCaseStatusInactive')}
-            </Badge>
-          )}
-        </Group>
-
-        <Group justify="flex-end" align="center" gap={0}>
-          {auth.canWrite() && (
-            <Tooltip withArrow label={t('useCaseUpdateAction')}>
-              <ActionIcon variant="subtle" onClick={() => handleUpdateRequest(flow.id)}>
-                <IconPencil size={22} />
-              </ActionIcon>
-            </Tooltip>
-          )}
-          {auth.canWrite() && !flow.active && (
-            <Tooltip withArrow label={t('useCaseActivateAction')}>
-              <ActionIcon variant="subtle" onClick={() => handleActivateRequest(flow.id)}>
-                <IconArrowRampRight size={22} />
-              </ActionIcon>
-            </Tooltip>
-          )}
-          {auth.canWrite() && (
-            <Tooltip
-              withArrow
-              label={
-                flow.active ? t('useCaseDeactivateAction') : t('useCaseDeleteAction')
-              }
+    <Card withBorder h={300} w={'100%'}>
+      <Stack align="stretch" justify="flex-start" h={'100%'} gap={15}>
+        <Group justify="space-between" align="center">
+          <Tooltip withArrow style={{ fontSize: 'md' }} label={flow.title}>
+            <Text
+              maw={'calc(100% - 116px)'}
+              truncate="end"
+              size="lg"
+              component={NavLink}
+              to={`/use-cases/${useCase.id}/flows/${flow.id}`}
             >
-              <ActionIcon
-                color="red"
-                variant="subtle"
-                onClick={() => {
-                  return flow.active
-                    ? handleDeactivateRequest(flow.id)
-                    : handleDeleteRequest(flow.id);
-                }}
+              {flow.title}
+            </Text>
+          </Tooltip>
+          <Group justify="flex-end" align="center" gap={0} w={100}>
+            {auth.canWrite() && (
+              <Tooltip withArrow label={t('useCaseUpdateAction')}>
+                <ActionIcon variant="subtle" onClick={() => handleUpdateRequest(flow.id)}>
+                  <IconPencil size={22} />
+                </ActionIcon>
+              </Tooltip>
+            )}
+            {auth.canWrite() && !flow.active && (
+              <Tooltip withArrow label={t('useCaseActivateAction')}>
+                <ActionIcon
+                  variant="subtle"
+                  onClick={() => handleActivateRequest(flow.id)}
+                >
+                  <IconArrowRampRight size={22} />
+                </ActionIcon>
+              </Tooltip>
+            )}
+            {auth.canWrite() && (
+              <Tooltip
+                withArrow
+                label={
+                  flow.active ? t('useCaseDeactivateAction') : t('useCaseDeleteAction')
+                }
               >
-                {flow.active ? <IconArrowRampRight size={22} /> : <IconTrash size={22} />}
-              </ActionIcon>
-            </Tooltip>
-          )}
+                <ActionIcon
+                  color="red"
+                  variant="subtle"
+                  onClick={() => {
+                    return flow.active
+                      ? handleDeactivateRequest(flow.id)
+                      : handleDeleteRequest(flow.id);
+                  }}
+                >
+                  {flow.active ? (
+                    <IconArrowRampRight size={22} />
+                  ) : (
+                    <IconTrash size={22} />
+                  )}
+                </ActionIcon>
+              </Tooltip>
+            )}
+          </Group>
         </Group>
-      </Group>
-      <Text my={'sm'} lineClamp={2}>
-        {flow.description}
-      </Text>
-      <Divider my="sm" />
-      <Text my={10}>
-        <Trans i18nKey="flowCurrentServePct" values={{ pct: flow.currentServePct }} />
-      </Text>
-      <Slider
-        mb="xl"
-        color={
-          flow.currentServePct >= 30
-            ? 'brand'
-            : flow.currentServePct >= 10
-              ? 'yellow'
-              : 'red'
-        }
-        showLabelOnHover={true}
-        label={(value) => value + ' %'}
-        value={flow.currentServePct}
-        disabled={!flow.active}
-        marks={[
-          { value: 0, label: '0%' },
-          { value: 50, label: '50%' },
-          { value: 100, label: '100%' },
-        ]}
-      />
+        <Divider />
+        <Box>
+          <Text lineClamp={4}>{flow.description}</Text>
+        </Box>
+        <Stack align="stretch" justify="flex-end" h={'100%'} gap={15}>
+          <Divider />
+          <Text>
+            <Trans i18nKey="flowCurrentServePct" values={{ pct: flow.currentServePct }} />
+          </Text>
+          <Slider
+            mb="md"
+            color={
+              flow.currentServePct >= 30
+                ? 'brand'
+                : flow.currentServePct >= 10
+                  ? 'yellow'
+                  : 'red'
+            }
+            showLabelOnHover={true}
+            label={(value) => value + ' %'}
+            value={flow.currentServePct}
+            disabled={!flow.active}
+            marks={[
+              { value: 0, label: '0%' },
+              { value: 50, label: '50%' },
+              { value: 100, label: '100%' },
+            ]}
+          />
+        </Stack>
+      </Stack>
     </Card>
   );
 }

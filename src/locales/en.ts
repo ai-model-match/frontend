@@ -126,16 +126,16 @@ export const enTranslations = {
   updateUseCaseStepPositionInput: 'Position',
   updateUseCaseStepCreateBtn: 'UPDATE',
   updateUseCaseStepCodeInputAlreadyExists: 'Oops! This code is already taken',
-  updateUseCaseStepNotAllowed: 'Use Case Not Ready',
+  updateUseCaseStepNotAllowed: 'The Use Case cannot be activated',
   updateUseCaseStepNotAllowedDescription:
-    'You cannot activate this Use Case because there isn’t any Flow associated with it to handle incoming traffic. Please create a Flow before activating.',
+    'You cannot activate this Use Case because there isn’t any active Flow associated with it to handle incoming traffic. Please create or activate a Flow and try again.',
   updateUseCaseStepCodeWarning:
     'Changing the ’Code’ field may affect the proper functioning of active Flows linked to this Use Case.',
   deleteUseCaseStepCodeWarning:
     'Deleting the Step may affect the proper functioning of active Flows linked to this Use Case.',
   flowActiveTitlePage: 'ACTIVE FLOWS',
   flowInactiveTitlePage: 'INACTIVE FLOWS',
-  flowCurrentServePct: 'Handled requests: <strong>{{pct}}%</strong>',
+  flowCurrentServePct: 'Handled incoming requests: <strong>{{pct}}%</strong>',
   deleteFlowTitle: 'DELETE FLOW',
   deleteFlowDescription:
     'Are you sure you want to delete this Flow? This will permanently remove all its steps and statistics.',
@@ -156,4 +156,20 @@ export const enTranslations = {
   flowCreateNewTitleDisabled: 'No Flows yet...',
   flowCreateNewTextDisabled:
     'Don’t worry! As soon as someone creates a new Flow, you’ll see it appear here',
+  newFlowTitle: 'CREATE A NEW FLOW',
+  newFlowTitleInput: 'Title',
+  newFlowTitleInputPlaceholder: 'Type a title',
+  newFlowDescriptionInput: 'Description',
+  newFlowDescriptionInputPlaceholder: 'Describe the strategy of this Flow',
+  newFlowCreateBtn: 'CREATE',
+  flowNewCardBtn: 'Create a new Flow',
+  activateFlowTitle: 'ACTIVATE FLOW',
+  activateFlowDescription:
+    'Are you sure you want to activate this Flow? This will allow all its Steps to process incoming requests.',
+  deactivateFlowTitle: 'DEACTIVATE FLOW',
+  deactivateFlowDescription:
+    'Are you sure you want to deactivate this Flow? This will prevent all its Steps from processing incoming requests. Others Flows will be adapted to cover the 100% of incoming traffic.',
+  deactivateFlowNotAllowed: 'The Flow cannot be deactivated',
+  deactivateFlowNotAllowedDescription:
+    'You cannot deactivate the last active Flow when the Use Case is active. Activate or create another Flow before deactivating this one or deactivate the Use Case.',
 };
