@@ -9,6 +9,7 @@ import { AuthGuard } from '@guards/AuthGuard';
 import {
   Anchor,
   Breadcrumbs,
+  Button,
   Drawer,
   Fieldset,
   Grid,
@@ -22,7 +23,7 @@ import { useDisclosure, useInterval } from '@mantine/hooks';
 import { OrderDir } from '@services/api.type';
 import { flowService } from '@services/flowService';
 import { useCaseService } from '@services/useCaseService';
-import { IconArrowRampRight } from '@tabler/icons-react';
+import { IconAdjustmentsHorizontal, IconArrowRampRight } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +35,7 @@ import { FlowCardComponent } from './FlowCardComponent';
 import { FlowNewCardComponent } from './FlowNewCardComponent';
 import NewFlowComponent from './NewFlowComponent';
 import UpdateFlowComponent from './UpdateFlowComponent';
+import UpdateFlowPctBulkComponent from './UpdateFlowPctBulkComponent';
 interface BreadcrumbItem {
   title: string;
   href: string;
@@ -59,6 +61,11 @@ export default function FlowPage() {
   // Update Flow panel status
   const [updateFlowOpen, { open: updateFlowActionsOpen, close: updateFlowActionsClose }] =
     useDisclosure(false);
+  // Update Flow Bulk panel status
+  const [
+    updateFlowBulkOpen,
+    { open: updateFlowBulkActionsOpen, close: updateFlowBulkActionsClose },
+  ] = useDisclosure(false);
   // Delete Flow panel status
   const [deleteFlowOpen, { open: deleteFlowActionsOpen, close: deleteFlowActionsClose }] =
     useDisclosure(false);
@@ -85,6 +92,7 @@ export default function FlowPage() {
   const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>([]);
   // Indicates the selected flow for edit or delete
   const [selectedFlow, setSelectedFlow] = useState<Flow>();
+  const [selectedFlowsBulk, setSelectedFlowsBulk] = useState<Flow[]>();
   const interval = useInterval(() => setApiFlowRequest({ ...apiFlowRequest }), 4000);
 
   // Effects
@@ -153,6 +161,12 @@ export default function FlowPage() {
     updateFlowActionsOpen();
   };
 
+  const handleUpdateBulkRequest = () => {
+    const flows = apiFlowResponse?.items.filter((x) => x.active);
+    setSelectedFlowsBulk(flows);
+    updateFlowBulkActionsOpen();
+  };
+
   const handleDeleteRequest = (id: string) => {
     const flow = apiFlowResponse?.items.find((x) => x.id === id);
     setSelectedFlow(flow);
@@ -183,6 +197,11 @@ export default function FlowPage() {
     updateFlowActionsClose();
     setApiFlowRequest((prev) => ({ ...prev }));
   }, [setApiFlowRequest, updateFlowActionsClose]);
+
+  const onFlowsUpdated = useCallback(() => {
+    updateFlowBulkActionsClose();
+    setApiFlowRequest((prev) => ({ ...prev }));
+  }, [setApiFlowRequest, updateFlowBulkActionsClose]);
 
   const onFlowDeleted = useCallback(
     (id: string) => {
@@ -227,12 +246,19 @@ export default function FlowPage() {
             apiFlowResponse &&
             apiFlowResponse.items.filter((x) => x.active).length > 0 && (
               <Paper p="lg" mb="lg">
-                <Group justify="space-between" align="center" gap={0} mb={0}>
+                <Group justify="space-between" align="baseline" gap={0} mb={0}>
                   <PaperTitle
                     mb={30}
                     icon={IconArrowRampRight}
                     title={t('flowActiveTitlePage')}
                   />
+                  <Button
+                    variant="light"
+                    leftSection={<IconAdjustmentsHorizontal size={22} />}
+                    onClick={handleUpdateBulkRequest}
+                  >
+                    {t('flowUpdatePctBulkBtn')}
+                  </Button>
                 </Group>
                 <Grid>
                   {apiFlowResponse.items
@@ -344,6 +370,24 @@ export default function FlowPage() {
         >
           <UpdateFlowComponent flow={selectedFlow!} onFlowUpdated={onFlowUpdated} />
         </Drawer>
+        {apiUseCaseResponse && selectedFlowsBulk && (
+          <Drawer
+            opened={updateFlowBulkOpen}
+            padding={0}
+            onClose={updateFlowBulkActionsClose}
+            position="right"
+            offset={10}
+            overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+            withCloseButton={false}
+            radius="md"
+          >
+            <UpdateFlowPctBulkComponent
+              useCase={apiUseCaseResponse.item}
+              flows={selectedFlowsBulk!}
+              onFlowsUpdated={onFlowsUpdated}
+            />
+          </Drawer>
+        )}
         {selectedFlow && (
           <>
             <Modal

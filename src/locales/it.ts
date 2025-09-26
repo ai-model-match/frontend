@@ -173,4 +173,5 @@ export const itTranslations = {
   deactivateFlowNotAllowed: 'Il Flusso non può essere disattivato',
   deactivateFlowNotAllowedDescription:
     'Non puoi disattivare l’ultimo Flusso attivo quando il Caso d’Uso é attivo. Attiva o crea un altro Flusso prima di disattivare questo o disattiva il Caso d’Uso.',
+  flowUpdatePctBulkBtn: 'Aggiorna Percentuali',
 };

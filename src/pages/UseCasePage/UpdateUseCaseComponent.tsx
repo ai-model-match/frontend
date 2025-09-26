@@ -32,7 +32,7 @@ export default function UpdateUseCaseComponent({
   const { t } = useTranslation();
 
   // States
-  const [apiloading, setApiLoading] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -143,7 +143,7 @@ export default function UpdateUseCaseComponent({
         <Button
           type="submit"
           mt={'lg'}
-          loading={apiloading}
+          loading={apiLoading}
           loaderProps={{ type: 'dots' }}
           fullWidth
         >

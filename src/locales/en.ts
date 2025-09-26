@@ -172,4 +172,5 @@ export const enTranslations = {
   deactivateFlowNotAllowed: 'The Flow cannot be deactivated',
   deactivateFlowNotAllowedDescription:
     'You cannot deactivate the last active Flow when the Use Case is active. Activate or create another Flow before deactivating this one or deactivate the Use Case.',
+  flowUpdatePctBulkBtn: 'Update Percentages',
 };

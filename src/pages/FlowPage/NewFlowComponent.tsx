@@ -22,7 +22,7 @@ export default function NewFlowComponent({
   const { t } = useTranslation();
 
   // States
-  const [apiloading, setApiLoading] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -102,7 +102,7 @@ export default function NewFlowComponent({
         <Button
           type="submit"
           mt={'lg'}
-          loading={apiloading}
+          loading={apiLoading}
           loaderProps={{ type: 'dots' }}
           fullWidth
         >

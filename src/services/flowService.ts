@@ -11,6 +11,8 @@ import {
   UpdateFlowOutputDto,
   GetFlowStatisticsInputDto,
   GetFlowStatisticsOutputDto,
+  UpdateFlowPctBulkInputDto,
+  UpdateFlowPctBulkOutputDto,
 } from '@dtos/flowDto';
 import { Method } from './api.type';
 import { callAuthApi } from './authApi';
@@ -92,6 +94,21 @@ export const flowService = {
     );
     if (!response) {
       throw new Error('flow-statistics-get-failed');
+    }
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.errors[0]);
+    }
+    const data = await response.json();
+    return data;
+  },
+
+  async updateFlowPctBulk(
+    input: UpdateFlowPctBulkInputDto
+  ): Promise<UpdateFlowPctBulkOutputDto> {
+    const response = await callAuthApi(`/api/v1/flows/bulk`, Method.PUT, input);
+    if (!response) {
+      throw new Error('flow-pct-bulk-update-failed');
     }
     if (!response.ok) {
       const data = await response.json();

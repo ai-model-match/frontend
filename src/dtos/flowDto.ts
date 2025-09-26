@@ -71,3 +71,19 @@ export type GetFlowStatisticsInputDto = {
 export type GetFlowStatisticsOutputDto = {
   item: FlowStatistics;
 };
+
+export type UpdateFlowPctInputDto = {
+  flowId: string;
+  currentServePct: number;
+};
+
+export type UpdateFlowPctBulkInputDto = {
+  useCaseId: string;
+  flows: UpdateFlowPctInputDto[];
+};
+
+export type UpdateFlowPctBulkOutputDto = {
+  hasNext: boolean;
+  totalCount: number;
+  items: Flow[];
+};

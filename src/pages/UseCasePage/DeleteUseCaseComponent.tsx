@@ -31,7 +31,7 @@ export default function DeleteUseCaseComponent({
 
   const [textToConfirm, setTextToConfirm] = useState<string>();
   const [isConfirmDisabled, setIsConfirmDisabled] = useState<boolean>(true);
-  const [apiloading, setApiLoading] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false);
 
   const form = useForm();
 
@@ -94,7 +94,7 @@ export default function DeleteUseCaseComponent({
           type="submit"
           color="red"
           disabled={isConfirmDisabled}
-          loading={apiloading}
+          loading={apiLoading}
           loaderProps={{ type: 'dots' }}
         >
           {t('btnConfirm')}

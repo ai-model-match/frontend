@@ -15,7 +15,7 @@ export function LoginPageForm() {
   const auth = useAuth();
 
   // States
-  const [apiloading, setApiLoading] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -80,7 +80,7 @@ export function LoginPageForm() {
         <Button
           type="submit"
           mt={'xl'}
-          loading={apiloading}
+          loading={apiLoading}
           loaderProps={{ type: 'dots' }}
           fullWidth
         >

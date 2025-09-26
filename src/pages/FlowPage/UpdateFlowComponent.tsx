@@ -1,11 +1,9 @@
 import { Flow } from '@entities/flow';
 import { Box, Button, Group, Text, Textarea, TextInput, ThemeIcon } from '@mantine/core';
-import { Alert, Slider } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { flowService } from '@services/flowService';
 import { assets } from '@styles/assets';
 import { IconEdit } from '@tabler/icons-react';
-import { IconAlertCircle } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,13 +23,12 @@ export default function UpdateFlowComponent({
   const { t } = useTranslation();
 
   // States
-  const [apiloading, setApiLoading] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
       title: flow.title,
       description: flow.description,
-      currentServePct: flow.currentServePct,
     },
     validate: {
       title: (value: string) => (value.trim().length != 0 ? null : t('fieldRequired')),
@@ -48,14 +45,10 @@ export default function UpdateFlowComponent({
         id: flow.id,
         title: values.title,
         description: values.description,
-        currentServePct: values.currentServePct,
       });
       onFlowUpdated(data.item);
     } catch (err: unknown) {
       switch (getErrorMessage(err)) {
-        case 'flow-same-code-already-exists':
-          form.setFieldError('code', t('updateFlowCodeInputAlreadyExists'));
-          break;
         case 'refresh-token-failed':
           navigate('/logout');
           break;
@@ -103,32 +96,6 @@ export default function UpdateFlowComponent({
               {...form.getInputProps('description')}
               mb="sm"
             />
-            {flow.active && (
-              <Alert icon={<IconAlertCircle size={22} />} color="yellow" mb="sm">
-                {t('updateFlowPctAlert')}
-              </Alert>
-            )}
-            <Slider
-              my="xl"
-              color={
-                form.getInputProps('currentServePct').value >= 30
-                  ? 'brand'
-                  : form.getInputProps('currentServePct').value >= 10
-                    ? 'yellow'
-                    : 'red'
-              }
-              label={() => form.getInputProps('currentServePct').value + ' %'}
-              key={form.key('currentServePct')}
-              {...form.getInputProps('currentServePct')}
-              marks={[
-                { value: 0, label: '0%' },
-                { value: 50, label: '50%' },
-                { value: 100, label: '100%' },
-              ]}
-              value={flow.active ? form.getInputProps('currentServePct').value : 0}
-              disabled={!flow.active}
-              mb="sm"
-            />
           </Box>
         </Group>
       </Box>
@@ -136,7 +103,7 @@ export default function UpdateFlowComponent({
         <Button
           type="submit"
           mt={40}
-          loading={apiloading}
+          loading={apiLoading}
           loaderProps={{ type: 'dots' }}
           fullWidth
         >

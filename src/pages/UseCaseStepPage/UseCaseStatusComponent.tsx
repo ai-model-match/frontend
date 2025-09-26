@@ -28,7 +28,7 @@ export default function UseCaseStatusComponent({
   const { t } = useTranslation();
 
   // States
-  const [apiloading, setApiLoading] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false);
   const [useCase, setUseCase] = useState(useCaseInput);
 
   // Use Case confirm panel status
@@ -85,7 +85,7 @@ export default function UseCaseStatusComponent({
       <SegmentedControl
         size="md"
         withItemsBorders
-        disabled={apiloading || !auth.canWrite()}
+        disabled={apiLoading || !auth.canWrite()}
         value={useCase.active ? USE_CASE_ACTIVE : USE_CASE_INACTIVE}
         color={
           auth.canWrite()
