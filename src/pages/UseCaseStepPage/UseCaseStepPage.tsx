@@ -203,10 +203,10 @@ export default function UseCaseStepPage() {
   const breadcrumbItemsRender = () =>
     breadcrumbItems.map((item) => {
       if (item.href == '#') {
-        return <Text size="md">{item.title}</Text>;
+        return <Text>{item.title}</Text>;
       } else {
         return (
-          <Anchor size="md" component={NavLink} to={item.href}>
+          <Anchor component={NavLink} to={item.href}>
             {item.title}
           </Anchor>
         );
@@ -253,9 +253,7 @@ export default function UseCaseStepPage() {
             )}
           </Group>
         </Group>
-        <Text size="md" mt={15}>
-          {item.description}
-        </Text>
+        <Text mt={15}>{item.description}</Text>
         <Divider my={20} />
         <UseCaseStepGraphComponent />
       </>
@@ -267,7 +265,7 @@ export default function UseCaseStepPage() {
       <Layout>
         {pageLoaded && apiUseCaseResponse && (
           <Grid.Col span={12}>
-            <Paper p="lg">
+            <Paper>
               <Group justify="space-between" align="center" gap={0} mb={0}>
                 <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
                 <Button
@@ -285,7 +283,7 @@ export default function UseCaseStepPage() {
         )}
         {pageLoaded && apiUseCaseResponse && apiStepResponse && (
           <Grid.Col span={12}>
-            <Paper p="lg">
+            <Paper>
               <Group justify="space-between" align="center" gap={0} mb={0}>
                 <Group gap={2}>
                   <PaperTitle
@@ -313,7 +311,7 @@ export default function UseCaseStepPage() {
                   />
                 )}
               </Group>
-              <Text size="md" mt={15} mb={50} mr={200}>
+              <Text mt={15} mb={50} mr={200}>
                 {apiUseCaseResponse.item.description}
               </Text>
               <Grid>
@@ -322,7 +320,6 @@ export default function UseCaseStepPage() {
                     <Grid.Col span={4}>
                       <Fieldset legend={'Steps'}>
                         <Stepper
-                          size="lg"
                           active={selectedStepNumber}
                           orientation="vertical"
                           onStepClick={onStepItemClick}
@@ -367,7 +364,7 @@ export default function UseCaseStepPage() {
                 )}
                 {apiStepResponse.items.length === 0 && auth.canWrite() && (
                   <Grid.Col span={12}>
-                    <Fieldset mb={120}>
+                    <Fieldset mb={60}>
                       <EmptyState
                         imageName="new-use-case-step"
                         title={t('useCaseStepCreateNewTitle')}
@@ -381,7 +378,7 @@ export default function UseCaseStepPage() {
                 )}
                 {apiStepResponse.items.length === 0 && !auth.canWrite() && (
                   <Grid.Col span={12}>
-                    <Fieldset mb={120}>
+                    <Fieldset mb={60}>
                       <EmptyState
                         imageName="new-use-case-step"
                         title={t('useCaseStepCreateNewTitleDisabled')}
@@ -396,7 +393,7 @@ export default function UseCaseStepPage() {
         )}
         {!pageLoaded && (
           <Grid.Col span={12}>
-            <Paper p="lg">
+            <Paper>
               <Group mt={100} mb={100} justify="center" align="center">
                 <Loader type="dots" />
               </Group>

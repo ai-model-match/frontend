@@ -34,6 +34,7 @@ export const enTranslations = {
   useCaseDeleteAction: 'Delete',
   useCaseUpdateAction: 'Edit',
   useCaseFlowsAction: 'Go to Execution Plans',
+  useCaseFlowsBackAction: 'Go back to Execution Plans',
   useCaseActivateAction: 'Activate',
   useCaseDeactivateAction: 'Deactivate',
   useCaseRolloutStrategyAction: 'Go to Rollout Strategy',
@@ -133,8 +134,8 @@ export const enTranslations = {
     'Changing the ’Slug’ field may affect the proper functioning of active Execution Plans linked to this Use Case.',
   deleteUseCaseStepCodeWarning:
     'Deleting the Step may affect the proper functioning of active Execution Plans linked to this Use Case.',
-  flowActiveTitlePage: 'CANDIDATE EXECUTION PLANS',
-  flowInactiveTitlePage: 'AVAILABLE EXECUTION PLANS',
+  flowActiveTitlePage: 'CANDIDATE PLANS',
+  flowInactiveTitlePage: 'AVAILABLE PLANS',
   flowCurrentServePct: 'Current requests processed: <strong>{{pct}}%</strong>',
   deleteFlowTitle: 'DELETE EXECUTION PLAN',
   deleteFlowDescription:
@@ -174,4 +175,13 @@ export const enTranslations = {
   deactivateFlowNotAllowedDescription:
     'You cannot deactivate the last active Execution Plan when the Use Case is active. Activate or create another Execution Plan before deactivating this one or deactivate the Use Case.',
   flowUpdatePctBulkBtn: 'Force Percentages',
+  flowStepUpdateBtn: 'Update Configuration',
+  flowStepInvalidConfig: 'Invalid configuration. Please check the JSON.',
+  flowStepPlainTab: 'Advanced Configuration',
+  flowStepConfigTab: 'Guided Configuration',
+  flowStepModalityLabel: 'Modality',
+  flowStepModalityPlaceholder: 'Select modality',
+  flowActiveAlertMessage:
+    'Attention! This Execution Plan is active. Modifying the configuration of these Steps will immediately affect incoming requests.',
+  flowStepConfigurationSaved: 'Configuration updated successfully!',
 };

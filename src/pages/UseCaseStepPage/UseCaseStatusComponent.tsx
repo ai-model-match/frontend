@@ -3,6 +3,7 @@ import { UseCase } from '@entities/useCase';
 import { Modal, SegmentedControl, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useCaseService } from '@services/useCaseService';
+import { IconX } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { sendErrorNotification } from '@utils/notificationUtils';
 import { useState } from 'react';
@@ -64,8 +65,9 @@ export default function UseCaseStatusComponent({
         case 'use-case-cannot-be-activated-without-active-flow':
           sendErrorNotification({
             id: 'use-case-cannot-be-activated-without-active-flow',
-            title: <Text size="lg">{t('updateUseCaseStepNotAllowed')}</Text>,
-            message: <Text size="md">{t('updateUseCaseStepNotAllowedDescription')}</Text>,
+            icon: <IconX />,
+            title: <Text>{t('updateUseCaseStepNotAllowed')}</Text>,
+            message: <Text>{t('updateUseCaseStepNotAllowedDescription')}</Text>,
           });
           break;
         case 'refresh-token-failed':

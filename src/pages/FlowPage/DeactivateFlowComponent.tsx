@@ -38,9 +38,7 @@ export default function DeactivateFlowComponent({
 
   // Calculate if the confirm button can be enabled
   useEffect(() => {
-    setIsConfirmDisabled(
-      confirmTextRequired !== undefined && textToConfirm !== t('deactivateMe')
-    );
+    setIsConfirmDisabled(!!confirmTextRequired && textToConfirm !== t('deactivateMe'));
   }, [confirmTextRequired, textToConfirm, t]);
 
   // Handles
@@ -54,8 +52,9 @@ export default function DeactivateFlowComponent({
         case 'flow-cannot-be-deactivated-if-last-active':
           sendErrorNotification({
             id: 'flow-cannot-be-deactivated-if-last-active',
-            title: <Text size="lg">{t('deactivateFlowNotAllowed')}</Text>,
-            message: <Text size="md">{t('deactivateFlowNotAllowedDescription')}</Text>,
+            icon: <IconX />,
+            title: <Text>{t('deactivateFlowNotAllowed')}</Text>,
+            message: <Text>{t('deactivateFlowNotAllowedDescription')}</Text>,
           });
           break;
         case 'refresh-token-failed':
@@ -79,9 +78,7 @@ export default function DeactivateFlowComponent({
         </ThemeIcon>
         <Text size={'xl'}>{title}</Text>
       </Group>
-      <Text size="md" mt={10}>
-        {text}
-      </Text>
+      <Text mt={10}>{text}</Text>
       {confirmTextRequired && (
         <TextInput
           mt={30}

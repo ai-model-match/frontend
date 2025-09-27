@@ -29,7 +29,7 @@ export function EmptyState({
         {title}
       </Title>
       {text && (
-        <Text size="md" ta={'center'} maw={500}>
+        <Text ta={'center'} maw={500}>
           {text}
         </Text>
       )}

@@ -16,7 +16,7 @@ export function LanguageSelectorItem({
       onClick={() => onSelectedLanguage(language.code)}
       leftSection={<Text size="lg">{language.flag}</Text>}
     >
-      <Text size="md">{language.label}</Text>
+      <Text>{language.label}</Text>
     </Menu.Item>
   );
 }

@@ -37,7 +37,7 @@ export default function DeleteUseCaseStepComponent({
 
   // Calculate if the confirm button can be enabled
   useEffect(() => {
-    setIsConfirmDisabled(confirmTextRequired === true && textToConfirm !== t('deleteMe'));
+    setIsConfirmDisabled(!!confirmTextRequired && textToConfirm !== t('deleteMe'));
   }, [confirmTextRequired, textToConfirm, t]);
 
   // Handles
@@ -69,11 +69,9 @@ export default function DeleteUseCaseStepComponent({
         </ThemeIcon>
         <Text size={'xl'}>{title}</Text>
       </Group>
-      <Text size="md" mt={10}>
-        {text}
-      </Text>
+      <Text mt={10}>{text}</Text>
       {!confirmTextRequired && (
-        <Text size="md" mt={10} fw={600}>
+        <Text mt={10} fw={'var(--mantine-heading-font-weight)'}>
           {t('deleteUndo')}
         </Text>
       )}
@@ -84,7 +82,6 @@ export default function DeleteUseCaseStepComponent({
       )}
       {confirmTextRequired && (
         <TextInput
-          mt={'md'}
           withAsterisk
           required
           label={t('deleteMeInput')}

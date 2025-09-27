@@ -149,10 +149,10 @@ export default function FlowPage() {
   const breadcrumbItemsRender = () =>
     breadcrumbItems.map((item) => {
       if (item.href == '#') {
-        return <Text size="md">{item.title}</Text>;
+        return <Text>{item.title}</Text>;
       } else {
         return (
-          <Anchor size="md" component={NavLink} to={item.href}>
+          <Anchor component={NavLink} to={item.href}>
             {item.title}
           </Anchor>
         );
@@ -232,7 +232,7 @@ export default function FlowPage() {
       <Layout>
         {pageLoaded && apiUseCaseResponse && (
           <Grid.Col span={12}>
-            <Paper p="lg">
+            <Paper>
               <Group justify="space-between" align="center" gap={10} mb={0}>
                 <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
                 <Button
@@ -250,7 +250,7 @@ export default function FlowPage() {
         )}
         <Grid.Col span={12}>
           {!pageLoaded && (
-            <Paper p="lg">
+            <Paper>
               <Group mt={100} mb={100} justify="center" align="center">
                 <Loader type="dots" />
               </Group>
@@ -260,7 +260,7 @@ export default function FlowPage() {
             apiUseCaseResponse &&
             apiFlowResponse &&
             apiFlowResponse.items.filter((x) => x.active).length > 0 && (
-              <Paper p="lg" mb="lg">
+              <Paper mb="lg">
                 <Group justify="space-between" align="baseline" gap={0} mb={0}>
                   <PaperTitle
                     mb={30}
@@ -301,7 +301,7 @@ export default function FlowPage() {
             apiUseCaseResponse &&
             apiFlowResponse &&
             apiFlowResponse.items.length > 0 && (
-              <Paper p="lg" mb="lg">
+              <Paper mb="lg">
                 <Group justify="space-between" align="center" gap={0} mb={0}>
                   <PaperTitle
                     mb={30}
@@ -337,7 +337,7 @@ export default function FlowPage() {
             apiUseCaseResponse &&
             apiFlowResponse &&
             apiFlowResponse.items.length === 0 && (
-              <Paper p="lg">
+              <Paper>
                 <Fieldset>
                   {auth.canWrite() ? (
                     <EmptyState

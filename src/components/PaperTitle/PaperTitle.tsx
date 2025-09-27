@@ -79,7 +79,7 @@ export function PaperTitle({
   // Content
   return (
     <Group justify="space-between" align="center" mb={mb}>
-      <Group justify="left" align="center">
+      <Group justify="left" align="center" gap={10}>
         <ThemeIcon variant="filled" color={iconColor} size={36}>
           <Icon stroke={1} />
         </ThemeIcon>
@@ -106,7 +106,7 @@ export function PaperTitle({
           />
         )}
         {BtnIcon && btnClick && (
-          <Button size="sm" p={2} mb={3} w={'40'} onClick={btnClick}>
+          <Button p={2} mb={3} w={'40'} onClick={btnClick}>
             <BtnIcon />
           </Button>
         )}

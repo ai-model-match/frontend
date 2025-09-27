@@ -6,7 +6,7 @@ import {
 } from '@mantine/core';
 
 export const mantineTheme: MantineThemeOverride = createTheme({
-  fontFamily: 'Ubuntu, sans-serif',
+  fontFamily: 'Inter, sans-serif',
   colors: {
     dark: [
       '#d0d0d0',
@@ -64,7 +64,7 @@ export const mantineTheme: MantineThemeOverride = createTheme({
     Paper: {
       defaultProps: {
         shadow: '',
-        p: 'sm',
+        p: 'md',
         bg: 'var(--aimm-bg-paper)',
       },
     },
@@ -73,24 +73,34 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         mb: 'xl',
       },
     },
+    Text: {
+      defaultProps: {
+        size: 'sm',
+      },
+    },
+    Anchor: {
+      defaultProps: {
+        size: 'sm',
+      },
+    },
     TextInput: {
       defaultProps: {
-        size: 'md',
+        size: 'sm',
       },
     },
     PasswordInput: {
       defaultProps: {
-        size: 'md',
+        size: 'sm',
       },
     },
     Textarea: {
       defaultProps: {
-        size: 'md',
+        size: 'sm',
       },
     },
     Button: {
       defaultProps: {
-        size: 'md',
+        size: 'sm',
       },
     },
     Modal: {
@@ -101,6 +111,7 @@ export const mantineTheme: MantineThemeOverride = createTheme({
     },
     SegmentedControl: {
       defaultProps: {
+        size: 'sm',
         bg: `var(--aimm-segmented-control-bg)`,
       },
     },
@@ -109,15 +120,25 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         bg: `var(--aimm-segmented-control-bg)`,
       },
     },
+    Pagination: {
+      defaultProps: {
+        size: 'sm',
+      },
+    },
     Code: {
       styles: (theme: MantineTheme) => ({
         root: {
-          fontSize: 'var(--mantine-font-size-sm)',
+          fontSize: 'var(--mantine-font-size-xs)',
           overflow: 'hidden',
           color: theme.colors.brand[7],
           border: `1px solid ${theme.colors.brand[7]}`,
         },
       }),
+    },
+    Stepper: {
+      defaultProps: {
+        size: 'md',
+      },
     },
     Fieldset: {
       styles: () => ({

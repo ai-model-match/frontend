@@ -213,7 +213,7 @@ export default function UseCasePage() {
     <AuthGuard>
       <Layout>
         <Grid.Col span={12}>
-          <Paper p="lg">
+          <Paper>
             {!pageLoaded && (
               <Group mt={100} mb={100} justify="center" align="center">
                 <Loader type="dots" />
@@ -268,7 +268,6 @@ export default function UseCasePage() {
                           mt={40}
                           total={Math.ceil(apiResponse.totalCount / apiRequest.pageSize)}
                           value={apiRequest.page}
-                          size={'md'}
                           onChange={onPageSelected}
                         />
                       )}

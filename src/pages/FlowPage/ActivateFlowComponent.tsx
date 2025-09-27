@@ -37,9 +37,7 @@ export default function ActivateFlowComponent({
 
   // Calculate if the confirm button can be enabled
   useEffect(() => {
-    setIsConfirmDisabled(
-      confirmTextRequired !== undefined && textToConfirm !== t('ActivateMe')
-    );
+    setIsConfirmDisabled(!!confirmTextRequired && textToConfirm !== t('ActivateMe'));
   }, [confirmTextRequired, textToConfirm, t]);
 
   // Handles
@@ -71,9 +69,7 @@ export default function ActivateFlowComponent({
         </ThemeIcon>
         <Text size={'xl'}>{title}</Text>
       </Group>
-      <Text size="md" mt={10}>
-        {text}
-      </Text>
+      <Text mt={10}>{text}</Text>
       {confirmTextRequired && (
         <TextInput
           mt={30}

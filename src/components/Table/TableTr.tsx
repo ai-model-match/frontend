@@ -23,17 +23,11 @@ export function TableTr({ trKey, tds }: TableTrProps) {
             {td.text && td.textWithCopy && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 {td.textWithTooltip && (
-                  <Tooltip withArrow style={{ fontSize: 'md' }} label={td.text}>
-                    <Text size="md" truncate="end">
-                      {td.text}
-                    </Text>
+                  <Tooltip withArrow label={td.text}>
+                    <Text truncate="end">{td.text}</Text>
                   </Tooltip>
                 )}
-                {!td.textWithTooltip && (
-                  <Text size="md" truncate="end">
-                    {td.text}
-                  </Text>
-                )}
+                {!td.textWithTooltip && <Text truncate="end">{td.text}</Text>}
                 <CopyButton value={td.text} timeout={1000}>
                   {({ copied, copy }) => (
                     <ActionIcon
@@ -51,16 +45,10 @@ export function TableTr({ trKey, tds }: TableTrProps) {
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 {td.textWithTooltip && (
                   <Tooltip withArrow label={td.text}>
-                    <Text size="md" truncate="end">
-                      {td.text}
-                    </Text>
+                    <Text truncate="end">{td.text}</Text>
                   </Tooltip>
                 )}
-                {!td.textWithTooltip && (
-                  <Text size="md" truncate="end">
-                    {td.text}
-                  </Text>
-                )}
+                {!td.textWithTooltip && <Text truncate="end">{td.text}</Text>}
               </div>
             )}
 

@@ -37,9 +37,7 @@ export default function DeleteFlowComponent({
 
   // Calculate if the confirm button can be enabled
   useEffect(() => {
-    setIsConfirmDisabled(
-      confirmTextRequired !== undefined && textToConfirm !== t('deleteMe')
-    );
+    setIsConfirmDisabled(!!confirmTextRequired && textToConfirm !== t('deleteMe'));
   }, [confirmTextRequired, textToConfirm, t]);
 
   // Handles
@@ -71,10 +69,8 @@ export default function DeleteFlowComponent({
         </ThemeIcon>
         <Text size={'xl'}>{title}</Text>
       </Group>
-      <Text size="md" mt={10}>
-        {text}
-      </Text>
-      <Text size="md" mt={10} fw={600}>
+      <Text mt={10}>{text}</Text>
+      <Text mt={10} fw={'var(--mantine-heading-font-weight)'}>
         {t('deleteUndo')}
       </Text>
       {confirmTextRequired && (

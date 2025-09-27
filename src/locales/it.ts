@@ -34,6 +34,7 @@ export const itTranslations = {
   useCaseDeleteAction: 'Elimina',
   useCaseUpdateAction: 'Modifica',
   useCaseFlowsAction: 'Vai ai Piani di Esecuzione',
+  useCaseFlowsBackAction: 'Torna ai Piani di Esecuzione',
   useCaseActivateAction: 'Attiva',
   useCaseDeactivateAction: 'Disattiva',
   useCaseRolloutStrategyAction: 'Vai alla Strategia di Rilascio',
@@ -135,8 +136,8 @@ export const itTranslations = {
     'La modifica del campo ’Slug’ potrebbe compromettere il corretto funzionamento dei Piani di Esecuzione attivi collegati a questo Caso d’Uso.',
   deleteUseCaseStepCodeWarning:
     'L’eliminazione dello Step potrebbe compromettere il corretto funzionamento dei Piani di Esecuzione attivi collegati a questo Caso d’Uso.',
-  flowActiveTitlePage: 'PIANI DI ESECUZIONE CANDIDATI',
-  flowInactiveTitlePage: 'PIANI DI ESECUZIONE DISPONIBILI',
+  flowActiveTitlePage: 'PIANI CANDIDATI',
+  flowInactiveTitlePage: 'PIANI DISPONIBILI',
   flowCurrentServePct: 'Richieste correnti elaborate: <strong>{{pct}}%</strong>',
   deleteFlowTitle: 'ELIMINA PIANO DI ESECUZIONE',
   deleteFlowDescription:
@@ -177,4 +178,13 @@ export const itTranslations = {
   deactivateFlowNotAllowedDescription:
     'Non puoi disattivare l’ultimo Piano di Esecuzione attivo quando il Caso d’Uso é attivo. Attiva o crea un altro Piano di Esecuzione prima di disattivare questo o disattiva il Caso d’Uso.',
   flowUpdatePctBulkBtn: 'Forza Percentuali',
+  flowStepUpdateBtn: 'Aggiorna Configurazione',
+  flowStepInvalidConfig: 'Configurazione non valida. Controlla il JSON.',
+  flowStepPlainTab: 'Configurazione Avanzata',
+  flowStepConfigTab: 'Configurazione Guidata',
+  flowStepModalityLabel: 'Modalità',
+  flowStepModalityPlaceholder: 'Seleziona la modalità',
+  flowActiveAlertMessage:
+    'Attenzione! Questo Piano di Esecuzione è attivo. Modificare la configurazione di questi Steps influenzerà immediatamente le richieste in ingresso.',
+  flowStepConfigurationSaved: 'Configurazione aggiornata con successo!',
 };

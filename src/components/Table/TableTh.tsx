@@ -14,9 +14,7 @@ export function TableTh({ children, reversed, sorted, onSort }: TableThProps) {
     <Table.Th h={'50'}>
       <UnstyledButton onClick={onSort}>
         <Group justify="space-between">
-          <Text fw={600} fz="md">
-            {children}
-          </Text>
+          <Text fw={'var(--mantine-heading-font-weight)'}>{children}</Text>
           <Center>
             <Icon size={18} />
           </Center>

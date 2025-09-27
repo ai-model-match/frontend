@@ -40,7 +40,7 @@ export function FlowCardComponent({
     <Card withBorder h={300} w={'100%'}>
       <Stack align="stretch" justify="flex-start" h={'100%'} gap={15}>
         <Group justify="space-between" align="center">
-          <Tooltip withArrow style={{ fontSize: 'md' }} label={flow.title}>
+          <Tooltip withArrow label={flow.title}>
             <Text
               maw={'calc(100% - 116px)'}
               truncate="end"
