@@ -1,10 +1,4 @@
 import { FlowStep } from '@entities/flowStep';
-import { TranscriptionCreateParams } from 'openai/resources/audio/transcriptions.mjs';
-import { CompletionCreateParams } from 'openai/resources/completions.mjs';
-import { FileCreateParams } from 'openai/resources/files.mjs';
-import { JobCreateParams } from 'openai/resources/fine-tuning/jobs/jobs.mjs';
-import { ImageGenerateParams } from 'openai/resources/images.mjs';
-import { AudioTranscription } from 'openai/resources/realtime/realtime.mjs';
 
 export type ListFlowStepInputDto = {
   flowId: string;
@@ -20,13 +14,7 @@ export type ListFlowStepOutputDto = {
 
 export type UpdateFlowStepInputDto = {
   id: string;
-  configuration?:
-    | CompletionCreateParams
-    | ImageGenerateParams
-    | AudioTranscription
-    | TranscriptionCreateParams
-    | FileCreateParams
-    | JobCreateParams;
+  configuration?: JSON;
 };
 
 export type UpdateFlowStepOutputDto = {
