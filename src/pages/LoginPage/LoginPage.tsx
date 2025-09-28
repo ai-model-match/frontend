@@ -4,6 +4,7 @@ import { Box, Container, Image, Paper, Title } from '@mantine/core';
 import { authService } from '@services/authService';
 import { getErrorMessage } from '@utils/errUtils';
 import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import classes from './LoginPage.module.css';
@@ -14,10 +15,13 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const effectRan = useRef(false);
   const [pageLoaded, setPageLoaded] = useState(false);
 
   useEffect(() => {
     if (!auth.loaded) return;
+    if (effectRan.current) return;
+    effectRan.current = true;
     (async () => {
       try {
         if (!auth.refreshToken) {
@@ -29,7 +33,7 @@ export default function LoginPage() {
           refreshToken: auth.refreshToken,
         });
         auth.refresh(data.accessToken, data.refreshToken);
-        navigate('/use-cases', { replace: true });
+        navigate('/use-cases');
       } catch (err: unknown) {
         switch (getErrorMessage(err)) {
           case 'refresh-token-failed': {
@@ -39,7 +43,7 @@ export default function LoginPage() {
           }
           default: {
             auth.logout();
-            navigate('/internal-server-error');
+            navigate('/internal-server-error', { replace: true });
             setPageLoaded(true);
             break;
           }

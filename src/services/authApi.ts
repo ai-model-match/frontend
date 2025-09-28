@@ -8,7 +8,6 @@ export const callAuthApi = async (
 ) => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
-
   let response;
 
   // If the access token is defined, call the API
@@ -17,11 +16,14 @@ export const callAuthApi = async (
   }
 
   // If access token were not defined or we received a 401, try refresh and call API again
-  if ((response == null || response.status === 401) && refreshToken) {
+  if (!response || response.status === 401) {
+    if (!refreshToken) {
+      throw new Error('refresh-token-failed');
+    }
     const refreshRes = await callApi(`/api/v1/auth/refresh`, Method.POST, null, {
       refreshToken,
     });
-    if (!refreshRes.ok) {
+    if (!refreshRes || !refreshRes.ok) {
       throw new Error('refresh-token-failed');
     }
     const data = await refreshRes.json();

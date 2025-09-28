@@ -136,7 +136,7 @@ export const enTranslations = {
     'Deleting the Step may affect the proper functioning of active Execution Plans linked to this Use Case.',
   flowActiveTitlePage: 'CANDIDATE PLANS',
   flowInactiveTitlePage: 'AVAILABLE PLANS',
-  flowCurrentServePct: 'Current requests processed: <strong>{{pct}}%</strong>',
+  flowCurrentServePct: 'Traffic handled: <strong>{{pct}}%</strong>',
   deleteFlowTitle: 'DELETE EXECUTION PLAN',
   deleteFlowDescription:
     'Are you sure you want to delete this Execution Plan? This will permanently remove all its steps and statistics.',
@@ -175,6 +175,7 @@ export const enTranslations = {
   deactivateFlowNotAllowedDescription:
     'You cannot deactivate the last active Execution Plan when the Use Case is active. Activate or create another Execution Plan before deactivating this one or deactivate the Use Case.',
   flowUpdatePctBulkBtn: 'Force Percentages',
+  flowUpdatePctBulkTitle: 'FORCE PERCENTAGES',
   flowStepUpdateBtn: 'Update Configuration',
   flowStepInvalidConfig: 'Invalid configuration. Please check the JSON.',
   flowStepPlainTab: 'Advanced Configuration',

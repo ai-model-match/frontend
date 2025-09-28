@@ -1,4 +1,5 @@
 import { Flow } from '@entities/flow';
+import { UseCase } from '@entities/useCase';
 import { Box, Button, Group, Text, Textarea, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { flowService } from '@services/flowService';
@@ -10,11 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 interface NewFlowComponentProps {
-  useCaseId: string;
+  useCase: UseCase;
   onFlowCreated: (flow: Flow) => void;
 }
 export default function NewFlowComponent({
-  useCaseId,
+  useCase,
   onFlowCreated,
 }: NewFlowComponentProps) {
   // Services
@@ -41,7 +42,7 @@ export default function NewFlowComponent({
     try {
       setApiLoading(true);
       const data = await flowService.createFlow({
-        useCaseID: useCaseId,
+        useCaseID: useCase.id,
         title: values.title,
         description: values.description,
       });
@@ -49,10 +50,10 @@ export default function NewFlowComponent({
     } catch (err: unknown) {
       switch (getErrorMessage(err)) {
         case 'refresh-token-failed':
-          navigate('/logout');
+          navigate('/logout', { replace: true });
           break;
         default:
-          navigate('/internal-server-error');
+          navigate('/internal-server-error', { replace: true });
           break;
       }
     } finally {

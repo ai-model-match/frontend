@@ -49,10 +49,10 @@ export default function ActivateFlowComponent({
     } catch (err: unknown) {
       switch (getErrorMessage(err)) {
         case 'refresh-token-failed':
-          navigate('/logout');
+          navigate('/logout', { replace: true });
           break;
         default:
-          navigate('/internal-server-error');
+          navigate('/internal-server-error', { replace: true });
           break;
       }
     } finally {

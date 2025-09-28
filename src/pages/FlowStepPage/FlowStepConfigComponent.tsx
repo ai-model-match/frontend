@@ -65,9 +65,9 @@ export function FlowStepConfigComponent({
       } catch (err: unknown) {
         const errorMessage = getErrorMessage(err);
         if (errorMessage === 'refresh-token-failed') {
-          navigate('/logout');
+          navigate('/logout', { replace: true });
         } else {
-          navigate('/internal-server-error');
+          navigate('/internal-server-error', { replace: true });
         }
       } finally {
         setApiLoading(false);
@@ -96,9 +96,9 @@ export function FlowStepConfigComponent({
       if (errorMessage.startsWith('configuration')) {
         form.setErrors({ configuration: t('flowStepInvalidConfig') });
       } else if (errorMessage === 'refresh-token-failed') {
-        navigate('/logout');
+        navigate('/logout', { replace: true });
       } else {
-        navigate('/internal-server-error');
+        navigate('/internal-server-error', { replace: true });
       }
     } finally {
       setApiLoading(false);

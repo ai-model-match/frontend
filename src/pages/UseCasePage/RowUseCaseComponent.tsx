@@ -64,11 +64,7 @@ export default function RowUseCaseComponent({
             <Text
               td={'underline'}
               style={{ cursor: 'pointer' }}
-              onClick={() =>
-                navigate(`/use-cases/${useCase.id}`, {
-                  replace: true,
-                })
-              }
+              onClick={() => navigate(`/use-cases/${useCase.id}`)}
             >
               {useCase.title}
             </Text>

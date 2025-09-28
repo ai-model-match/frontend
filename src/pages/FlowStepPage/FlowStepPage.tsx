@@ -39,6 +39,13 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FlowStepConfigComponent } from './FlowStepConfigComponent';
+import {
+  defaultFlowApiResponse,
+  defaultFlowStepApiRequest,
+  defaultFlowStepApiResponse,
+  defaultUseCaseApiResponse,
+  defaultUseCaseStepApiResponse,
+} from './FlowStepData';
 
 interface BreadcrumbItem {
   title: string;
@@ -55,24 +62,17 @@ export default function FlowStepPage() {
   const [pageLoaded, setPageLoaded] = useState(false);
 
   // API Requests and Responses
-  const [apiFlowStepRequest] = useState<ListFlowStepInputDto>({
-    flowId: flowId!,
-    page: 1,
-    pageSize: 200,
-  });
-  const [apiUseCaseResponse, setApiUseCaseResponse] = useState<GetUseCaseOutputDto>();
-  const [apiFlowResponse, setApiFlowResponse] = useState<GetFlowOutputDto>();
-  const [apiFlowStepResponse, setApiFlowStepResponse] = useState<ListFlowStepOutputDto>({
-    items: [],
-    totalCount: 0,
-    hasNext: false,
-  });
+  const [apiFlowStepRequest] = useState<ListFlowStepInputDto>(defaultFlowStepApiRequest);
+  const [apiUseCaseResponse, setApiUseCaseResponse] = useState<GetUseCaseOutputDto>(
+    defaultUseCaseApiResponse
+  );
+  const [apiFlowResponse, setApiFlowResponse] =
+    useState<GetFlowOutputDto>(defaultFlowApiResponse);
+  const [apiFlowStepResponse, setApiFlowStepResponse] = useState<ListFlowStepOutputDto>(
+    defaultFlowStepApiResponse
+  );
   const [apiUseCaseStepResponse, setApiUseCaseStepsResponse] =
-    useState<ListUseCaseStepsOutputDto>({
-      items: [],
-      totalCount: 0,
-      hasNext: false,
-    });
+    useState<ListUseCaseStepsOutputDto>(defaultUseCaseStepApiResponse);
 
   const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>([]);
   const [selectedStepNumber, setSelectedStepNumber] = useState<number>(0);
@@ -102,18 +102,21 @@ export default function FlowStepPage() {
         });
         setApiUseCaseStepsResponse(useCaseStepData);
         // Get Flow Steps
-        const flowStepData = await flowStepService.listFlowSteps(apiFlowStepRequest);
+        const flowStepData = await flowStepService.listFlowSteps({
+          ...apiFlowStepRequest,
+          flowId: flowId!,
+        });
         setApiFlowStepResponse(flowStepData);
       } catch (err: unknown) {
         switch (getErrorMessage(err)) {
           case 'refresh-token-failed':
-            navigate('/logout');
+            navigate('/logout', { replace: true });
             break;
           case 'use-case-not-found':
-            navigate('/not-found');
+            navigate('/not-found', { replace: true });
             break;
           default:
-            navigate('/internal-server-error');
+            navigate('/internal-server-error', { replace: true });
             break;
         }
       } finally {
@@ -164,29 +167,33 @@ export default function FlowStepPage() {
   return (
     <AuthGuard>
       <Layout>
-        {pageLoaded && apiUseCaseResponse && (
+        {!pageLoaded && (
           <Grid.Col span={12}>
             <Paper>
-              <Group justify="space-between" align="center" gap={0} mb={0}>
-                <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
-                <Button
-                  variant="light"
-                  leftSection={<IconArrowRampRight size={22} />}
-                  onClick={() =>
-                    navigate('/use-cases/' + apiUseCaseResponse.item.id + '/flows')
-                  }
-                >
-                  {t('useCaseFlowsBackAction')}
-                </Button>
+              <Group mt={100} mb={100} justify="center" align="center">
+                <Loader type="dots" />
               </Group>
             </Paper>
           </Grid.Col>
         )}
-        {pageLoaded &&
-          apiUseCaseResponse &&
-          apiFlowResponse &&
-          apiUseCaseStepResponse &&
-          apiFlowStepResponse && (
+        {pageLoaded && (
+          <>
+            <Grid.Col span={12}>
+              <Paper>
+                <Group justify="space-between" align="center" gap={0} mb={0}>
+                  <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+                  <Button
+                    variant="light"
+                    leftSection={<IconArrowRampRight size={22} />}
+                    onClick={() =>
+                      navigate('/use-cases/' + apiUseCaseResponse.item.id + '/flows')
+                    }
+                  >
+                    {t('useCaseFlowsBackAction')}
+                  </Button>
+                </Group>
+              </Paper>
+            </Grid.Col>
             <Grid.Col span={12}>
               <Paper>
                 <Group justify="space-between" align="center" gap={0}>
@@ -197,7 +204,7 @@ export default function FlowStepPage() {
                   />
                 </Group>
                 {auth.canWrite() && apiFlowResponse.item.active && (
-                  <Alert color="red" icon={<IconAlertCircle />} mt={20}>
+                  <Alert color="orange" icon={<IconAlertCircle />} mt={20}>
                     {t('flowActiveAlertMessage')}
                   </Alert>
                 )}
@@ -248,15 +255,7 @@ export default function FlowStepPage() {
                 </Grid>
               </Paper>
             </Grid.Col>
-          )}
-        {!pageLoaded && (
-          <Grid.Col span={12}>
-            <Paper>
-              <Group mt={100} mb={100} justify="center" align="center">
-                <Loader type="dots" />
-              </Group>
-            </Paper>
-          </Grid.Col>
+          </>
         )}
       </Layout>
     </AuthGuard>

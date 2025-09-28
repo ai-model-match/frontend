@@ -35,18 +35,13 @@ import DeleteUseCaseComponent from './DeleteUseCaseComponent';
 import NewUseCaseComponent from './NewUseCaseComponent';
 import RowUseCaseComponent from './RowUseCaseComponent';
 import UpdateUseCaseComponent from './UpdateUseCaseComponent';
+import { defaultApiRequest, defaultApiResponse, defaultUseCase } from './UseCaseData';
 
 export default function UseCasePage() {
   // Services
   const navigate = useNavigate();
   const auth = useAuth();
   const { t } = useTranslation();
-  const [defaultApiRequest] = useState<ListUseCaseInputDto>({
-    page: 1,
-    pageSize: 5,
-    orderDir: OrderDir.DESC,
-    orderBy: UseCaseOrderByOptions.UpdatedAt,
-  });
 
   // New Use Case panel status
   const [newUseCaseOpen, { open: newUseCaseActionsOpen, close: newUseCaseActionsClose }] =
@@ -66,13 +61,10 @@ export default function UseCasePage() {
   // Indicates if the API is loading, the current request and current response
   const [apiLoading, setApiLoading] = useState(false);
   const [apiRequest, setApiRequest] = useState<ListUseCaseInputDto>(defaultApiRequest);
-  const [apiResponse, setApiResponse] = useState<ListUseCaseOutputDto>({
-    items: [],
-    totalCount: 0,
-    hasNext: false,
-  });
+  const [apiResponse, setApiResponse] =
+    useState<ListUseCaseOutputDto>(defaultApiResponse);
   // Indicates the selected use Case for edit or delete
-  const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>();
+  const [selectedUseCase, setSelectedUseCase] = useState<UseCase>(defaultUseCase);
   // Indicates the search key value (could be different compared to API Request due to constrains on length)
   const [searchKeyValue, setSearchKeyValue] = useState<string>();
 
@@ -84,14 +76,13 @@ export default function UseCasePage() {
         setApiLoading(true);
         const data = await useCaseService.listUseCases(apiRequest);
         setApiResponse(data);
-        setApiLoading(false);
       } catch (err: unknown) {
         switch (getErrorMessage(err)) {
           case 'refresh-token-failed':
-            navigate('/logout');
+            navigate('/logout', { replace: true });
             break;
           default:
-            navigate('/internal-server-error');
+            navigate('/internal-server-error', { replace: true });
             break;
         }
       } finally {
@@ -102,17 +93,19 @@ export default function UseCasePage() {
   }, [auth.loaded, navigate, apiRequest]);
 
   const handleGoToFlowsRequest = (id: string) => {
-    navigate(`/use-cases/${id}/flows`, { replace: true });
+    navigate(`/use-cases/${id}/flows`);
   };
 
   const handleUpdateRequest = (id: string) => {
     const useCase = apiResponse?.items.find((x) => x.id === id);
+    if (!useCase) return;
     setSelectedUseCase(useCase);
     updateUseCaseActionsOpen();
   };
 
   const handleDeleteRequest = (id: string) => {
     const useCase = apiResponse?.items.find((x) => x.id === id);
+    if (!useCase) return;
     setSelectedUseCase(useCase);
     deleteUseCaseActionsOpen();
   };
@@ -120,7 +113,7 @@ export default function UseCasePage() {
   const onUseCaseCreated = useCallback(
     (useCase: UseCase) => {
       newUseCaseActionsClose();
-      navigate(`/use-cases/${useCase.id}`, { replace: true });
+      navigate(`/use-cases/${useCase.id}`);
     },
     [navigate, newUseCaseActionsClose]
   );
@@ -138,11 +131,11 @@ export default function UseCasePage() {
     const newPage = Math.min(apiRequest.page, maxPage);
     if (newPage < 1) {
       setApiRequest({ ...defaultApiRequest });
-      setSearchKeyValue('');
+      setSearchKeyValue(undefined);
     } else {
       setApiRequest({ ...apiRequest, page: newPage });
     }
-  }, [apiRequest, apiResponse.items, defaultApiRequest, deleteUseCaseActionsClose]);
+  }, [apiRequest, apiResponse.items, deleteUseCaseActionsClose]);
 
   const onPageSelected = (selected: number) => {
     setApiRequest({
@@ -153,11 +146,11 @@ export default function UseCasePage() {
 
   const onFilterReset = () => {
     setApiRequest(defaultApiRequest);
-    setSearchKeyValue('');
+    setSearchKeyValue(undefined);
   };
 
-  const onSearchTextChanged = (value: string | undefined) => {
-    const newValue = value !== undefined && value.length >= 3 ? value : undefined;
+  const onSearchTextChanged = (value?: string) => {
+    const newValue = !!value && value.length >= 3 ? value : undefined;
     setSearchKeyValue(value);
     const orderBy = newValue
       ? UseCaseOrderByOptions.Relevance
@@ -191,21 +184,15 @@ export default function UseCasePage() {
   };
 
   const hasNoFilteredResults = (): boolean => {
-    return !!(
+    return (
       !apiLoading &&
-      apiResponse &&
       apiResponse.items.length == 0 &&
       (apiResponse.totalCount != 0 || !isFilterApplied())
     );
   };
 
   const hasNoResults = (): boolean => {
-    return !!(
-      !apiLoading &&
-      apiResponse &&
-      apiResponse.totalCount == 0 &&
-      isFilterApplied()
-    );
+    return !apiLoading && apiResponse.totalCount == 0 && isFilterApplied();
   };
 
   // Content
@@ -263,7 +250,7 @@ export default function UseCasePage() {
                       )}
                     </Fieldset>
                     <Group justify="center" align="center">
-                      {apiResponse && apiResponse.totalCount > 0 && (
+                      {apiResponse.totalCount > 0 && (
                         <Pagination
                           mt={40}
                           total={Math.ceil(apiResponse.totalCount / apiRequest.pageSize)}
@@ -321,7 +308,7 @@ export default function UseCasePage() {
           radius="md"
         >
           <UpdateUseCaseComponent
-            useCase={selectedUseCase!}
+            useCase={selectedUseCase}
             onUseCaseUpdated={onUseCaseUpdated}
           />
         </Drawer>
@@ -332,7 +319,7 @@ export default function UseCasePage() {
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
         >
           <DeleteUseCaseComponent
-            useCase={selectedUseCase!}
+            useCase={selectedUseCase}
             title={t('deleteUseCaseTitle')}
             text={t('deleteUseCaseDescription')}
             confirmTextRequired

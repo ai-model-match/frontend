@@ -138,7 +138,7 @@ export const itTranslations = {
     'L’eliminazione dello Step potrebbe compromettere il corretto funzionamento dei Piani di Esecuzione attivi collegati a questo Caso d’Uso.',
   flowActiveTitlePage: 'PIANI CANDIDATI',
   flowInactiveTitlePage: 'PIANI DISPONIBILI',
-  flowCurrentServePct: 'Richieste correnti elaborate: <strong>{{pct}}%</strong>',
+  flowCurrentServePct: 'Traffico gestito: <strong>{{pct}}%</strong>',
   deleteFlowTitle: 'ELIMINA PIANO DI ESECUZIONE',
   deleteFlowDescription:
     'Sei sicuro di voler cancellare questo Piano di Esecuzione? Questo rimuoverà permanentemente tutti i suoi Steps e statistiche.',
@@ -178,6 +178,7 @@ export const itTranslations = {
   deactivateFlowNotAllowedDescription:
     'Non puoi disattivare l’ultimo Piano di Esecuzione attivo quando il Caso d’Uso é attivo. Attiva o crea un altro Piano di Esecuzione prima di disattivare questo o disattiva il Caso d’Uso.',
   flowUpdatePctBulkBtn: 'Forza Percentuali',
+  flowUpdatePctBulkTitle: 'FORZA PERCENTUALI',
   flowStepUpdateBtn: 'Aggiorna Configurazione',
   flowStepInvalidConfig: 'Configurazione non valida. Controlla il JSON.',
   flowStepPlainTab: 'Configurazione Avanzata',

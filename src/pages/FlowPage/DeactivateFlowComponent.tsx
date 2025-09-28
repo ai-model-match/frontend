@@ -58,10 +58,10 @@ export default function DeactivateFlowComponent({
           });
           break;
         case 'refresh-token-failed':
-          navigate('/logout');
+          navigate('/logout', { replace: true });
           break;
         default:
-          navigate('/internal-server-error');
+          navigate('/internal-server-error', { replace: true });
           break;
       }
     } finally {

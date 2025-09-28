@@ -37,7 +37,7 @@ export function LoginPageForm() {
         password: values.password,
       });
       auth.login(values.username, data.accessToken, data.refreshToken);
-      navigate('/use-cases', { replace: true });
+      navigate('/use-cases');
     } catch (err: unknown) {
       switch (getErrorMessage(err)) {
         case 'invalid-username-or-password': {
@@ -47,7 +47,7 @@ export function LoginPageForm() {
           break;
         }
         default: {
-          navigate('/internal-server-error');
+          navigate('/internal-server-error', { replace: true });
           break;
         }
       }

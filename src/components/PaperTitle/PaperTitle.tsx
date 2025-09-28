@@ -11,7 +11,7 @@ export interface PaperTitleProps {
   title: string;
   showSearch?: boolean;
   searchValue?: string;
-  onSearchChange?: (value: string | undefined) => void;
+  onSearchChange?: (value?: string) => void;
   btnIcon?: Icon;
   onBtnClick?: () => void;
 }

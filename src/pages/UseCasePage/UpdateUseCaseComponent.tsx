@@ -51,6 +51,7 @@ export default function UpdateUseCaseComponent({
 
   // Handles
   const handleSubmit = async (values: typeof form.values) => {
+    if (!useCase) return;
     try {
       setApiLoading(true);
       const data = await useCaseService.updateUseCase({
@@ -66,10 +67,10 @@ export default function UpdateUseCaseComponent({
           form.setFieldError('code', t('updateUseCaseCodeInputAlreadyExists'));
           break;
         case 'refresh-token-failed':
-          navigate('/logout');
+          navigate('/logout', { replace: true });
           break;
         default:
-          navigate('/internal-server-error');
+          navigate('/internal-server-error', { replace: true });
           break;
       }
     } finally {
@@ -102,7 +103,7 @@ export default function UpdateUseCaseComponent({
               {...form.getInputProps('title')}
               mb="sm"
             />
-            {useCase.active && (
+            {useCase.active ? (
               <Tooltip withArrow label={t('updateUseCaseCodeCannotUpdate')}>
                 <TextInput
                   withAsterisk
@@ -115,8 +116,7 @@ export default function UpdateUseCaseComponent({
                   disabled
                 />
               </Tooltip>
-            )}
-            {!useCase.active && (
+            ) : (
               <TextInput
                 withAsterisk
                 maxLength={30}

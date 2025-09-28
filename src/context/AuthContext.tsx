@@ -14,10 +14,10 @@ export interface JwtClaims {
 
 type AuthContextType = {
   loaded: boolean;
-  username: string | null;
+  username?: string;
   permissions: string[];
-  accessToken: string | null;
-  refreshToken: string | null;
+  accessToken?: string;
+  refreshToken?: string;
   login: (username: string, accessToken: string, refreshToken: string) => void;
   refresh: (accessToken: string, refreshToken: string) => void;
   canWrite: () => boolean;
@@ -25,14 +25,15 @@ type AuthContextType = {
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 export interface AuthProviderProps {
   children: React.ReactNode;
 }
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [username, setUsername] = useState<string | null>(null);
+  const [username, setUsername] = useState<string>();
   const [permissions, setPermissions] = useState<string[]>([]);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string>();
+  const [refreshToken, setRefreshToken] = useState<string>();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -45,6 +46,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setRefreshToken(storedRefresh);
       const decoded = jwtDecode<JwtClaims>(storedAccess);
       setPermissions(decoded.permissions);
+    } else {
+      logout();
     }
     setLoaded(true);
   }, []);
@@ -61,9 +64,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    setUsername(null);
-    setAccessToken(null);
-    setRefreshToken(null);
+    setUsername(undefined);
+    setAccessToken(undefined);
+    setRefreshToken(undefined);
+    setPermissions([]);
     localStorage.removeItem('username');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');

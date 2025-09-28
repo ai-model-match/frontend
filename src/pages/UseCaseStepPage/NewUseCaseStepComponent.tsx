@@ -1,3 +1,4 @@
+import { UseCase } from '@entities/useCase';
 import { UseCaseStep } from '@entities/useCaseStep';
 import { Box, Button, Group, Text, Textarea, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -11,11 +12,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 interface NewUseCaseStepComponentProps {
-  useCaseId: string;
+  useCase: UseCase;
   onUseCaseStepCreated: (useCaseStep: UseCaseStep) => void;
 }
 export default function NewUseCaseStepComponent({
-  useCaseId,
+  useCase,
   onUseCaseStepCreated,
 }: NewUseCaseStepComponentProps) {
   // Services
@@ -44,7 +45,7 @@ export default function NewUseCaseStepComponent({
     try {
       setApiLoading(true);
       const data = await useCaseStepService.createUseCaseStep({
-        useCaseID: useCaseId,
+        useCaseID: useCase.id,
         title: values.title,
         code: values.code,
         description: values.description,
@@ -56,10 +57,10 @@ export default function NewUseCaseStepComponent({
           form.setFieldError('code', t('newUseCaseStepCodeInputAlreadyExists'));
           break;
         case 'refresh-token-failed':
-          navigate('/logout');
+          navigate('/logout', { replace: true });
           break;
         default:
-          navigate('/internal-server-error');
+          navigate('/internal-server-error', { replace: true });
           break;
       }
     } finally {

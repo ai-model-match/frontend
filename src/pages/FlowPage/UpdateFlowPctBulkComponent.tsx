@@ -63,10 +63,10 @@ export default function UpdateFlowPctBulkComponent({
     } catch (err: unknown) {
       switch (getErrorMessage(err)) {
         case 'refresh-token-failed':
-          navigate('/logout');
+          navigate('/logout', { replace: true });
           break;
         default:
-          navigate('/internal-server-error');
+          navigate('/internal-server-error', { replace: true });
           break;
       }
     } finally {
@@ -83,7 +83,7 @@ export default function UpdateFlowPctBulkComponent({
           <ThemeIcon variant="filled" c={'white'} size={30}>
             <IconEdit size={22} />
           </ThemeIcon>
-          <Text size={'lg'}>{t('updateFlowTitle')}</Text>
+          <Text size={'lg'}>{t('flowUpdatePctBulkTitle')}</Text>
         </Group>
         <Box w={'85%'} p={80} pt={10} pb={10}>
           <Box mt={20} component={Image} />

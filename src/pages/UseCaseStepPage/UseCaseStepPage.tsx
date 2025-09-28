@@ -6,7 +6,6 @@ import { GetUseCaseOutputDto } from '@dtos/useCaseDto';
 import {
   ListUseCaseStepsInputDto,
   ListUseCaseStepsOutputDto,
-  UseCaseStepOrderByOptions,
 } from '@dtos/useCaseStepDto';
 import { UseCase } from '@entities/useCase';
 import { UseCaseStep } from '@entities/useCaseStep';
@@ -31,7 +30,6 @@ import {
   Tooltip,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { OrderDir } from '@services/api.type';
 import { useCaseService } from '@services/useCaseService';
 import { useCaseStepService } from '@services/useCaseStepService';
 import {
@@ -52,6 +50,12 @@ import DeleteUseCaseStepComponent from './DeleteUseCaseStepComponent';
 import NewUseCaseStepComponent from './NewUseCaseStepComponent';
 import UpdateUseCaseStepComponent from './UpdateUseCaseStepComponent';
 import UseCaseStatusComponent from './UseCaseStatusComponent';
+import {
+  defaultStepApiRequest,
+  defaultStepApiResponse,
+  defaultUseCaseApiResponse,
+  defaultStep,
+} from './UseCaseStepData';
 import { UseCaseStepGraphComponent } from './UseCaseStepGraphComponent';
 
 interface BreadcrumbItem {
@@ -61,26 +65,19 @@ interface BreadcrumbItem {
 export default function UseCaseStepPage() {
   // Params
   const { id } = useParams();
-  const defaultApiRequest: ListUseCaseStepsInputDto = {
-    useCaseId: '',
-    page: 1,
-    pageSize: 200,
-    orderDir: OrderDir.ASC,
-    orderBy: UseCaseStepOrderByOptions.Position,
-  };
   // Services
   const auth = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  // States
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [apiUseCaseResponse, setApiUseCaseResponse] = useState<GetUseCaseOutputDto>();
+  const [apiUseCaseResponse, setApiUseCaseResponse] = useState<GetUseCaseOutputDto>(
+    defaultUseCaseApiResponse
+  );
   const [apiStepRequest, setApiStepRequest] =
-    useState<ListUseCaseStepsInputDto>(defaultApiRequest);
-  const [apiStepResponse, setApiStepResponse] = useState<ListUseCaseStepsOutputDto>({
-    items: [],
-    totalCount: 0,
-    hasNext: false,
-  });
+    useState<ListUseCaseStepsInputDto>(defaultStepApiRequest);
+  const [apiStepResponse, setApiStepResponse] =
+    useState<ListUseCaseStepsOutputDto>(defaultStepApiResponse);
   const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>([]);
   const [selectedStepNumber, setSelectedStepNumber] = useState<number>(0);
   // New Use Case Step panel status
@@ -99,7 +96,8 @@ export default function UseCaseStepPage() {
     { open: deleteUseCaseStepActionsOpen, close: deleteUseCaseStepActionsClose },
   ] = useDisclosure(false);
   // Indicates the selected Use Case Step for edit or delete
-  const [selectedUseCaseStep, setSelectedUseCaseStep] = useState<UseCaseStep | null>();
+  const [selectedUseCaseStep, setSelectedUseCaseStep] =
+    useState<UseCaseStep>(defaultStep);
 
   // Effects
   useEffect(() => {
@@ -116,13 +114,13 @@ export default function UseCaseStepPage() {
       } catch (err: unknown) {
         switch (getErrorMessage(err)) {
           case 'refresh-token-failed':
-            navigate('/logout');
+            navigate('/logout', { replace: true });
             break;
           case 'use-case-not-found':
-            navigate('/not-found');
+            navigate('/not-found', { replace: true });
             break;
           default:
-            navigate('/internal-server-error');
+            navigate('/internal-server-error', { replace: true });
             break;
         }
       } finally {
@@ -147,12 +145,14 @@ export default function UseCaseStepPage() {
 
   const handleUpdateRequest = (id: string) => {
     const useCaseStep = apiStepResponse?.items.find((x) => x.id === id);
+    if (!useCaseStep) return;
     setSelectedUseCaseStep(useCaseStep);
     updateUseCaseStepActionsOpen();
   };
 
   const handleDeleteRequest = (id: string) => {
     const useCaseStep = apiStepResponse?.items.find((x: UseCaseStep) => x.id === id);
+    if (!useCaseStep) return;
     setSelectedUseCaseStep(useCaseStep);
     deleteUseCaseStepActionsOpen();
   };
@@ -263,134 +263,6 @@ export default function UseCaseStepPage() {
   return (
     <AuthGuard>
       <Layout>
-        {pageLoaded && apiUseCaseResponse && (
-          <Grid.Col span={12}>
-            <Paper>
-              <Group justify="space-between" align="center" gap={0} mb={0}>
-                <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
-                <Button
-                  variant="light"
-                  leftSection={<IconArrowRampRight size={22} />}
-                  onClick={() =>
-                    navigate('/use-cases/' + apiUseCaseResponse.item.id + '/flows')
-                  }
-                >
-                  {t('useCaseFlowsAction')}
-                </Button>
-              </Group>
-            </Paper>
-          </Grid.Col>
-        )}
-        {pageLoaded && apiUseCaseResponse && apiStepResponse && (
-          <Grid.Col span={12}>
-            <Paper>
-              <Group justify="space-between" align="center" gap={0} mb={0}>
-                <Group gap={2}>
-                  <PaperTitle
-                    mb={0}
-                    icon={IconTargetArrow}
-                    title={apiUseCaseResponse.item.title}
-                  />
-                  <Code>{apiUseCaseResponse.item.code}</Code>
-                  <CopyButton value={apiUseCaseResponse.item.code} timeout={1000}>
-                    {({ copied, copy }) => (
-                      <ActionIcon
-                        color={copied ? 'var(--mantine-color-teal-7)' : 'gray'}
-                        variant="subtle"
-                        onClick={copy}
-                      >
-                        {copied ? <IconCheck size={22} /> : <IconCopy size={22} />}
-                      </ActionIcon>
-                    )}
-                  </CopyButton>
-                </Group>
-                {apiStepResponse.items.length > 0 && (
-                  <UseCaseStatusComponent
-                    useCaseInput={apiUseCaseResponse.item}
-                    onUseCaseStatusChange={onUseCaseStatusChange}
-                  />
-                )}
-              </Group>
-              <Text mt={15} mb={50} mr={200}>
-                {apiUseCaseResponse.item.description}
-              </Text>
-              <Grid>
-                {apiStepResponse.items.length > 0 && (
-                  <>
-                    <Grid.Col span={4}>
-                      <Fieldset legend={'Steps'}>
-                        <Stepper
-                          active={selectedStepNumber}
-                          orientation="vertical"
-                          onStepClick={onStepItemClick}
-                        >
-                          {apiStepResponse.items.map((step, index) => (
-                            <Stepper.Step
-                              completedIcon={index + 1}
-                              allowStepSelect={true}
-                              label={step.title}
-                              description={step.code}
-                            ></Stepper.Step>
-                          ))}
-                          {auth.canWrite() && (
-                            <Stepper.Step
-                              styles={{
-                                stepLabel: {
-                                  color: 'var(--mantine-color-brand-7)',
-                                  borderColor: 'var(--mantine-color-brand-7)',
-                                },
-                                stepIcon: {
-                                  backgroundColor: 'var(--mantine-color-brand-7)',
-                                  color: 'white',
-                                },
-                              }}
-                              completedIcon={<IconPlus />}
-                              icon={<IconPlus />}
-                              label={t('newUseCaseStepCreateBtn')}
-                              description={t('newUseCaseStepCreateDescription')}
-                            ></Stepper.Step>
-                          )}
-                        </Stepper>
-                      </Fieldset>
-                    </Grid.Col>
-                    <Grid.Col span={8}>
-                      <Fieldset
-                        legend={`${t('useCaseStepNumber')}${selectedStepNumber + 1}`}
-                      >
-                        {element(apiStepResponse.items[selectedStepNumber])}
-                      </Fieldset>
-                    </Grid.Col>
-                  </>
-                )}
-                {apiStepResponse.items.length === 0 && auth.canWrite() && (
-                  <Grid.Col span={12}>
-                    <Fieldset mb={60}>
-                      <EmptyState
-                        imageName="new-use-case-step"
-                        title={t('useCaseStepCreateNewTitle')}
-                        text={t('useCaseStepCreateNewText')}
-                        suggestion={t('useCaseStepCreateNewSuggestion')}
-                        btnText={t('useCaseStepCreateNewBtn')}
-                        btnHandle={newUseCaseStepActionsOpen}
-                      ></EmptyState>
-                    </Fieldset>
-                  </Grid.Col>
-                )}
-                {apiStepResponse.items.length === 0 && !auth.canWrite() && (
-                  <Grid.Col span={12}>
-                    <Fieldset mb={60}>
-                      <EmptyState
-                        imageName="new-use-case-step"
-                        title={t('useCaseStepCreateNewTitleDisabled')}
-                        text={t('useCaseStepCreateNewTextDisabled')}
-                      ></EmptyState>
-                    </Fieldset>
-                  </Grid.Col>
-                )}
-              </Grid>
-            </Paper>
-          </Grid.Col>
-        )}
         {!pageLoaded && (
           <Grid.Col span={12}>
             <Paper>
@@ -400,42 +272,166 @@ export default function UseCaseStepPage() {
             </Paper>
           </Grid.Col>
         )}
-        {apiUseCaseResponse && (
-          <Drawer
-            opened={newUseCaseStepOpen}
-            padding={0}
-            onClose={newUseCaseStepActionsClose}
-            position="right"
-            offset={10}
-            overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-            withCloseButton={false}
-            radius="md"
-          >
-            <NewUseCaseStepComponent
-              useCaseId={apiUseCaseResponse.item.id}
-              onUseCaseStepCreated={onUseCaseStepCreated}
-            />
-          </Drawer>
+        {pageLoaded && (
+          <>
+            <Grid.Col span={12}>
+              <Paper>
+                <Group justify="space-between" align="center" gap={0} mb={0}>
+                  <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+                  <Button
+                    variant="light"
+                    leftSection={<IconArrowRampRight size={22} />}
+                    onClick={() =>
+                      navigate('/use-cases/' + apiUseCaseResponse.item.id + '/flows')
+                    }
+                  >
+                    {t('useCaseFlowsAction')}
+                  </Button>
+                </Group>
+              </Paper>
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <Paper>
+                <Group justify="space-between" align="center" gap={0} mb={0}>
+                  <Group gap={2}>
+                    <PaperTitle
+                      mb={0}
+                      icon={IconTargetArrow}
+                      title={apiUseCaseResponse.item.title}
+                    />
+                    <Code>{apiUseCaseResponse.item.code}</Code>
+                    <CopyButton value={apiUseCaseResponse.item.code} timeout={1000}>
+                      {({ copied, copy }) => (
+                        <ActionIcon
+                          color={copied ? 'var(--mantine-color-teal-7)' : 'gray'}
+                          variant="subtle"
+                          onClick={copy}
+                        >
+                          {copied ? <IconCheck size={22} /> : <IconCopy size={22} />}
+                        </ActionIcon>
+                      )}
+                    </CopyButton>
+                  </Group>
+                  {apiStepResponse.items.length > 0 && (
+                    <UseCaseStatusComponent
+                      useCaseInput={apiUseCaseResponse.item}
+                      onUseCaseStatusChange={onUseCaseStatusChange}
+                    />
+                  )}
+                </Group>
+                <Text mt={15} mb={50} mr={200}>
+                  {apiUseCaseResponse.item.description}
+                </Text>
+                <Grid>
+                  {apiStepResponse.items.length > 0 && (
+                    <>
+                      <Grid.Col span={4}>
+                        <Fieldset legend={'Steps'}>
+                          <Stepper
+                            active={selectedStepNumber}
+                            orientation="vertical"
+                            onStepClick={onStepItemClick}
+                          >
+                            {apiStepResponse.items.map((step, index) => (
+                              <Stepper.Step
+                                completedIcon={index + 1}
+                                allowStepSelect={true}
+                                label={step.title}
+                                description={step.code}
+                              ></Stepper.Step>
+                            ))}
+                            {auth.canWrite() && (
+                              <Stepper.Step
+                                styles={{
+                                  stepLabel: {
+                                    color: 'var(--mantine-color-brand-7)',
+                                    borderColor: 'var(--mantine-color-brand-7)',
+                                  },
+                                  stepIcon: {
+                                    backgroundColor: 'var(--mantine-color-brand-7)',
+                                    color: 'white',
+                                  },
+                                }}
+                                completedIcon={<IconPlus />}
+                                icon={<IconPlus />}
+                                label={t('newUseCaseStepCreateBtn')}
+                                description={t('newUseCaseStepCreateDescription')}
+                              ></Stepper.Step>
+                            )}
+                          </Stepper>
+                        </Fieldset>
+                      </Grid.Col>
+                      <Grid.Col span={8}>
+                        <Fieldset
+                          legend={`${t('useCaseStepNumber')}${selectedStepNumber + 1}`}
+                        >
+                          {element(apiStepResponse.items[selectedStepNumber])}
+                        </Fieldset>
+                      </Grid.Col>
+                    </>
+                  )}
+                  {apiStepResponse.items.length === 0 && auth.canWrite() && (
+                    <Grid.Col span={12}>
+                      <Fieldset mb={60}>
+                        <EmptyState
+                          imageName="new-use-case-step"
+                          title={t('useCaseStepCreateNewTitle')}
+                          text={t('useCaseStepCreateNewText')}
+                          suggestion={t('useCaseStepCreateNewSuggestion')}
+                          btnText={t('useCaseStepCreateNewBtn')}
+                          btnHandle={newUseCaseStepActionsOpen}
+                        ></EmptyState>
+                      </Fieldset>
+                    </Grid.Col>
+                  )}
+                  {apiStepResponse.items.length === 0 && !auth.canWrite() && (
+                    <Grid.Col span={12}>
+                      <Fieldset mb={60}>
+                        <EmptyState
+                          imageName="new-use-case-step"
+                          title={t('useCaseStepCreateNewTitleDisabled')}
+                          text={t('useCaseStepCreateNewTextDisabled')}
+                        ></EmptyState>
+                      </Fieldset>
+                    </Grid.Col>
+                  )}
+                </Grid>
+              </Paper>
+            </Grid.Col>
+          </>
         )}
-        {apiUseCaseResponse && (
-          <Drawer
-            opened={updateUseCaseStepOpen}
-            padding={0}
-            onClose={updateUseCaseStepActionsClose}
-            position="right"
-            offset={10}
-            overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-            withCloseButton={false}
-            radius="md"
-          >
-            <UpdateUseCaseStepComponent
-              totalItemsCount={apiStepResponse.totalCount}
-              useCase={apiUseCaseResponse.item}
-              useCaseStep={selectedUseCaseStep!}
-              onUseCaseStepUpdated={onUseCaseStepUpdated}
-            />
-          </Drawer>
-        )}
+        <Drawer
+          opened={newUseCaseStepOpen}
+          padding={0}
+          onClose={newUseCaseStepActionsClose}
+          position="right"
+          offset={10}
+          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+          withCloseButton={false}
+          radius="md"
+        >
+          <NewUseCaseStepComponent
+            useCase={apiUseCaseResponse.item}
+            onUseCaseStepCreated={onUseCaseStepCreated}
+          />
+        </Drawer>
+        <Drawer
+          opened={updateUseCaseStepOpen}
+          padding={0}
+          onClose={updateUseCaseStepActionsClose}
+          position="right"
+          offset={10}
+          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+          withCloseButton={false}
+          radius="md"
+        >
+          <UpdateUseCaseStepComponent
+            totalItemsCount={apiStepResponse.totalCount}
+            useCase={apiUseCaseResponse.item}
+            useCaseStep={selectedUseCaseStep!}
+            onUseCaseStepUpdated={onUseCaseStepUpdated}
+          />
+        </Drawer>
         <Modal
           opened={deleteUseCaseStepOpen}
           onClose={deleteUseCaseStepActionsClose}
