@@ -100,13 +100,7 @@ export default function UpdateUseCaseStepComponent({
           <Box mt={20} component={Image} />
         </Box>
         {useCase.active && (
-          <Alert
-            variant="light"
-            color="yellow"
-            p={'xs'}
-            mb={'md'}
-            icon={<IconExclamationCircle />}
-          >
+          <Alert color="orange" icon={<IconExclamationCircle />} mb={'md'}>
             {t('updateUseCaseStepCodeWarning')}
           </Alert>
         )}

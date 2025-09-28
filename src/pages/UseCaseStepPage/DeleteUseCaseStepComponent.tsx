@@ -76,7 +76,7 @@ export default function DeleteUseCaseStepComponent({
         </Text>
       )}
       {confirmTextRequired && (
-        <Alert color="yellow" p={'xs'} mt={'md'} icon={<IconExclamationCircle />}>
+        <Alert color="orange" icon={<IconExclamationCircle />} mt={'md'}>
           {t('deleteUseCaseStepCodeWarning')}
         </Alert>
       )}

@@ -109,6 +109,12 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         size: 'lg',
       },
     },
+    Alert: {
+      defaultProps: {
+        p: 'sm',
+        variant: 'filled',
+      },
+    },
     SegmentedControl: {
       defaultProps: {
         size: 'sm',

@@ -204,7 +204,7 @@ export default function FlowStepPage() {
                   />
                 </Group>
                 {auth.canWrite() && apiFlowResponse.item.active && (
-                  <Alert color="orange" icon={<IconAlertCircle />} mt={20}>
+                  <Alert color="orange" icon={<IconAlertCircle />} mt={'sm'}>
                     {t('flowActiveAlertMessage')}
                   </Alert>
                 )}
