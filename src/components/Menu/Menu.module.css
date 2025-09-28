@@ -1,0 +1,23 @@
+.menuBox {
+  background: var(--aimm-gradient-bg);
+  padding: var(--mantine-spacing-xs);
+  height: 100%;
+}
+
+.navbar {
+  padding: 0px;
+  padding-top: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  border-top: 1px solid var(--mantine-color-brand-4);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.links {
+  flex: 1;
+}
