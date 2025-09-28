@@ -1,6 +1,6 @@
-import { EmptyState } from '@components/EmptyState';
-import { Layout } from '@components/Layout';
-import { PaperTitle } from '@components/PaperTitle';
+import { EmptyState } from '@components/EmptyState/EmptyState';
+import { Layout } from '@components/Layout/Layout';
+import { PaperTitle } from '@components/PaperTitle/PaperTitle';
 import { useAuth } from '@context/AuthContext';
 import { GetFlowOutputDto } from '@dtos/flowDto';
 import { ListFlowStepInputDto, ListFlowStepOutputDto } from '@dtos/flowStepDto';

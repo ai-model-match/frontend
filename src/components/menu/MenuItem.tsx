@@ -1,4 +1,4 @@
-import { Icon } from '@components/Icon';
+import { Icon } from '@components/Icon/Icon';
 import { Box, Collapse, Group, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';

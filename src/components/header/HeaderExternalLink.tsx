@@ -1,4 +1,4 @@
-import { Icon } from '@components/Icon';
+import { Icon } from '@components/Icon/Icon';
 import { ActionIcon } from '@mantine/core';
 
 export interface HeaderExternalLinkProps {

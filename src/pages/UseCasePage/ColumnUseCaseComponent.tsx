@@ -1,4 +1,4 @@
-import { TableHeader } from '@components/Table';
+import { TableHeader } from '@components/Table/TableHeader';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 

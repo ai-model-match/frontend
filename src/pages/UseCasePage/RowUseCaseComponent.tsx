@@ -1,4 +1,4 @@
-import { TableTr } from '@components/Table';
+import { TableTr } from '@components/Table/TableTr';
 import { useAuth } from '@context/AuthContext';
 import { UseCase } from '@entities/useCase';
 import { ActionIcon, Badge, Code, CopyButton, Group, Text, Tooltip } from '@mantine/core';

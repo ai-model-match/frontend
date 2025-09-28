@@ -1,4 +1,4 @@
-import { PaperTitle } from '@components/PaperTitle';
+import { PaperTitle } from '@components/PaperTitle/PaperTitle';
 import { useAuth } from '@context/AuthContext';
 import { FlowStep } from '@entities/flowStep';
 import { UseCaseStep } from '@entities/useCaseStep';

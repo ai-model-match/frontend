@@ -1,4 +1,4 @@
-import { LanguageSelector } from '@components/LanguageSelector';
+import { LanguageSelector } from '@components/LanguageSelector/LanguageSelector';
 import { Box, Group } from '@mantine/core';
 import { IconBrandGithub, IconBrandOpenSource } from '@tabler/icons-react';
 import classes from './Header.module.css';

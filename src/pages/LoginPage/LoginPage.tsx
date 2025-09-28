@@ -1,4 +1,4 @@
-import { LanguageSelector } from '@components/LanguageSelector';
+import { LanguageSelector } from '@components/LanguageSelector/LanguageSelector';
 import { useAuth } from '@context/AuthContext';
 import { Box, Container, Image, Paper, Title } from '@mantine/core';
 import { authService } from '@services/authService';

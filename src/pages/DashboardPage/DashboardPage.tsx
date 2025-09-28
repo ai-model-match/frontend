@@ -1,4 +1,4 @@
-import { Layout } from '@components/Layout';
+import { Layout } from '@components/Layout/Layout';
 import { AuthGuard } from '@guards/AuthGuard';
 import { Grid, Skeleton } from '@mantine/core';
 
