@@ -47,7 +47,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const decoded = jwtDecode<JwtClaims>(storedAccess);
       setPermissions(decoded.permissions);
     } else {
-      logout();
+      setUsername(undefined);
+      setAccessToken(undefined);
+      setRefreshToken(undefined);
+      setPermissions([]);
     }
     setLoaded(true);
   }, []);
@@ -63,16 +66,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setPermissions(decoded.permissions);
   };
 
-  const logout = () => {
-    setUsername(undefined);
-    setAccessToken(undefined);
-    setRefreshToken(undefined);
-    setPermissions([]);
-    localStorage.removeItem('username');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-  };
-
   const refresh = (accessToken: string, refreshToken: string) => {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
@@ -80,6 +73,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('refreshToken', refreshToken);
     const decoded = jwtDecode<JwtClaims>(accessToken);
     setPermissions(decoded.permissions);
+  };
+
+  const logout = () => {
+    if (username) setUsername(undefined);
+    if (accessToken) setAccessToken(undefined);
+    if (refreshToken) setRefreshToken(undefined);
+    if (permissions.length > 0) setPermissions([]);
+    localStorage.removeItem('username');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   };
 
   const canWrite = () => {

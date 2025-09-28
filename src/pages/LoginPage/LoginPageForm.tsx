@@ -43,7 +43,6 @@ export function LoginPageForm() {
         case 'invalid-username-or-password': {
           form.setFieldError('username', t('loginInvalidCredentials'));
           form.setFieldError('password', t('loginInvalidCredentials'));
-          auth.logout();
           break;
         }
         default: {
