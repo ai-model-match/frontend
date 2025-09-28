@@ -1,4 +1,4 @@
-export const prepareSlug = (text: string) => {
+export const prepareCode = (text: string) => {
   return text
     .toLowerCase()
     .trim()

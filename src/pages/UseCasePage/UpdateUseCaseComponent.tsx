@@ -13,8 +13,8 @@ import { useForm } from '@mantine/form';
 import { useCaseService } from '@services/useCaseService';
 import { assets } from '@styles/assets';
 import { IconEdit } from '@tabler/icons-react';
+import { prepareCode } from '@utils/codeUtils';
 import { getErrorMessage } from '@utils/errUtils';
-import { prepareSlug } from '@utils/slugCodeUtils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -125,7 +125,7 @@ export default function UpdateUseCaseComponent({
                 key={form.key('code')}
                 {...form.getInputProps('code')}
                 onChange={(event) =>
-                  form.setFieldValue('code', prepareSlug(event.currentTarget.value))
+                  form.setFieldValue('code', prepareCode(event.currentTarget.value))
                 }
                 mb="sm"
               />
