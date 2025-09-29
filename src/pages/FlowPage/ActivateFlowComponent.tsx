@@ -30,9 +30,9 @@ export default function ActivateFlowComponent({
   const navigate = useNavigate();
 
   // States
+  const [apiLoading, setApiLoading] = useState(false);
   const [textToConfirm, setTextToConfirm] = useState<string>();
   const [isConfirmDisabled, setIsConfirmDisabled] = useState<boolean>(true);
-  const [apiLoading, setApiLoading] = useState(false);
 
   // Form
   const form = useForm();

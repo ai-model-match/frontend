@@ -30,6 +30,7 @@ export function FlowStepConfigComponent({
   const [apiLoading, setApiLoading] = useState(false);
   const [flowStepState, setFlowStepState] = useState<FlowStep>();
 
+  // Form
   const form = useForm({
     initialValues: {
       configuration: '',
@@ -51,6 +52,7 @@ export function FlowStepConfigComponent({
     },
   });
 
+  // Effects
   useEffect(() => {
     (async () => {
       if (flowStepState && flowStep.id === flowStepState.id) return;
@@ -105,6 +107,7 @@ export function FlowStepConfigComponent({
     }
   };
 
+  // Content
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <PaperTitle mb={0} icon={IconRoute} title={useCaseStep.title} />
