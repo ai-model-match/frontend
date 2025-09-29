@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import classes from './InternalServerErrorPage.module.css';
 
 export default function InternalServerErrorPage() {
+  // Services
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  // Content
   return (
     <div className={classes.root}>
       <Container>

@@ -4,11 +4,11 @@ import type {
   CreateUseCaseInputDto,
   CreateUseCaseOutputDto,
   DeleteUseCaseInputDto,
+  DeleteUseCaseOutputDto,
   UpdateUseCaseInputDto,
   UpdateUseCaseOutputDto,
   GetUseCaseInputDto,
   GetUseCaseOutputDto,
-  DeleteUseCaseOutputDto,
 } from '@dtos/useCaseDto';
 import { Method } from './api.type';
 import { callAuthApi } from './authApi';

@@ -33,9 +33,11 @@ export function FlowCardComponent({
   handleActivateRequest,
   handleDeactivateRequest,
 }: FlowCardComponentProps) {
+  // Services
   const { t } = useTranslation();
   const auth = useAuth();
 
+  // Content
   return (
     <Card withBorder h={300} w={'100%'}>
       <Stack align="stretch" justify="flex-start" h={'100%'} gap={15}>

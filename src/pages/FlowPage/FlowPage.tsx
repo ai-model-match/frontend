@@ -2,6 +2,12 @@ import { EmptyState } from '@components/EmptyState/EmptyState';
 import { Layout } from '@components/Layout/Layout';
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
 import { useAuth } from '@context/AuthContext';
+import {
+  defaultFlow,
+  defaultListFlowApiRequest,
+  defaultListFlowApiResponse,
+} from '@dtos/defaultFlowDto';
+import { defaultGetUseCaseApiResponse } from '@dtos/defaultUseCaseDto';
 import { ListFlowInputDto, ListFlowOutputDto } from '@dtos/flowDto';
 import { GetUseCaseOutputDto } from '@dtos/useCaseDto';
 import { Flow } from '@entities/flow';
@@ -36,12 +42,6 @@ import DeactivateFlowComponent from './DeactivateFlowComponent';
 import DeleteFlowComponent from './DeleteFlowComponent';
 import { FlowCardComponent } from './FlowCardComponent';
 import { FlowNewCardComponent } from './FlowNewCardComponent';
-import {
-  defaultFlow,
-  defaultFlowApiRequest,
-  defaultFlowApiResponse,
-  defaultUseCaseApiResponse,
-} from './FlowPageData';
 import NewFlowComponent from './NewFlowComponent';
 import UpdateFlowComponent from './UpdateFlowComponent';
 import UpdateFlowPctBulkComponent from './UpdateFlowPctBulkComponent';
@@ -57,43 +57,46 @@ export default function FlowPage() {
   const auth = useAuth();
   const { t } = useTranslation();
 
-  // New Flow panel status
-  const [newFlowOpen, { open: newFlowActionsOpen, close: newFlowActionsClose }] =
+  // States
+  const [newFlowPanelIsOpen, { open: newFlowOpenPanel, close: newFlowClosePanel }] =
     useDisclosure(false);
-  // Update Flow panel status
-  const [updateFlowOpen, { open: updateFlowActionsOpen, close: updateFlowActionsClose }] =
-    useDisclosure(false);
-  // Update Flow Bulk panel status
   const [
-    updateFlowBulkOpen,
-    { open: updateFlowBulkActionsOpen, close: updateFlowBulkActionsClose },
-  ] = useDisclosure(false);
-  // Delete Flow panel status
-  const [deleteFlowOpen, { open: deleteFlowActionsOpen, close: deleteFlowActionsClose }] =
-    useDisclosure(false);
-  // Deactivate Flow panel status
-  const [
-    deactivateFlowOpen,
-    { open: deactivateFlowActionsOpen, close: deactivateFlowActionsClose },
-  ] = useDisclosure(false);
-  // Activate Flow panel status
-  const [
-    activateFlowOpen,
-    { open: activateFlowActionsOpen, close: activateFlowActionsClose },
+    updateFlowPanelIsOpen,
+    { open: updateFlowOpenPanel, close: updateFlowClosePanel },
   ] = useDisclosure(false);
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [apiUseCaseResponse, setApiUseCaseResponse] = useState<GetUseCaseOutputDto>(
-    defaultUseCaseApiResponse
+  const [
+    updateFlowBulkPanelIsOpen,
+    { open: updateFlowBulkOpenPanel, close: updateFlowBulkClosePanel },
+  ] = useDisclosure(false);
+  const [
+    deleteFlowPanelIsOpen,
+    { open: deleteFlowOpenPanel, close: deleteFlowClosePanel },
+  ] = useDisclosure(false);
+  const [
+    deactivateFlowPanelIsOpen,
+    { open: deactivateFlowOpenPanel, close: deactivateFlowClosePanel },
+  ] = useDisclosure(false);
+  const [
+    activateFlowPanelIsOpen,
+    { open: activateFlowOpenPanel, close: activateFlowClosePanel },
+  ] = useDisclosure(false);
+  const [apiGetUseCaseResponse, setApiGetUseCaseResponse] = useState<GetUseCaseOutputDto>(
+    defaultGetUseCaseApiResponse
   );
-  const [apiFlowRequest, setApiFlowRequest] =
-    useState<ListFlowInputDto>(defaultFlowApiRequest);
-  const [apiFlowResponse, setApiFlowResponse] =
-    useState<ListFlowOutputDto>(defaultFlowApiResponse);
+  const [apiListFlowRequest, setApiListFlowRequest] = useState<ListFlowInputDto>(
+    defaultListFlowApiRequest
+  );
+  const [apiListFlowResponse, setApiListFlowResponse] = useState<ListFlowOutputDto>(
+    defaultListFlowApiResponse
+  );
   const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>([]);
-  // Indicates the selected flow for edit or delete
   const [selectedFlow, setSelectedFlow] = useState<Flow>(defaultFlow);
   const [selectedFlowsBulk, setSelectedFlowsBulk] = useState<Flow[]>([]);
-  const interval = useInterval(() => setApiFlowRequest({ ...apiFlowRequest }), 4000);
+  const interval = useInterval(
+    () => setApiListFlowRequest({ ...apiListFlowRequest }),
+    4000
+  );
 
   // Effects
   useEffect(() => {
@@ -102,11 +105,11 @@ export default function FlowPage() {
       try {
         const data = await useCaseService.getUseCase({ id: id! });
         const flowData = await flowService.listFlows({
-          ...apiFlowRequest,
+          ...apiListFlowRequest,
           useCaseId: data.item.id,
         });
-        setApiFlowResponse(flowData);
-        setApiUseCaseResponse(data);
+        setApiListFlowResponse(flowData);
+        setApiGetUseCaseResponse(data);
       } catch (err: unknown) {
         switch (getErrorMessage(err)) {
           case 'refresh-token-failed':
@@ -123,7 +126,7 @@ export default function FlowPage() {
         setPageLoaded(true);
       }
     })();
-  }, [id, auth, navigate, t, apiFlowRequest]);
+  }, [id, auth, navigate, t, apiListFlowRequest]);
 
   useEffect(() => {
     interval.start();
@@ -133,15 +136,89 @@ export default function FlowPage() {
   useEffect(() => {
     // Set breadcrumb and adapt by change on data or translation
     const items = [{ title: t('menuUseCases'), href: '/use-cases' }];
-    if (apiUseCaseResponse)
+    if (apiGetUseCaseResponse)
       items.push({
-        title: apiUseCaseResponse.item.title,
-        href: `/use-cases/${apiUseCaseResponse.item.id}`,
+        title: apiGetUseCaseResponse.item.title,
+        href: `/use-cases/${apiGetUseCaseResponse.item.id}`,
       });
     items.push({ title: t('menuFlows'), href: '#' });
     setBreadcrumbItems(items);
-  }, [t, apiUseCaseResponse]);
+  }, [t, apiGetUseCaseResponse]);
 
+  // Handlers
+  const handleUpdateRequest = (id: string) => {
+    const flow = apiListFlowResponse?.items.find((x) => x.id === id);
+    if (!flow) return;
+    setSelectedFlow(flow);
+    updateFlowOpenPanel();
+  };
+
+  const handleUpdateBulkRequest = () => {
+    const flows = apiListFlowResponse?.items.filter((x) => x.active);
+    setSelectedFlowsBulk(flows);
+    updateFlowBulkOpenPanel();
+  };
+
+  const handleDeleteRequest = (id: string) => {
+    const flow = apiListFlowResponse?.items.find((x) => x.id === id);
+    if (!flow) return;
+    setSelectedFlow(flow);
+    deleteFlowOpenPanel();
+  };
+
+  const handleDeactivateRequest = (id: string) => {
+    const flow = apiListFlowResponse?.items.find((x) => x.id === id);
+    if (!flow) return;
+    setSelectedFlow(flow);
+    deactivateFlowOpenPanel();
+  };
+
+  const handleActivateRequest = (id: string) => {
+    const flow = apiListFlowResponse?.items.find((x) => x.id === id);
+    if (!flow) return;
+    setSelectedFlow(flow);
+    activateFlowOpenPanel();
+  };
+
+  const onFlowCreated = useCallback(
+    (_: Flow) => {
+      newFlowClosePanel();
+      setApiListFlowRequest((prev) => ({ ...prev }));
+    },
+    [setApiListFlowRequest, newFlowClosePanel]
+  );
+
+  const onFlowUpdated = useCallback(() => {
+    updateFlowClosePanel();
+    setApiListFlowRequest((prev) => ({ ...prev }));
+  }, [setApiListFlowRequest, updateFlowClosePanel]);
+
+  const onFlowsUpdated = useCallback(() => {
+    updateFlowBulkClosePanel();
+    setApiListFlowRequest((prev) => ({ ...prev }));
+  }, [setApiListFlowRequest, updateFlowBulkClosePanel]);
+
+  const onFlowDeleted = useCallback(
+    (id: string) => {
+      deleteFlowClosePanel();
+      apiListFlowResponse.items = apiListFlowResponse.items.filter((x) => x.id !== id);
+      apiListFlowResponse.totalCount--;
+      setApiListFlowRequest((prev) => ({ ...prev }));
+    },
+    [apiListFlowResponse, setApiListFlowRequest, deleteFlowClosePanel]
+  );
+
+  const onFlowDeactivated = useCallback(() => {
+    deactivateFlowClosePanel();
+    setApiListFlowRequest((prev) => ({ ...prev }));
+  }, [setApiListFlowRequest, deactivateFlowClosePanel]);
+
+  const onFlowActivated = useCallback(() => {
+    activateFlowClosePanel();
+    setApiListFlowRequest((prev) => ({ ...prev }));
+  }, [setApiListFlowRequest, activateFlowClosePanel]);
+
+  // Content
   const breadcrumbItemsRender = () =>
     breadcrumbItems.map((item) => {
       if (item.href == '#') {
@@ -154,79 +231,6 @@ export default function FlowPage() {
         );
       }
     });
-
-  const handleUpdateRequest = (id: string) => {
-    const flow = apiFlowResponse?.items.find((x) => x.id === id);
-    if (!flow) return;
-    setSelectedFlow(flow);
-    updateFlowActionsOpen();
-  };
-
-  const handleUpdateBulkRequest = () => {
-    const flows = apiFlowResponse?.items.filter((x) => x.active);
-    setSelectedFlowsBulk(flows);
-    updateFlowBulkActionsOpen();
-  };
-
-  const handleDeleteRequest = (id: string) => {
-    const flow = apiFlowResponse?.items.find((x) => x.id === id);
-    if (!flow) return;
-    setSelectedFlow(flow);
-    deleteFlowActionsOpen();
-  };
-
-  const handleDeactivateRequest = (id: string) => {
-    const flow = apiFlowResponse?.items.find((x) => x.id === id);
-    if (!flow) return;
-    setSelectedFlow(flow);
-    deactivateFlowActionsOpen();
-  };
-
-  const handleActivateRequest = (id: string) => {
-    const flow = apiFlowResponse?.items.find((x) => x.id === id);
-    if (!flow) return;
-    setSelectedFlow(flow);
-    activateFlowActionsOpen();
-  };
-
-  const onFlowCreated = useCallback(
-    (_: Flow) => {
-      newFlowActionsClose();
-      setApiFlowRequest((prev) => ({ ...prev }));
-    },
-    [setApiFlowRequest, newFlowActionsClose]
-  );
-
-  const onFlowUpdated = useCallback(() => {
-    updateFlowActionsClose();
-    setApiFlowRequest((prev) => ({ ...prev }));
-  }, [setApiFlowRequest, updateFlowActionsClose]);
-
-  const onFlowsUpdated = useCallback(() => {
-    updateFlowBulkActionsClose();
-    setApiFlowRequest((prev) => ({ ...prev }));
-  }, [setApiFlowRequest, updateFlowBulkActionsClose]);
-
-  const onFlowDeleted = useCallback(
-    (id: string) => {
-      deleteFlowActionsClose();
-      apiFlowResponse.items = apiFlowResponse.items.filter((x) => x.id !== id);
-      apiFlowResponse.totalCount--;
-      setApiFlowRequest((prev) => ({ ...prev }));
-    },
-    [apiFlowResponse, setApiFlowRequest, deleteFlowActionsClose]
-  );
-
-  const onFlowDeactivated = useCallback(() => {
-    deactivateFlowActionsClose();
-    setApiFlowRequest((prev) => ({ ...prev }));
-  }, [setApiFlowRequest, deactivateFlowActionsClose]);
-
-  const onFlowActivated = useCallback(() => {
-    activateFlowActionsClose();
-    setApiFlowRequest((prev) => ({ ...prev }));
-  }, [setApiFlowRequest, activateFlowActionsClose]);
-
   return (
     <AuthGuard>
       <Layout>
@@ -250,7 +254,7 @@ export default function FlowPage() {
                     leftSection={<IconSettingsAutomation size={22} />}
                     onClick={() =>
                       navigate(
-                        `/use-cases/${apiUseCaseResponse.item.id}/rollout-strategy`
+                        `/use-cases/${apiGetUseCaseResponse.item.id}/rollout-strategy`
                       )
                     }
                   >
@@ -260,7 +264,7 @@ export default function FlowPage() {
               </Paper>
             </Grid.Col>
             <Grid.Col span={12}>
-              {apiFlowResponse.items.filter((x) => x.active).length > 0 && (
+              {apiListFlowResponse.items.filter((x) => x.active).length > 0 && (
                 <Paper mb="lg">
                   <Group justify="space-between" align="baseline" gap={0} mb={0}>
                     <PaperTitle
@@ -280,12 +284,12 @@ export default function FlowPage() {
                     )}
                   </Group>
                   <Grid>
-                    {apiFlowResponse.items
+                    {apiListFlowResponse.items
                       .filter((x) => x.active)
                       .map((item) => (
                         <Grid.Col span={4} key={item.id}>
                           <FlowCardComponent
-                            useCase={apiUseCaseResponse.item}
+                            useCase={apiGetUseCaseResponse.item}
                             flow={item}
                             handleUpdateRequest={handleUpdateRequest}
                             handleDeleteRequest={handleDeleteRequest}
@@ -298,7 +302,7 @@ export default function FlowPage() {
                 </Paper>
               )}
 
-              {apiFlowResponse.items.length > 0 && (
+              {apiListFlowResponse.items.length > 0 && (
                 <Paper mb="lg">
                   <Group justify="space-between" align="center" gap={0} mb={0}>
                     <PaperTitle
@@ -309,12 +313,12 @@ export default function FlowPage() {
                     />
                   </Group>
                   <Grid>
-                    {apiFlowResponse.items
+                    {apiListFlowResponse.items
                       .filter((x) => !x.active)
                       .map((item) => (
                         <Grid.Col span={4} key={item.id}>
                           <FlowCardComponent
-                            useCase={apiUseCaseResponse.item}
+                            useCase={apiGetUseCaseResponse.item}
                             flow={item}
                             handleUpdateRequest={handleUpdateRequest}
                             handleDeleteRequest={handleDeleteRequest}
@@ -325,13 +329,13 @@ export default function FlowPage() {
                       ))}
                     {auth.canWrite() && (
                       <Grid.Col span={4} key={'new-flow-id'}>
-                        <FlowNewCardComponent onClick={newFlowActionsOpen} />
+                        <FlowNewCardComponent onClick={newFlowOpenPanel} />
                       </Grid.Col>
                     )}
                   </Grid>
                 </Paper>
               )}
-              {apiFlowResponse.items.length === 0 && (
+              {apiListFlowResponse.items.length === 0 && (
                 <Paper>
                   <Fieldset>
                     {auth.canWrite() ? (
@@ -341,7 +345,7 @@ export default function FlowPage() {
                         text={t('flowCreateNewText')}
                         suggestion={t('flowCreateNewSuggestion')}
                         btnText={t('flowCreateNewBtn')}
-                        btnHandle={newFlowActionsOpen}
+                        btnHandle={newFlowOpenPanel}
                       ></EmptyState>
                     ) : (
                       <EmptyState
@@ -357,9 +361,9 @@ export default function FlowPage() {
           </>
         )}
         <Drawer
-          opened={newFlowOpen}
+          opened={newFlowPanelIsOpen}
           padding={0}
-          onClose={newFlowActionsClose}
+          onClose={newFlowClosePanel}
           position="right"
           offset={10}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
@@ -367,26 +371,26 @@ export default function FlowPage() {
           radius="md"
         >
           <NewFlowComponent
-            useCase={apiUseCaseResponse.item}
+            useCase={apiGetUseCaseResponse.item}
             onFlowCreated={onFlowCreated}
           />
         </Drawer>
         <Drawer
-          opened={updateFlowOpen}
+          opened={updateFlowPanelIsOpen}
           padding={0}
-          onClose={updateFlowActionsClose}
+          onClose={updateFlowClosePanel}
           position="right"
           offset={10}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
           withCloseButton={false}
           radius="md"
         >
-          <UpdateFlowComponent flow={selectedFlow!} onFlowUpdated={onFlowUpdated} />
+          <UpdateFlowComponent flow={selectedFlow} onFlowUpdated={onFlowUpdated} />
         </Drawer>
         <Drawer
-          opened={updateFlowBulkOpen}
+          opened={updateFlowBulkPanelIsOpen}
           padding={0}
-          onClose={updateFlowBulkActionsClose}
+          onClose={updateFlowBulkClosePanel}
           position="right"
           offset={10}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
@@ -394,51 +398,51 @@ export default function FlowPage() {
           radius="md"
         >
           <UpdateFlowPctBulkComponent
-            useCase={apiUseCaseResponse.item}
-            flows={selectedFlowsBulk!}
+            useCase={apiGetUseCaseResponse.item}
+            flows={selectedFlowsBulk}
             onFlowsUpdated={onFlowsUpdated}
           />
         </Drawer>
         <Modal
-          opened={deleteFlowOpen}
-          onClose={deleteFlowActionsClose}
+          opened={deleteFlowPanelIsOpen}
+          onClose={deleteFlowClosePanel}
           withCloseButton={false}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
         >
           <DeleteFlowComponent
-            flow={selectedFlow!}
+            flow={selectedFlow}
             title={t('deleteFlowTitle')}
             text={t('deleteFlowDescription')}
-            onCancel={deleteFlowActionsClose}
+            onCancel={deleteFlowClosePanel}
             onFlowDeleted={onFlowDeleted}
           ></DeleteFlowComponent>
         </Modal>
         <Modal
-          opened={deactivateFlowOpen}
-          onClose={deactivateFlowActionsClose}
+          opened={deactivateFlowPanelIsOpen}
+          onClose={deactivateFlowClosePanel}
           withCloseButton={false}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
         >
           <DeactivateFlowComponent
-            flow={selectedFlow!}
+            flow={selectedFlow}
             title={t('deactivateFlowTitle')}
             text={t('deactivateFlowDescription')}
             confirmTextRequired={selectedFlow!.currentServePct > 0}
-            onCancel={deactivateFlowActionsClose}
+            onCancel={deactivateFlowClosePanel}
             onFlowDeactivated={onFlowDeactivated}
           ></DeactivateFlowComponent>
         </Modal>
         <Modal
-          opened={activateFlowOpen}
-          onClose={activateFlowActionsClose}
+          opened={activateFlowPanelIsOpen}
+          onClose={activateFlowClosePanel}
           withCloseButton={false}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
         >
           <ActivateFlowComponent
-            flow={selectedFlow!}
+            flow={selectedFlow}
             title={t('activateFlowTitle')}
             text={t('activateFlowDescription')}
-            onCancel={activateFlowActionsClose}
+            onCancel={activateFlowClosePanel}
             onFlowActivated={onFlowActivated}
           ></ActivateFlowComponent>
         </Modal>

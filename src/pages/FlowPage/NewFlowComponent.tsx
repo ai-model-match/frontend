@@ -25,6 +25,7 @@ export default function NewFlowComponent({
   // States
   const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm({
     initialValues: {
       title: '',
@@ -37,7 +38,7 @@ export default function NewFlowComponent({
     },
   });
 
-  // Handles
+  // Handlers
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiLoading(true);

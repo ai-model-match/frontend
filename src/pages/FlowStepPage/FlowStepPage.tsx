@@ -2,11 +2,18 @@ import { EmptyState } from '@components/EmptyState/EmptyState';
 import { Layout } from '@components/Layout/Layout';
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
 import { useAuth } from '@context/AuthContext';
+import { defaultGetFlowApiResponse } from '@dtos/defaultFlowDto';
+import {
+  defaultListFlowStepApiRequest,
+  defaultListFlowStepApiResponse,
+} from '@dtos/defaultFlowStepDto';
+import { defaultGetUseCaseApiResponse } from '@dtos/defaultUseCaseDto';
+import { defaultListUseCaseStepApiResponse } from '@dtos/defaultUseCaseStepDto';
 import { GetFlowOutputDto } from '@dtos/flowDto';
 import { ListFlowStepInputDto, ListFlowStepOutputDto } from '@dtos/flowStepDto';
 import { GetUseCaseOutputDto } from '@dtos/useCaseDto';
 import {
-  ListUseCaseStepsOutputDto,
+  ListUseCaseStepOutputDto,
   UseCaseStepOrderByOptions,
 } from '@dtos/useCaseStepDto';
 import { FlowStep } from '@entities/flowStep';
@@ -39,13 +46,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FlowStepConfigComponent } from './FlowStepConfigComponent';
-import {
-  defaultFlowApiResponse,
-  defaultFlowStepApiRequest,
-  defaultFlowStepApiResponse,
-  defaultUseCaseApiResponse,
-  defaultUseCaseStepApiResponse,
-} from './FlowStepData';
 
 interface BreadcrumbItem {
   title: string;
@@ -62,18 +62,20 @@ export default function FlowStepPage() {
   const [pageLoaded, setPageLoaded] = useState(false);
 
   // API Requests and Responses
-  const [apiFlowStepRequest] = useState<ListFlowStepInputDto>(defaultFlowStepApiRequest);
-  const [apiUseCaseResponse, setApiUseCaseResponse] = useState<GetUseCaseOutputDto>(
-    defaultUseCaseApiResponse
+  const [apiListFlowStepRequest] = useState<ListFlowStepInputDto>(
+    defaultListFlowStepApiRequest
   );
-  const [apiFlowResponse, setApiFlowResponse] =
-    useState<GetFlowOutputDto>(defaultFlowApiResponse);
-  const [apiFlowStepResponse, setApiFlowStepResponse] = useState<ListFlowStepOutputDto>(
-    defaultFlowStepApiResponse
-  );
-  const [apiUseCaseStepResponse, setApiUseCaseStepsResponse] =
-    useState<ListUseCaseStepsOutputDto>(defaultUseCaseStepApiResponse);
+  const [apiListFlowStepResponse, setApiListFlowStepResponse] =
+    useState<ListFlowStepOutputDto>(defaultListFlowStepApiResponse);
 
+  const [apiGetUseCaseResponse, setApiGetUseCaseResponse] = useState<GetUseCaseOutputDto>(
+    defaultGetUseCaseApiResponse
+  );
+  const [apiListUseCaseStepResponse, setApiListUseCaseStepsResponse] =
+    useState<ListUseCaseStepOutputDto>(defaultListUseCaseStepApiResponse);
+  const [apiGetFlowResponse, setApiGetFlowResponse] = useState<GetFlowOutputDto>(
+    defaultGetFlowApiResponse
+  );
   const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>([]);
   const [selectedStepNumber, setSelectedStepNumber] = useState<number>(0);
 
@@ -86,12 +88,12 @@ export default function FlowStepPage() {
         const useCaseData = await useCaseService.getUseCase({
           id: id!,
         });
-        setApiUseCaseResponse(useCaseData);
+        setApiGetUseCaseResponse(useCaseData);
         // Get Flow
         const flowData = await flowService.getFlow({
           id: flowId!,
         });
-        setApiFlowResponse(flowData);
+        setApiGetFlowResponse(flowData);
         // Get Use Case Steps
         const useCaseStepData = await useCaseStepService.listUseCaseSteps({
           useCaseId: id!,
@@ -100,13 +102,13 @@ export default function FlowStepPage() {
           orderBy: UseCaseStepOrderByOptions.Position,
           orderDir: OrderDir.ASC,
         });
-        setApiUseCaseStepsResponse(useCaseStepData);
+        setApiListUseCaseStepsResponse(useCaseStepData);
         // Get Flow Steps
         const flowStepData = await flowStepService.listFlowSteps({
-          ...apiFlowStepRequest,
+          ...apiListFlowStepRequest,
           flowId: flowId!,
         });
-        setApiFlowStepResponse(flowStepData);
+        setApiListFlowStepResponse(flowStepData);
       } catch (err: unknown) {
         switch (getErrorMessage(err)) {
           case 'refresh-token-failed':
@@ -123,28 +125,28 @@ export default function FlowStepPage() {
         setPageLoaded(true);
       }
     })();
-  }, [flowId, id, auth, navigate, t, apiFlowStepRequest]);
+  }, [flowId, id, auth, navigate, t, apiListFlowStepRequest]);
 
   useEffect(() => {
     // Set breadcrumb and adapt by change on data or translation
     const items = [{ title: t('menuUseCases'), href: '/use-cases' }];
-    if (apiUseCaseResponse) {
+    if (apiGetUseCaseResponse) {
       items.push(
         {
-          title: apiUseCaseResponse.item.title,
-          href: '/use-cases/' + apiUseCaseResponse.item.id,
+          title: apiGetUseCaseResponse.item.title,
+          href: '/use-cases/' + apiGetUseCaseResponse.item.id,
         },
         {
           title: t('menuFlows'),
-          href: '/use-cases/' + apiUseCaseResponse.item.id + '/flows',
+          href: '/use-cases/' + apiGetUseCaseResponse.item.id + '/flows',
         }
       );
-      if (apiFlowResponse) {
-        items.push({ title: apiFlowResponse.item.title, href: '#' });
+      if (apiGetFlowResponse) {
+        items.push({ title: apiGetFlowResponse.item.title, href: '#' });
       }
     }
     setBreadcrumbItems(items);
-  }, [t, apiUseCaseResponse, apiFlowResponse]);
+  }, [t, apiGetUseCaseResponse, apiGetFlowResponse]);
 
   const breadcrumbItemsRender = () =>
     breadcrumbItems.map((item) => {
@@ -160,8 +162,8 @@ export default function FlowStepPage() {
     });
 
   const getFlowStepByUseCaseStep = (selectedStepNumber: number): FlowStep => {
-    const useCaseStep = apiUseCaseStepResponse.items[selectedStepNumber];
-    return apiFlowStepResponse.items.find((x) => x.useCaseStepId === useCaseStep.id)!;
+    const useCaseStep = apiListUseCaseStepResponse.items[selectedStepNumber];
+    return apiListFlowStepResponse.items.find((x) => x.useCaseStepId === useCaseStep.id)!;
   };
 
   return (
@@ -186,7 +188,7 @@ export default function FlowStepPage() {
                     variant="light"
                     leftSection={<IconArrowRampRight size={22} />}
                     onClick={() =>
-                      navigate('/use-cases/' + apiUseCaseResponse.item.id + '/flows')
+                      navigate('/use-cases/' + apiGetUseCaseResponse.item.id + '/flows')
                     }
                   >
                     {t('useCaseFlowsBackAction')}
@@ -200,16 +202,16 @@ export default function FlowStepPage() {
                   <PaperTitle
                     mb={0}
                     icon={IconSettingsCode}
-                    title={apiFlowResponse.item.title}
+                    title={apiGetFlowResponse.item.title}
                   />
                 </Group>
-                {auth.canWrite() && apiFlowResponse.item.active && (
+                {auth.canWrite() && apiGetFlowResponse.item.active && (
                   <Alert color="orange" icon={<IconAlertCircle />} mt={'sm'}>
                     {t('flowActiveAlertMessage')}
                   </Alert>
                 )}
                 <Grid mt={30}>
-                  {apiUseCaseStepResponse.items.length > 0 && (
+                  {apiListUseCaseStepResponse.items.length > 0 && (
                     <>
                       <Grid.Col span={4}>
                         <Fieldset legend={'Steps'}>
@@ -218,7 +220,7 @@ export default function FlowStepPage() {
                             orientation="vertical"
                             onStepClick={(step) => setSelectedStepNumber(step)}
                           >
-                            {apiUseCaseStepResponse.items.map((step, index) => (
+                            {apiListUseCaseStepResponse.items.map((step, index) => (
                               <Stepper.Step
                                 completedIcon={index + 1}
                                 allowStepSelect={true}
@@ -234,14 +236,16 @@ export default function FlowStepPage() {
                           legend={`${t('useCaseStepNumber')}${selectedStepNumber + 1}`}
                         >
                           <FlowStepConfigComponent
-                            useCaseStep={apiUseCaseStepResponse.items[selectedStepNumber]}
+                            useCaseStep={
+                              apiListUseCaseStepResponse.items[selectedStepNumber]
+                            }
                             flowStep={getFlowStepByUseCaseStep(selectedStepNumber)}
                           />
                         </Fieldset>
                       </Grid.Col>
                     </>
                   )}
-                  {apiUseCaseStepResponse.items.length === 0 && (
+                  {apiListUseCaseStepResponse.items.length === 0 && (
                     <Grid.Col span={12}>
                       <Fieldset mb={60}>
                         <EmptyState

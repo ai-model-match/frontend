@@ -8,7 +8,7 @@ export enum UseCaseStepOrderByOptions {
   Relevance = 'relevance',
 }
 
-export type ListUseCaseStepsInputDto = {
+export type ListUseCaseStepInputDto = {
   useCaseId: string;
   page: number;
   pageSize: number;
@@ -17,7 +17,7 @@ export type ListUseCaseStepsInputDto = {
   searchKey?: string;
 };
 
-export type ListUseCaseStepsOutputDto = {
+export type ListUseCaseStepOutputDto = {
   items: UseCaseStep[];
   totalCount: number;
   hasNext: boolean;

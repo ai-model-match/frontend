@@ -19,12 +19,12 @@ export default function UpdateFlowComponent({
 }: UpdateFlowComponentProps) {
   // Services
   const navigate = useNavigate();
-
   const { t } = useTranslation();
 
   // States
   const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm({
     initialValues: {
       title: flow.title,
@@ -37,7 +37,7 @@ export default function UpdateFlowComponent({
     },
   });
 
-  // Handles
+  // Handlers
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiLoading(true);

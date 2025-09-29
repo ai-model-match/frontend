@@ -30,10 +30,12 @@ export default function DeactivateFlowComponent({
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  // States
+  const [apiLoading, setApiLoading] = useState(false);
   const [textToConfirm, setTextToConfirm] = useState<string>();
   const [isConfirmDisabled, setIsConfirmDisabled] = useState<boolean>(true);
-  const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm();
 
   // Calculate if the confirm button can be enabled
@@ -41,7 +43,7 @@ export default function DeactivateFlowComponent({
     setIsConfirmDisabled(!!confirmTextRequired && textToConfirm !== t('deactivateMe'));
   }, [confirmTextRequired, textToConfirm, t]);
 
-  // Handles
+  // Handlers
   const handleSubmit = async () => {
     try {
       setApiLoading(true);

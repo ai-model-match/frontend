@@ -3,6 +3,11 @@ import { Layout } from '@components/Layout/Layout';
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
 import { useAuth } from '@context/AuthContext';
 import {
+  defaultListUseCaseApiRequest,
+  defaultListUseCaseApiResponse,
+  defaultUseCase,
+} from '@dtos/defaultUseCaseDto';
+import {
   ListUseCaseInputDto,
   ListUseCaseOutputDto,
   UseCaseOrderByOptions,
@@ -35,7 +40,6 @@ import DeleteUseCaseComponent from './DeleteUseCaseComponent';
 import NewUseCaseComponent from './NewUseCaseComponent';
 import RowUseCaseComponent from './RowUseCaseComponent';
 import UpdateUseCaseComponent from './UpdateUseCaseComponent';
-import { defaultApiRequest, defaultApiResponse, defaultUseCase } from './UseCaseData';
 
 export default function UseCasePage() {
   // Services
@@ -43,29 +47,29 @@ export default function UseCasePage() {
   const auth = useAuth();
   const { t } = useTranslation();
 
-  // New Use Case panel status
-  const [newUseCaseOpen, { open: newUseCaseActionsOpen, close: newUseCaseActionsClose }] =
-    useDisclosure(false);
-  // Update Use Case panel status
-  const [
-    updateUseCaseOpen,
-    { open: updateUseCaseActionsOpen, close: updateUseCaseActionsClose },
-  ] = useDisclosure(false);
-  // Delete Use Case panel status
-  const [
-    deleteUseCaseOpen,
-    { open: deleteUseCaseActionsOpen, close: deleteUseCaseActionsClose },
-  ] = useDisclosure(false);
-  // Indicates if the first load happended
+  // States
   const [pageLoaded, setPageLoaded] = useState(false);
-  // Indicates if the API is loading, the current request and current response
   const [apiLoading, setApiLoading] = useState(false);
-  const [apiRequest, setApiRequest] = useState<ListUseCaseInputDto>(defaultApiRequest);
-  const [apiResponse, setApiResponse] =
-    useState<ListUseCaseOutputDto>(defaultApiResponse);
-  // Indicates the selected use Case for edit or delete
+  const [
+    newUseCasePanelIsOpen,
+    { open: newUseCaseOpenPanel, close: newUseCaseClosePanel },
+  ] = useDisclosure(false);
+  const [
+    updateUseCasePanelIsOpen,
+    { open: updateUseCaseOpenPanel, close: updateUseCaseClosePanel },
+  ] = useDisclosure(false);
+  const [
+    deleteUseCasePanelIsOpen,
+    { open: deleteUseCaseOpenPanel, close: deleteUseCaseClosePanel },
+  ] = useDisclosure(false);
+
+  const [listUseCaseApiRequest, setListUseCaseApiRequest] = useState<ListUseCaseInputDto>(
+    defaultListUseCaseApiRequest
+  );
+  const [listUseCaseApiResponse, setListUseCaseApiResponse] =
+    useState<ListUseCaseOutputDto>(defaultListUseCaseApiResponse);
+
   const [selectedUseCase, setSelectedUseCase] = useState<UseCase>(defaultUseCase);
-  // Indicates the search key value (could be different compared to API Request due to constrains on length)
   const [searchKeyValue, setSearchKeyValue] = useState<string>();
 
   // Effects
@@ -74,8 +78,8 @@ export default function UseCasePage() {
     (async () => {
       try {
         setApiLoading(true);
-        const data = await useCaseService.listUseCases(apiRequest);
-        setApiResponse(data);
+        const data = await useCaseService.listUseCases(listUseCaseApiRequest);
+        setListUseCaseApiResponse(data);
       } catch (err: unknown) {
         switch (getErrorMessage(err)) {
           case 'refresh-token-failed':
@@ -90,62 +94,63 @@ export default function UseCasePage() {
         setPageLoaded(true);
       }
     })();
-  }, [auth.loaded, navigate, apiRequest]);
+  }, [auth.loaded, navigate, listUseCaseApiRequest]);
 
+  // Handlers
   const handleGoToFlowsRequest = (id: string) => {
     navigate(`/use-cases/${id}/flows`);
   };
 
   const handleUpdateRequest = (id: string) => {
-    const useCase = apiResponse?.items.find((x) => x.id === id);
+    const useCase = listUseCaseApiResponse?.items.find((x) => x.id === id);
     if (!useCase) return;
     setSelectedUseCase(useCase);
-    updateUseCaseActionsOpen();
+    updateUseCaseOpenPanel();
   };
 
   const handleDeleteRequest = (id: string) => {
-    const useCase = apiResponse?.items.find((x) => x.id === id);
+    const useCase = listUseCaseApiResponse?.items.find((x) => x.id === id);
     if (!useCase) return;
     setSelectedUseCase(useCase);
-    deleteUseCaseActionsOpen();
+    deleteUseCaseOpenPanel();
   };
 
   const onUseCaseCreated = useCallback(
     (useCase: UseCase) => {
-      newUseCaseActionsClose();
+      newUseCaseClosePanel();
       navigate(`/use-cases/${useCase.id}`);
     },
-    [navigate, newUseCaseActionsClose]
+    [navigate, newUseCaseClosePanel]
   );
 
   const onUseCaseUpdated = useCallback(() => {
-    updateUseCaseActionsClose();
-    setApiRequest({ ...apiRequest });
-  }, [apiRequest, setApiRequest, updateUseCaseActionsClose]);
+    updateUseCaseClosePanel();
+    setListUseCaseApiRequest({ ...listUseCaseApiRequest });
+  }, [listUseCaseApiRequest, setListUseCaseApiRequest, updateUseCaseClosePanel]);
 
   const onUseCaseDeleted = useCallback(() => {
-    deleteUseCaseActionsClose();
+    deleteUseCaseClosePanel();
     // Check if we need to go back of 1 page or reset all filters after the deletion
-    const totalItems = apiResponse.items.length - 1;
-    const maxPage = Math.ceil(totalItems / apiRequest.pageSize);
-    const newPage = Math.min(apiRequest.page, maxPage);
+    const totalItems = listUseCaseApiResponse.items.length - 1;
+    const maxPage = Math.ceil(totalItems / listUseCaseApiRequest.pageSize);
+    const newPage = Math.min(listUseCaseApiRequest.page, maxPage);
     if (newPage < 1) {
-      setApiRequest({ ...defaultApiRequest });
+      setListUseCaseApiRequest({ ...defaultListUseCaseApiRequest });
       setSearchKeyValue(undefined);
     } else {
-      setApiRequest({ ...apiRequest, page: newPage });
+      setListUseCaseApiRequest({ ...listUseCaseApiRequest, page: newPage });
     }
-  }, [apiRequest, apiResponse.items, deleteUseCaseActionsClose]);
+  }, [listUseCaseApiRequest, listUseCaseApiResponse.items, deleteUseCaseClosePanel]);
 
   const onPageSelected = (selected: number) => {
-    setApiRequest({
-      ...apiRequest,
+    setListUseCaseApiRequest({
+      ...listUseCaseApiRequest,
       page: selected,
     });
   };
 
   const onFilterReset = () => {
-    setApiRequest(defaultApiRequest);
+    setListUseCaseApiRequest(defaultListUseCaseApiRequest);
     setSearchKeyValue(undefined);
   };
 
@@ -155,10 +160,10 @@ export default function UseCasePage() {
     const orderBy = newValue
       ? UseCaseOrderByOptions.Relevance
       : UseCaseOrderByOptions.UpdatedAt;
-    setApiRequest((prev) => {
+    setListUseCaseApiRequest((prev) => {
       if (prev.searchKey != newValue) {
         return {
-          ...defaultApiRequest,
+          ...defaultListUseCaseApiRequest,
           orderBy: orderBy,
           searchKey: newValue,
         };
@@ -170,32 +175,30 @@ export default function UseCasePage() {
 
   const onSortingChanged = useCallback(
     (field: string, dir: string) => {
-      setApiRequest({
-        ...apiRequest,
+      setListUseCaseApiRequest({
+        ...listUseCaseApiRequest,
         orderDir: dir as OrderDir,
         orderBy: field as UseCaseOrderByOptions,
       });
     },
-    [setApiRequest, apiRequest]
+    [setListUseCaseApiRequest, listUseCaseApiRequest]
   );
 
+  // Content
   const isFilterApplied = (): boolean => {
-    return equal(apiRequest, defaultApiRequest);
+    return equal(listUseCaseApiRequest, defaultListUseCaseApiRequest);
   };
-
   const hasNoFilteredResults = (): boolean => {
     return (
       !apiLoading &&
-      apiResponse.items.length == 0 &&
-      (apiResponse.totalCount != 0 || !isFilterApplied())
+      listUseCaseApiResponse.items.length == 0 &&
+      (listUseCaseApiResponse.totalCount != 0 || !isFilterApplied())
     );
   };
-
   const hasNoResults = (): boolean => {
-    return !apiLoading && apiResponse.totalCount == 0 && isFilterApplied();
+    return !apiLoading && listUseCaseApiResponse.totalCount == 0 && isFilterApplied();
   };
 
-  // Content
   return (
     <AuthGuard>
       <Layout>
@@ -216,19 +219,19 @@ export default function UseCasePage() {
                   showSearch={!hasNoResults()}
                   onSearchChange={onSearchTextChanged}
                   btnIcon={auth.canWrite() && !hasNoResults() ? IconPlus : undefined}
-                  onBtnClick={auth.canWrite() ? newUseCaseActionsOpen : undefined}
+                  onBtnClick={auth.canWrite() ? newUseCaseOpenPanel : undefined}
                 />
                 {!hasNoResults() && (
                   <Box mb={'xl'}>
                     <Fieldset>
                       <Table>
                         <ColumnUseCaseComponent
-                          sortBy={apiRequest.orderBy}
+                          sortBy={listUseCaseApiRequest.orderBy}
                           onSortingChanged={onSortingChanged}
                         />
                         {!hasNoFilteredResults() && (
                           <Table.Tbody>
-                            {apiResponse.items.map((useCase) => (
+                            {listUseCaseApiResponse.items.map((useCase) => (
                               <RowUseCaseComponent
                                 key={useCase.id}
                                 useCase={useCase}
@@ -250,11 +253,14 @@ export default function UseCasePage() {
                       )}
                     </Fieldset>
                     <Group justify="center" align="center">
-                      {apiResponse.totalCount > 0 && (
+                      {listUseCaseApiResponse.totalCount > 0 && (
                         <Pagination
                           mt={40}
-                          total={Math.ceil(apiResponse.totalCount / apiRequest.pageSize)}
-                          value={apiRequest.page}
+                          total={Math.ceil(
+                            listUseCaseApiResponse.totalCount /
+                              listUseCaseApiRequest.pageSize
+                          )}
+                          value={listUseCaseApiRequest.page}
                           onChange={onPageSelected}
                         />
                       )}
@@ -270,7 +276,7 @@ export default function UseCasePage() {
                         text={t('useCaseCreateNewText')}
                         suggestion={t('useCaseCreateNewSuggestion')}
                         btnText={t('useCaseCreateNewBtn')}
-                        btnHandle={newUseCaseActionsOpen}
+                        btnHandle={newUseCaseOpenPanel}
                       ></EmptyState>
                     ) : (
                       <EmptyState
@@ -286,9 +292,9 @@ export default function UseCasePage() {
           </Paper>
         </Grid.Col>
         <Drawer
-          opened={newUseCaseOpen}
+          opened={newUseCasePanelIsOpen}
           padding={0}
-          onClose={newUseCaseActionsClose}
+          onClose={newUseCaseClosePanel}
           position="right"
           offset={10}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
@@ -298,9 +304,9 @@ export default function UseCasePage() {
           <NewUseCaseComponent onUseCaseCreated={onUseCaseCreated} />
         </Drawer>
         <Drawer
-          opened={updateUseCaseOpen}
+          opened={updateUseCasePanelIsOpen}
           padding={0}
-          onClose={updateUseCaseActionsClose}
+          onClose={updateUseCaseClosePanel}
           position="right"
           offset={10}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
@@ -313,8 +319,8 @@ export default function UseCasePage() {
           />
         </Drawer>
         <Modal
-          opened={deleteUseCaseOpen}
-          onClose={deleteUseCaseActionsClose}
+          opened={deleteUseCasePanelIsOpen}
+          onClose={deleteUseCaseClosePanel}
           withCloseButton={false}
           overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
         >
@@ -323,7 +329,7 @@ export default function UseCasePage() {
             title={t('deleteUseCaseTitle')}
             text={t('deleteUseCaseDescription')}
             confirmTextRequired
-            onCancel={deleteUseCaseActionsClose}
+            onCancel={deleteUseCaseClosePanel}
             onUseCaseDeleted={onUseCaseDeleted}
           ></DeleteUseCaseComponent>
         </Modal>

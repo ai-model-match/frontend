@@ -1,4 +1,5 @@
 import {
+  GetUseCaseOutputDto,
   ListUseCaseInputDto,
   ListUseCaseOutputDto,
   UseCaseOrderByOptions,
@@ -16,14 +17,18 @@ export const defaultUseCase: UseCase = {
   updatedAt: '',
 };
 
-export const defaultApiRequest: ListUseCaseInputDto = {
+export const defaultGetUseCaseApiResponse: GetUseCaseOutputDto = {
+  item: defaultUseCase,
+};
+
+export const defaultListUseCaseApiRequest: ListUseCaseInputDto = {
   page: 1,
   pageSize: 5,
   orderDir: OrderDir.DESC,
   orderBy: UseCaseOrderByOptions.UpdatedAt,
 };
 
-export const defaultApiResponse: ListUseCaseOutputDto = {
+export const defaultListUseCaseApiResponse: ListUseCaseOutputDto = {
   items: [],
   totalCount: 0,
   hasNext: false,

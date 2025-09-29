@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import classes from './NotFoundPage.module.css';
 
 export default function NotFoundPage() {
+  // Services
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  // Content
   return (
     <div className={classes.root}>
       <Container>

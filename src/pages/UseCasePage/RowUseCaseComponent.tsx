@@ -30,6 +30,7 @@ export default function RowUseCaseComponent({
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  // Content
   return (
     <TableTr
       key={useCase.id}

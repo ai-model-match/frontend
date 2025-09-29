@@ -6,8 +6,10 @@ export interface FlowNewCardComponentProps {
   onClick: () => void;
 }
 export function FlowNewCardComponent({ onClick }: FlowNewCardComponentProps) {
+  // Services
   const { t } = useTranslation();
 
+  // Content
   return (
     <Button
       bd={'1px dashed var(--mantine-color-gray-6)'}

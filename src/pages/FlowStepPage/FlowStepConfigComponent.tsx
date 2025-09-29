@@ -75,7 +75,7 @@ export function FlowStepConfigComponent({
     })();
   }, [flowStep, flowStepState, form, navigate]);
 
-  // Handles
+  // Handlers
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiLoading(true);
@@ -113,6 +113,7 @@ export function FlowStepConfigComponent({
         <JsonInput
           key={flowStepState.id}
           my="md"
+          minRows={20}
           maxRows={20}
           readOnly={!auth.canWrite()}
           formatOnBlur

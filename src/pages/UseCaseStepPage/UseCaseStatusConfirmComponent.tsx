@@ -22,12 +22,14 @@ export default function UseCaseStatusConfirmComponent({
   // Services
   const { t } = useTranslation();
 
+  // States
   const [textToConfirm, setTextToConfirm] = useState<string>();
   const [isConfirmDisabled, setIsConfirmDisabled] = useState<boolean>(true);
 
+  // Form
   const form = useForm();
 
-  // Calculate if the confirm button can be enabled
+  // Effects
   useEffect(() => {
     setIsConfirmDisabled(!!confirmTextRequired && textToConfirm !== t('deactivateMe'));
   }, [confirmTextRequired, textToConfirm, t]);

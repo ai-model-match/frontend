@@ -3,8 +3,8 @@ import { AuthGuard } from '@guards/AuthGuard';
 import { Grid, Skeleton } from '@mantine/core';
 
 export default function DashboardPage() {
+  // Content
   const child = <Skeleton height={140} radius="md" animate={false} />;
-
   return (
     <AuthGuard>
       <Layout>

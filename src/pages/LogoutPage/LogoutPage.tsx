@@ -4,9 +4,11 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function LogoutPage() {
+  // Services
   const navigate = useNavigate();
   const auth = useAuth();
 
+  // Effects
   useEffect(() => {
     if (!auth.loaded) return;
     (async () => {
@@ -23,5 +25,6 @@ export default function LogoutPage() {
     })();
   }, [auth, navigate]);
 
+  // Content
   return <></>;
 }

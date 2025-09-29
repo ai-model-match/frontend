@@ -36,6 +36,7 @@ export default function UpdateFlowPctBulkComponent({
   // States
   const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm({
     initialValues: Object.fromEntries(
       flows.map((flow) => [flow.id, flow.currentServePct])
@@ -48,7 +49,7 @@ export default function UpdateFlowPctBulkComponent({
     0
   );
 
-  // Handles
+  // Handlers
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiLoading(true);

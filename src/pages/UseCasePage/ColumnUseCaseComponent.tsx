@@ -13,7 +13,7 @@ export default function ColumnUseCaseComponent({
   // Services
   const { t } = useTranslation();
 
-  // Update the list of columns when the language changes
+  // Data
   const tableColumns = useMemo(() => {
     return [
       {
@@ -54,6 +54,7 @@ export default function ColumnUseCaseComponent({
     ];
   }, [t]);
 
+  // Content
   return (
     <TableHeader
       sortBy={sortBy}

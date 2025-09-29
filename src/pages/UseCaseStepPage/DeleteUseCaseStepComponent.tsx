@@ -29,18 +29,20 @@ export default function DeleteUseCaseStepComponent({
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  // States
+  const [apiLoading, setApiLoading] = useState(false);
   const [textToConfirm, setTextToConfirm] = useState<string>();
   const [isConfirmDisabled, setIsConfirmDisabled] = useState<boolean>(true);
-  const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm();
 
-  // Calculate if the confirm button can be enabled
+  // Effects
   useEffect(() => {
     setIsConfirmDisabled(!!confirmTextRequired && textToConfirm !== t('deleteMe'));
   }, [confirmTextRequired, textToConfirm, t]);
 
-  // Handles
+  // Handlers
   const handleSubmit = async () => {
     try {
       setApiLoading(true);

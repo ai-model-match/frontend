@@ -29,12 +29,12 @@ export default function UpdateUseCaseComponent({
 }: UpdateUseCaseComponentProps) {
   // Services
   const navigate = useNavigate();
-
   const { t } = useTranslation();
 
   // States
   const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm({
     initialValues: {
       title: useCase.title,
@@ -49,7 +49,7 @@ export default function UpdateUseCaseComponent({
     },
   });
 
-  // Handles
+  // Handlers
   const handleSubmit = async (values: typeof form.values) => {
     if (!useCase) return;
     try {

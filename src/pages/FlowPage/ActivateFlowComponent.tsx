@@ -29,18 +29,20 @@ export default function ActivateFlowComponent({
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  // States
   const [textToConfirm, setTextToConfirm] = useState<string>();
   const [isConfirmDisabled, setIsConfirmDisabled] = useState<boolean>(true);
   const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm();
 
-  // Calculate if the confirm button can be enabled
+  // Effects
   useEffect(() => {
     setIsConfirmDisabled(!!confirmTextRequired && textToConfirm !== t('ActivateMe'));
   }, [confirmTextRequired, textToConfirm, t]);
 
-  // Handles
+  // Handlers
   const handleSubmit = async () => {
     try {
       setApiLoading(true);

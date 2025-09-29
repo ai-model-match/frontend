@@ -1,6 +1,6 @@
 import type {
-  ListUseCaseStepsInputDto,
-  ListUseCaseStepsOutputDto,
+  ListUseCaseStepInputDto,
+  ListUseCaseStepOutputDto,
   CreateUseCaseStepInputDto,
   CreateUseCaseStepOutputDto,
   DeleteUseCaseStepInputDto,
@@ -13,8 +13,8 @@ import { callAuthApi } from './authApi';
 
 export const useCaseStepService = {
   async listUseCaseSteps(
-    input: ListUseCaseStepsInputDto
-  ): Promise<ListUseCaseStepsOutputDto> {
+    input: ListUseCaseStepInputDto
+  ): Promise<ListUseCaseStepOutputDto> {
     const response = await callAuthApi(`/api/v1/use-case-steps`, Method.GET, input);
     if (!response) {
       throw new Error('use-case-step-list-failed');

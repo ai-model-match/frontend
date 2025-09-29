@@ -26,6 +26,7 @@ export default function NewUseCaseStepComponent({
   // States
   const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm({
     initialValues: {
       title: '',
@@ -40,7 +41,7 @@ export default function NewUseCaseStepComponent({
     },
   });
 
-  // Handles
+  // Handlers
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiLoading(true);

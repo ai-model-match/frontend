@@ -17,6 +17,7 @@ export function LoginPageForm() {
   // States
   const [apiLoading, setApiLoading] = useState(false);
 
+  // Form
   const form = useForm({
     initialValues: {
       username: '',
@@ -28,7 +29,7 @@ export function LoginPageForm() {
     },
   });
 
-  // Handles
+  // Handlers
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiLoading(true);

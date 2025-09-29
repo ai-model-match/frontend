@@ -2,9 +2,11 @@ import { LineChart } from '@mantine/charts';
 import { useTranslation } from 'react-i18next';
 
 export function UseCaseStepGraphComponent() {
+  // Services
   const { t } = useTranslation();
-  const range = [...Array(30).keys()].map((i) => i + 1);
 
+  // Content
+  const range = [...Array(30).keys()].map((i) => i + 1);
   return (
     <LineChart
       h={300}

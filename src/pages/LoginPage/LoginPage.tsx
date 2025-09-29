@@ -11,13 +11,16 @@ import classes from './LoginPage.module.css';
 import { LoginPageForm } from './LoginPageForm';
 
 export default function LoginPage() {
+  // Services
   const auth = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  // States
   const effectRan = useRef(false);
   const [pageLoaded, setPageLoaded] = useState(false);
 
+  // Effects
   useEffect(() => {
     if (!auth.loaded) return;
     if (effectRan.current) return;
@@ -52,6 +55,7 @@ export default function LoginPage() {
     })();
   }, [auth, t, navigate]);
 
+  // Content
   return (
     pageLoaded && (
       <Box className={classes.root}>

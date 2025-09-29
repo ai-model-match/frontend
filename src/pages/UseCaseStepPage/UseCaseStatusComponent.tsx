@@ -32,22 +32,22 @@ export default function UseCaseStatusComponent({
   const [apiLoading, setApiLoading] = useState(false);
   const [useCase, setUseCase] = useState(useCaseInput);
 
-  // Use Case confirm panel status
   const [
-    deactivateUseCaseOpen,
-    { open: deactivateUseCaseActionsOpen, close: deactivateUseCaseActionsClose },
+    deactivateUseCasePanelIsOpen,
+    { open: deactivateUseCaseOpenPanel, close: deactivateUseCaseClosePanel },
   ] = useDisclosure(false);
 
+  // Handlers
   const onStatusChange = async () => {
     if (useCase.active) {
-      deactivateUseCaseActionsOpen();
+      deactivateUseCaseOpenPanel();
     } else {
       await callAPI();
     }
   };
 
-  const deactivateUseCaseConfirmed = () => {
-    deactivateUseCaseActionsClose();
+  const onDeactivateUseCaseConfirmed = () => {
+    deactivateUseCaseClosePanel();
     callAPI();
   };
 
@@ -82,6 +82,7 @@ export default function UseCaseStatusComponent({
     }
   };
 
+  // Content
   return (
     <>
       <SegmentedControl
@@ -105,8 +106,8 @@ export default function UseCaseStatusComponent({
         onChange={onStatusChange}
       />
       <Modal
-        opened={deactivateUseCaseOpen}
-        onClose={deactivateUseCaseActionsClose}
+        opened={deactivateUseCasePanelIsOpen}
+        onClose={deactivateUseCaseClosePanel}
         withCloseButton={false}
         overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
       >
@@ -114,8 +115,8 @@ export default function UseCaseStatusComponent({
           title={t('deactivateUseCaseTitle')}
           text={t('deactivateUsecaseDescription')}
           confirmTextRequired={true}
-          onCancel={deactivateUseCaseActionsClose}
-          onConfirm={deactivateUseCaseConfirmed}
+          onCancel={deactivateUseCaseClosePanel}
+          onConfirm={onDeactivateUseCaseConfirmed}
         />
       </Modal>
     </>
