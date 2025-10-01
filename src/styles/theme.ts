@@ -61,6 +61,16 @@ export const mantineTheme: MantineThemeOverride = createTheme({
   primaryColor: 'brand',
   defaultRadius: 'md',
   components: {
+    Drawer: {
+      defaultProps: {
+        padding: 0,
+        position: 'right',
+        overlayProps: { backgroundOpacity: 0.5, blur: 4 },
+        withCloseButton: false,
+        offset: 10,
+        radius: 'md',
+      },
+    },
     Paper: {
       defaultProps: {
         shadow: '',
@@ -93,6 +103,11 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         size: 'sm',
       },
     },
+    Tooltip: {
+      defaultProps: {
+        fz: 'xs',
+      },
+    },
     Textarea: {
       defaultProps: {
         size: 'sm',
@@ -107,6 +122,8 @@ export const mantineTheme: MantineThemeOverride = createTheme({
       defaultProps: {
         padding: 'md',
         size: 'lg',
+        withCloseButton: false,
+        overlayProps: { backgroundOpacity: 0.5, blur: 4 },
       },
     },
     Alert: {
@@ -118,7 +135,6 @@ export const mantineTheme: MantineThemeOverride = createTheme({
     SegmentedControl: {
       defaultProps: {
         size: 'sm',
-        bg: `var(--aimm-segmented-control-bg)`,
       },
     },
     Card: {

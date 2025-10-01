@@ -18,14 +18,13 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
   // Effects
   useEffect(() => {
-    if (!auth.loaded) return;
-    if (!auth.accessToken) {
+    if (!auth.getAccessToken()) {
       auth.logout();
       navigate('/login', { replace: true });
     } else {
       setAuthenticated(true);
     }
-  }, [auth, navigate, auth.accessToken]);
+  }, [auth, navigate]);
 
   // Content
   return authenticated ? <>{children}</> : null;

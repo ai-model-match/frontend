@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext } from 'react';
 
 export type Permission = 'read' | 'write';
 
@@ -13,11 +13,10 @@ export interface JwtClaims {
 }
 
 type AuthContextType = {
-  loaded: boolean;
-  username?: string;
-  permissions: string[];
-  accessToken?: string;
-  refreshToken?: string;
+  getUsername: () => string | null;
+  getAccessToken: () => string | null;
+  getRefreshToken: () => string | null;
+  getPermissions: () => string[];
   login: (username: string, accessToken: string, refreshToken: string) => void;
   refresh: (accessToken: string, refreshToken: string) => void;
   canWrite: () => boolean;
@@ -30,73 +29,54 @@ export interface AuthProviderProps {
   children: React.ReactNode;
 }
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [username, setUsername] = useState<string>();
-  const [permissions, setPermissions] = useState<string[]>([]);
-  const [accessToken, setAccessToken] = useState<string>();
-  const [refreshToken, setRefreshToken] = useState<string>();
-  const [loaded, setLoaded] = useState(false);
+  const getUsername = () => {
+    return localStorage.getItem('username');
+  };
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('username');
-    const storedAccess = localStorage.getItem('accessToken');
-    const storedRefresh = localStorage.getItem('refreshToken');
-    if (storedUser && storedAccess && storedRefresh) {
-      setUsername(storedUser);
-      setAccessToken(storedAccess);
-      setRefreshToken(storedRefresh);
-      const decoded = jwtDecode<JwtClaims>(storedAccess);
-      setPermissions(decoded.permissions);
-    } else {
-      setUsername(undefined);
-      setAccessToken(undefined);
-      setRefreshToken(undefined);
-      setPermissions([]);
-    }
-    setLoaded(true);
-  }, []);
+  const getAccessToken = () => {
+    return localStorage.getItem('accessToken');
+  };
+
+  const getRefreshToken = () => {
+    return localStorage.getItem('refreshToken');
+  };
+
+  const getPermissions = () => {
+    const accessToken = getAccessToken();
+    if (!accessToken) return [];
+    const decoded = jwtDecode<JwtClaims>(accessToken);
+    return decoded.permissions;
+  };
 
   const login = (username: string, accessToken: string, refreshToken: string) => {
-    setUsername(username);
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
     localStorage.setItem('username', username);
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
-    const decoded = jwtDecode<JwtClaims>(accessToken);
-    setPermissions(decoded.permissions);
   };
 
   const refresh = (accessToken: string, refreshToken: string) => {
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
-    const decoded = jwtDecode<JwtClaims>(accessToken);
-    setPermissions(decoded.permissions);
   };
 
   const logout = () => {
-    if (username) setUsername(undefined);
-    if (accessToken) setAccessToken(undefined);
-    if (refreshToken) setRefreshToken(undefined);
-    if (permissions.length > 0) setPermissions([]);
     localStorage.removeItem('username');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   };
 
   const canWrite = () => {
+    const permissions = getPermissions();
     return permissions.includes('write');
   };
 
   return (
     <AuthContext.Provider
       value={{
-        loaded,
-        username,
-        permissions,
-        accessToken,
-        refreshToken,
+        getUsername,
+        getAccessToken,
+        getRefreshToken,
+        getPermissions,
         login,
         refresh,
         logout,

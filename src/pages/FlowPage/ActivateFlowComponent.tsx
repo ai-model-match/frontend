@@ -65,7 +65,7 @@ export default function ActivateFlowComponent({
   // Content
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Group justify="left" align="flex-start">
+      <Group>
         <ThemeIcon variant="filled" size={34}>
           <IconX />
         </ThemeIcon>

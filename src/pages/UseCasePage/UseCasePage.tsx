@@ -74,7 +74,6 @@ export default function UseCasePage() {
 
   // Effects
   useEffect(() => {
-    if (!auth.loaded) return;
     (async () => {
       try {
         setApiLoading(true);
@@ -94,7 +93,7 @@ export default function UseCasePage() {
         setPageLoaded(true);
       }
     })();
-  }, [auth.loaded, navigate, listUseCaseApiRequest]);
+  }, [navigate, listUseCaseApiRequest]);
 
   // Handlers
   const handleGoToFlowsRequest = (id: string) => {
@@ -291,39 +290,16 @@ export default function UseCasePage() {
             )}
           </Paper>
         </Grid.Col>
-        <Drawer
-          opened={newUseCasePanelIsOpen}
-          padding={0}
-          onClose={newUseCaseClosePanel}
-          position="right"
-          offset={10}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-          withCloseButton={false}
-          radius="md"
-        >
+        <Drawer opened={newUseCasePanelIsOpen} onClose={newUseCaseClosePanel}>
           <NewUseCaseComponent onUseCaseCreated={onUseCaseCreated} />
         </Drawer>
-        <Drawer
-          opened={updateUseCasePanelIsOpen}
-          padding={0}
-          onClose={updateUseCaseClosePanel}
-          position="right"
-          offset={10}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-          withCloseButton={false}
-          radius="md"
-        >
+        <Drawer opened={updateUseCasePanelIsOpen} onClose={updateUseCaseClosePanel}>
           <UpdateUseCaseComponent
             useCase={selectedUseCase}
             onUseCaseUpdated={onUseCaseUpdated}
           />
         </Drawer>
-        <Modal
-          opened={deleteUseCasePanelIsOpen}
-          onClose={deleteUseCaseClosePanel}
-          withCloseButton={false}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        >
+        <Modal opened={deleteUseCasePanelIsOpen} onClose={deleteUseCaseClosePanel}>
           <DeleteUseCaseComponent
             useCase={selectedUseCase}
             title={t('deleteUseCaseTitle')}

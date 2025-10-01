@@ -37,7 +37,7 @@ export default function UseCaseStatusConfirmComponent({
   // Content
   return (
     <form onSubmit={form.onSubmit(onConfirm)}>
-      <Group justify="left" align="flex-start">
+      <Group>
         <ThemeIcon variant="filled" color={'red'} size={34}>
           <IconX />
         </ThemeIcon>

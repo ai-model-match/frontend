@@ -6,6 +6,7 @@ export const enTranslations = {
   fieldRequired: 'This field is required',
   btnCancel: 'CANCEL',
   btnConfirm: 'CONFIRM',
+  btnReset: 'Reset',
   btnShowMore: 'Show more',
   btnHide: 'Hide',
   deleteMe: 'delete me',
@@ -28,6 +29,7 @@ export const enTranslations = {
   menuDashboard: 'Dashboard',
   menuUseCases: 'Use Cases',
   menuFlows: 'Execution Plans',
+  menuRolloutStrategy: 'Rollout Strategy',
   menuLogout: 'Logout',
   useCaseTitlePage: 'USE CASES',
   useCaseCannotDelete: 'Cannot be deleted while it is active',
@@ -136,6 +138,8 @@ export const enTranslations = {
     'Deleting the Step may affect the proper functioning of active Execution Plans linked to this Use Case.',
   flowActiveTitlePage: 'CANDIDATE PLANS',
   flowInactiveTitlePage: 'AVAILABLE PLANS',
+  flowActivateAction: 'Promote to Candidate',
+  flowDeactivateAction: 'Remove from Candidates',
   flowCurrentServePct: 'Traffic handled: <strong>{{pct}}%</strong>',
   deleteFlowTitle: 'DELETE EXECUTION PLAN',
   deleteFlowDescription:
@@ -165,10 +169,10 @@ export const enTranslations = {
     'Describe the implementation of this Execution Plan',
   newFlowCreateBtn: 'CREATE',
   flowNewCardBtn: 'Create a new Execution Plan',
-  activateFlowTitle: 'ACTIVATE EXECUTION PLAN',
+  activateFlowTitle: 'PROMOTE TO CANDIDATE',
   activateFlowDescription:
     'Are you sure you want to activate this Execution Plan? This will allow all its Steps to process incoming requests.',
-  deactivateFlowTitle: 'DEACTIVATE EXECUTION PLAN',
+  deactivateFlowTitle: 'REMOVE FROM CANDIDATES',
   deactivateFlowDescription:
     'Are you sure you want to deactivate this Execution Plan? This will prevent all its Steps from processing incoming requests. Others Execution Plans will be adapted to cover the 100% of incoming traffic.',
   deactivateFlowNotAllowed: 'The Execution Plan cannot be deactivated',
@@ -185,4 +189,17 @@ export const enTranslations = {
   flowActiveAlertMessage:
     'Attention! This Execution Plan is active. Modifying the configuration of these Steps will immediately affect incoming requests.',
   flowStepConfigurationSaved: 'Configuration updated successfully!',
+  rsTitle: 'ROLLOUT STRATEGY',
+  rsFlowInactive: 'Execution Plan Inactive',
+  rsFlowActive: 'Execution Plan Active',
+  rwWarmupTitle: 'Warmup Phase',
+  rwWarmupDescription:
+    'The warmup phase gradually routes increasing amounts of traffic to new Execution Plans, ensuring a smooth transition while allowing performance monitoring and reducing the risk of issues.',
+  rwWarmupStart: 'Start adding an Execution Plan to the Warmup phase',
+  rsWarmupFlowError: 'The sum of the percentages must be exactly 100%',
+  rwWarmupFlowSelect: 'Select an Execution Plan',
+  rwWarmupFlowSelectNothingFound: 'No Execution Plans available',
+  rwWarmupFlowNotExist: 'Flow not available anymore',
+  rwWarmupFlowCurrentTraffic: 'Current traffic',
+  rwWarmupFlowTargetTraffic: 'Target traffic',
 };

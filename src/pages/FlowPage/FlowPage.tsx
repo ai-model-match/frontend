@@ -1,3 +1,7 @@
+import {
+  BreadcrumbPath,
+  BreadcrumbPathItem,
+} from '@components/BreadcrumbPath/BreadcrumbPath';
 import { EmptyState } from '@components/EmptyState/EmptyState';
 import { Layout } from '@components/Layout/Layout';
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
@@ -13,8 +17,6 @@ import { GetUseCaseOutputDto } from '@dtos/useCaseDto';
 import { Flow } from '@entities/flow';
 import { AuthGuard } from '@guards/AuthGuard';
 import {
-  Anchor,
-  Breadcrumbs,
   Button,
   Drawer,
   Fieldset,
@@ -23,7 +25,6 @@ import {
   Loader,
   Modal,
   Paper,
-  Text,
 } from '@mantine/core';
 import { useDisclosure, useInterval } from '@mantine/hooks';
 import { flowService } from '@services/flowService';
@@ -36,7 +37,7 @@ import {
 import { getErrorMessage } from '@utils/errUtils';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ActivateFlowComponent from './ActivateFlowComponent';
 import DeactivateFlowComponent from './DeactivateFlowComponent';
 import DeleteFlowComponent from './DeleteFlowComponent';
@@ -45,10 +46,7 @@ import { FlowNewCardComponent } from './FlowNewCardComponent';
 import NewFlowComponent from './NewFlowComponent';
 import UpdateFlowComponent from './UpdateFlowComponent';
 import UpdateFlowPctBulkComponent from './UpdateFlowPctBulkComponent';
-interface BreadcrumbItem {
-  title: string;
-  href: string;
-}
+
 export default function FlowPage() {
   const { id } = useParams();
 
@@ -90,17 +88,16 @@ export default function FlowPage() {
   const [apiListFlowResponse, setApiListFlowResponse] = useState<ListFlowOutputDto>(
     defaultListFlowApiResponse
   );
-  const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>([]);
+  const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbPathItem[]>([]);
   const [selectedFlow, setSelectedFlow] = useState<Flow>(defaultFlow);
   const [selectedFlowsBulk, setSelectedFlowsBulk] = useState<Flow[]>([]);
   const interval = useInterval(
     () => setApiListFlowRequest({ ...apiListFlowRequest }),
-    4000
+    3000
   );
 
   // Effects
   useEffect(() => {
-    if (!auth.loaded) return;
     (async () => {
       try {
         const data = await useCaseService.getUseCase({ id: id! });
@@ -126,7 +123,7 @@ export default function FlowPage() {
         setPageLoaded(true);
       }
     })();
-  }, [id, auth, navigate, t, apiListFlowRequest]);
+  }, [id, navigate, t, apiListFlowRequest]);
 
   useEffect(() => {
     interval.start();
@@ -219,18 +216,6 @@ export default function FlowPage() {
   }, [setApiListFlowRequest, activateFlowClosePanel]);
 
   // Content
-  const breadcrumbItemsRender = () =>
-    breadcrumbItems.map((item) => {
-      if (item.href == '#') {
-        return <Text>{item.title}</Text>;
-      } else {
-        return (
-          <Anchor component={NavLink} to={item.href}>
-            {item.title}
-          </Anchor>
-        );
-      }
-    });
   return (
     <AuthGuard>
       <Layout>
@@ -248,7 +233,7 @@ export default function FlowPage() {
             <Grid.Col span={12}>
               <Paper>
                 <Group justify="space-between" align="center" gap={10} mb={0}>
-                  <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+                  <BreadcrumbPath items={breadcrumbItems} />
                   <Button
                     variant="light"
                     leftSection={<IconSettingsAutomation size={22} />}
@@ -360,55 +345,23 @@ export default function FlowPage() {
             </Grid.Col>
           </>
         )}
-        <Drawer
-          opened={newFlowPanelIsOpen}
-          padding={0}
-          onClose={newFlowClosePanel}
-          position="right"
-          offset={10}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-          withCloseButton={false}
-          radius="md"
-        >
+        <Drawer opened={newFlowPanelIsOpen} onClose={newFlowClosePanel}>
           <NewFlowComponent
             useCase={apiGetUseCaseResponse.item}
             onFlowCreated={onFlowCreated}
           />
         </Drawer>
-        <Drawer
-          opened={updateFlowPanelIsOpen}
-          padding={0}
-          onClose={updateFlowClosePanel}
-          position="right"
-          offset={10}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-          withCloseButton={false}
-          radius="md"
-        >
+        <Drawer opened={updateFlowPanelIsOpen} onClose={updateFlowClosePanel}>
           <UpdateFlowComponent flow={selectedFlow} onFlowUpdated={onFlowUpdated} />
         </Drawer>
-        <Drawer
-          opened={updateFlowBulkPanelIsOpen}
-          padding={0}
-          onClose={updateFlowBulkClosePanel}
-          position="right"
-          offset={10}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-          withCloseButton={false}
-          radius="md"
-        >
+        <Drawer opened={updateFlowBulkPanelIsOpen} onClose={updateFlowBulkClosePanel}>
           <UpdateFlowPctBulkComponent
             useCase={apiGetUseCaseResponse.item}
             flows={selectedFlowsBulk}
             onFlowsUpdated={onFlowsUpdated}
           />
         </Drawer>
-        <Modal
-          opened={deleteFlowPanelIsOpen}
-          onClose={deleteFlowClosePanel}
-          withCloseButton={false}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        >
+        <Modal opened={deleteFlowPanelIsOpen} onClose={deleteFlowClosePanel}>
           <DeleteFlowComponent
             flow={selectedFlow}
             title={t('deleteFlowTitle')}
@@ -417,12 +370,7 @@ export default function FlowPage() {
             onFlowDeleted={onFlowDeleted}
           ></DeleteFlowComponent>
         </Modal>
-        <Modal
-          opened={deactivateFlowPanelIsOpen}
-          onClose={deactivateFlowClosePanel}
-          withCloseButton={false}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        >
+        <Modal opened={deactivateFlowPanelIsOpen} onClose={deactivateFlowClosePanel}>
           <DeactivateFlowComponent
             flow={selectedFlow}
             title={t('deactivateFlowTitle')}
@@ -432,12 +380,7 @@ export default function FlowPage() {
             onFlowDeactivated={onFlowDeactivated}
           ></DeactivateFlowComponent>
         </Modal>
-        <Modal
-          opened={activateFlowPanelIsOpen}
-          onClose={activateFlowClosePanel}
-          withCloseButton={false}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        >
+        <Modal opened={activateFlowPanelIsOpen} onClose={activateFlowClosePanel}>
           <ActivateFlowComponent
             flow={selectedFlow}
             title={t('activateFlowTitle')}

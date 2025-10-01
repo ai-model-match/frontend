@@ -1,3 +1,7 @@
+import {
+  BreadcrumbPath,
+  BreadcrumbPathItem,
+} from '@components/BreadcrumbPath/BreadcrumbPath';
 import { EmptyState } from '@components/EmptyState/EmptyState';
 import { Layout } from '@components/Layout/Layout';
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
@@ -15,8 +19,6 @@ import { UseCaseStep } from '@entities/useCaseStep';
 import { AuthGuard } from '@guards/AuthGuard';
 import {
   ActionIcon,
-  Anchor,
-  Breadcrumbs,
   Button,
   Code,
   CopyButton,
@@ -49,17 +51,13 @@ import {
 import { getErrorMessage } from '@utils/errUtils';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DeleteUseCaseStepComponent from './DeleteUseCaseStepComponent';
 import NewUseCaseStepComponent from './NewUseCaseStepComponent';
 import UpdateUseCaseStepComponent from './UpdateUseCaseStepComponent';
 import UseCaseStatusComponent from './UseCaseStatusComponent';
 import { UseCaseStepGraphComponent } from './UseCaseStepGraphComponent';
 
-interface BreadcrumbItem {
-  title: string;
-  href: string;
-}
 export default function UseCaseStepPage() {
   // Params
   const { id } = useParams();
@@ -76,7 +74,7 @@ export default function UseCaseStepPage() {
     useState<ListUseCaseStepInputDto>(defaultListUseCaseStepApiRequest);
   const [apiUseCaseStepResponse, setApiUseCaseStepResponse] =
     useState<ListUseCaseStepOutputDto>(defaultListUseCaseStepApiResponse);
-  const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>([]);
+  const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbPathItem[]>([]);
   const [selectedStepNumber, setSelectedStepNumber] = useState<number>(0);
   const [
     newUseCaseStepPanelIsOpen,
@@ -95,7 +93,6 @@ export default function UseCaseStepPage() {
 
   // Effects
   useEffect(() => {
-    if (!auth.loaded) return;
     (async () => {
       try {
         const data = await useCaseService.getUseCase({ id: id! });
@@ -121,7 +118,7 @@ export default function UseCaseStepPage() {
         setPageLoaded(true);
       }
     })();
-  }, [id, auth, navigate, t, apiUseCaseStepRequest]);
+  }, [id, navigate, t, apiUseCaseStepRequest]);
 
   useEffect(() => {
     // Set breadcrumb and adapt by change on data or translation
@@ -203,19 +200,6 @@ export default function UseCaseStepPage() {
     }
   };
 
-  const breadcrumbItemsRender = () =>
-    breadcrumbItems.map((item) => {
-      if (item.href == '#') {
-        return <Text>{item.title}</Text>;
-      } else {
-        return (
-          <Anchor component={NavLink} to={item.href}>
-            {item.title}
-          </Anchor>
-        );
-      }
-    });
-
   // Content
   const element = (item: UseCaseStep) => {
     return (
@@ -281,7 +265,7 @@ export default function UseCaseStepPage() {
             <Grid.Col span={12}>
               <Paper>
                 <Group justify="space-between" align="center" gap={0} mb={0}>
-                  <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+                  <BreadcrumbPath items={breadcrumbItems} />
                   <Group justify="flex-end" align="center" gap={10} mb={0}>
                     <Button
                       variant="light"
@@ -417,16 +401,7 @@ export default function UseCaseStepPage() {
             </Grid.Col>
           </>
         )}
-        <Drawer
-          opened={newUseCaseStepPanelIsOpen}
-          padding={0}
-          onClose={newUseCaseStepClosePanel}
-          position="right"
-          offset={10}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-          withCloseButton={false}
-          radius="md"
-        >
+        <Drawer opened={newUseCaseStepPanelIsOpen} onClose={newUseCaseStepClosePanel}>
           <NewUseCaseStepComponent
             useCase={apiGetUseCaseResponse.item}
             onUseCaseStepCreated={onUseCaseStepCreated}
@@ -434,13 +409,7 @@ export default function UseCaseStepPage() {
         </Drawer>
         <Drawer
           opened={updateUseCaseStepPanelIsOpen}
-          padding={0}
           onClose={updateUseCaseStepClosePanel}
-          position="right"
-          offset={10}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-          withCloseButton={false}
-          radius="md"
         >
           <UpdateUseCaseStepComponent
             totalItemsCount={apiUseCaseStepResponse.totalCount}
@@ -452,8 +421,6 @@ export default function UseCaseStepPage() {
         <Modal
           opened={deleteUseCaseStepPanelIsOpen}
           onClose={deleteUseCaseStepClosePanel}
-          withCloseButton={false}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
         >
           <DeleteUseCaseStepComponent
             useCaseStep={selectedUseCaseStep}

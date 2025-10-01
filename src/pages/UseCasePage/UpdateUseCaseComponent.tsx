@@ -83,7 +83,7 @@ export default function UpdateUseCaseComponent({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>
-        <Group justify="left" align="flex-start">
+        <Group>
           <ThemeIcon variant="filled" c={'white'} size={30}>
             <IconEdit size={22} />
           </ThemeIcon>

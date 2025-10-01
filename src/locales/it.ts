@@ -6,6 +6,7 @@ export const itTranslations = {
   fieldRequired: 'Il campo é obbligatorio',
   btnCancel: 'ANNULLA',
   btnConfirm: 'CONFERMA',
+  btnReset: 'Reset',
   btnShowMore: 'Mostra di più',
   btnHide: 'Nascondi',
   deleteMe: 'elimina',
@@ -28,6 +29,7 @@ export const itTranslations = {
   menuDashboard: 'Dashboard',
   menuUseCases: 'Casi d’Uso',
   menuFlows: 'Piani di Esecuzione',
+  menuRolloutStrategy: 'Strategia di Rilascio',
   menuLogout: 'Esci',
   useCaseTitlePage: 'CASI D’USO',
   useCaseCannotDelete: 'Impossibile eliminarlo mentre è attivo',
@@ -138,6 +140,8 @@ export const itTranslations = {
     'L’eliminazione dello Step potrebbe compromettere il corretto funzionamento dei Piani di Esecuzione attivi collegati a questo Caso d’Uso.',
   flowActiveTitlePage: 'PIANI CANDIDATI',
   flowInactiveTitlePage: 'PIANI DISPONIBILI',
+  flowActivateAction: 'Promuovi a Candidato',
+  flowDeactivateAction: 'Rimuovi dai Candidati',
   flowCurrentServePct: 'Traffico gestito: <strong>{{pct}}%</strong>',
   deleteFlowTitle: 'ELIMINA PIANO DI ESECUZIONE',
   deleteFlowDescription:
@@ -168,10 +172,10 @@ export const itTranslations = {
     'Descrivi l’implementazione di questo Piano di Esecuzione',
   newFlowCreateBtn: 'CREA',
   flowNewCardBtn: 'Crea un nuovo Piano di Esecuzione',
-  activateFlowTitle: 'ATTIVA PIANO DI ESECUZIONE',
+  activateFlowTitle: 'PROMUOVI A CANDIDATO',
   activateFlowDescription:
     'Sei sicuro di voler attivare questo Piano di Esecuzione? Questo permetterà a tutti i suoi Steps di elaborare le richieste in ingresso.',
-  deactivateFlowTitle: 'DISATTIVA PIANO DI ESECUZIONE',
+  deactivateFlowTitle: 'RIMUOVI DAI CANDIDATI',
   deactivateFlowDescription:
     'Sei sicuro di voler disattivare questo Piano di Esecuzione? Questo impedirà a tutti i suoi Steps di elaborare le richieste in ingresso. Altri Piani di Esecuzione saranno adattati per coprire il 100% del traffico in ingresso.',
   deactivateFlowNotAllowed: 'Il Piano di Esecuzione non può essere disattivato',
@@ -188,4 +192,17 @@ export const itTranslations = {
   flowActiveAlertMessage:
     'Attenzione! Questo Piano di Esecuzione è attivo. Modificare la configurazione di questi Steps influenzerà immediatamente le richieste in ingresso.',
   flowStepConfigurationSaved: 'Configurazione aggiornata con successo!',
+  rsTitle: 'STRATEGIA DI RILASCIO',
+  rsFlowInactive: 'Piano di Esecuzione Inattivo',
+  rsFlowActive: 'Piano di Esecuzione Attivo',
+  rwWarmupTitle: 'Fase di Warmup',
+  rwWarmupDescription:
+    'La fase di warmup instrada gradualmente quantità crescenti di traffico verso nuovi Piani di Esecuzione, garantendo una transizione fluida mentre consente il monitoraggio delle prestazioni e riduce il rischio di problemi.',
+  rwWarmupStart: 'Inizia aggiungendo un Piano di Esecuzione alla fase di Warmup',
+  rsWarmupFlowError: 'La somma delle percentuali deve essere esattamente 100%',
+  rwWarmupFlowSelect: 'Seleziona Piano di Esecuzione',
+  rwWarmupFlowSelectNothingFound: 'Nessun Piano disponibile',
+  rwWarmupFlowNotExist: 'Piano non più disponibile',
+  rwWarmupFlowCurrentTraffic: 'Traffico attuale',
+  rwWarmupFlowTargetTraffic: 'Obiettivo traffico',
 };

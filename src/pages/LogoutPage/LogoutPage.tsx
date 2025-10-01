@@ -10,11 +10,11 @@ export default function LogoutPage() {
 
   // Effects
   useEffect(() => {
-    if (!auth.loaded) return;
     (async () => {
       try {
-        if (auth.refreshToken) {
-          await authService.logout({ refreshToken: auth.refreshToken });
+        const refreshToken = auth.getRefreshToken();
+        if (refreshToken) {
+          await authService.logout({ refreshToken });
         }
       } catch (err: unknown) {
         void err;

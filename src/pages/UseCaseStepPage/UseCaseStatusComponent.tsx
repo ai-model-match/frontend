@@ -87,6 +87,7 @@ export default function UseCaseStatusComponent({
     <>
       <SegmentedControl
         size="md"
+        bg="var(--aimm-segmented-control-bg)"
         withItemsBorders
         disabled={apiLoading || !auth.canWrite()}
         value={useCase.active ? USE_CASE_ACTIVE : USE_CASE_INACTIVE}
@@ -105,12 +106,7 @@ export default function UseCaseStatusComponent({
         ]}
         onChange={onStatusChange}
       />
-      <Modal
-        opened={deactivateUseCasePanelIsOpen}
-        onClose={deactivateUseCaseClosePanel}
-        withCloseButton={false}
-        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-      >
+      <Modal opened={deactivateUseCasePanelIsOpen} onClose={deactivateUseCaseClosePanel}>
         <UseCaseStatusConfirmComponent
           title={t('deactivateUseCaseTitle')}
           text={t('deactivateUsecaseDescription')}

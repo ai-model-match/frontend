@@ -1,3 +1,7 @@
+import {
+  BreadcrumbPath,
+  BreadcrumbPathItem,
+} from '@components/BreadcrumbPath/BreadcrumbPath';
 import { EmptyState } from '@components/EmptyState/EmptyState';
 import { Layout } from '@components/Layout/Layout';
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
@@ -20,8 +24,6 @@ import { FlowStep } from '@entities/flowStep';
 import { AuthGuard } from '@guards/AuthGuard';
 import {
   Alert,
-  Anchor,
-  Breadcrumbs,
   Button,
   Fieldset,
   Grid,
@@ -29,7 +31,6 @@ import {
   Loader,
   Paper,
   Stepper,
-  Text,
 } from '@mantine/core';
 import { OrderDir } from '@services/api.type';
 import { flowService } from '@services/flowService';
@@ -44,13 +45,9 @@ import {
 import { getErrorMessage } from '@utils/errUtils';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FlowStepConfigComponent } from './FlowStepConfigComponent';
 
-interface BreadcrumbItem {
-  title: string;
-  href: string;
-}
 export default function FlowStepPage() {
   // Params
   const { id, flowId } = useParams();
@@ -76,12 +73,11 @@ export default function FlowStepPage() {
   const [apiGetFlowResponse, setApiGetFlowResponse] = useState<GetFlowOutputDto>(
     defaultGetFlowApiResponse
   );
-  const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbItem[]>([]);
+  const [breadcrumbItems, setBreadcrumbItems] = useState<BreadcrumbPathItem[]>([]);
   const [selectedStepNumber, setSelectedStepNumber] = useState<number>(0);
 
   // Effects
   useEffect(() => {
-    if (!auth.loaded) return;
     (async () => {
       try {
         // Get Use Case
@@ -125,7 +121,7 @@ export default function FlowStepPage() {
         setPageLoaded(true);
       }
     })();
-  }, [flowId, id, auth, navigate, t, apiListFlowStepRequest]);
+  }, [flowId, id, navigate, t, apiListFlowStepRequest]);
 
   useEffect(() => {
     // Set breadcrumb and adapt by change on data or translation
@@ -147,19 +143,6 @@ export default function FlowStepPage() {
     }
     setBreadcrumbItems(items);
   }, [t, apiGetUseCaseResponse, apiGetFlowResponse]);
-
-  const breadcrumbItemsRender = () =>
-    breadcrumbItems.map((item) => {
-      if (item.href == '#') {
-        return <Text>{item.title}</Text>;
-      } else {
-        return (
-          <Anchor component={NavLink} to={item.href}>
-            {item.title}
-          </Anchor>
-        );
-      }
-    });
 
   const getFlowStepByUseCaseStep = (selectedStepNumber: number): FlowStep => {
     const useCaseStep = apiListUseCaseStepResponse.items[selectedStepNumber];
@@ -183,7 +166,7 @@ export default function FlowStepPage() {
             <Grid.Col span={12}>
               <Paper>
                 <Group justify="space-between" align="center" gap={0} mb={0}>
-                  <Breadcrumbs>{breadcrumbItemsRender()}</Breadcrumbs>
+                  <BreadcrumbPath items={breadcrumbItems} />
                   <Button
                     variant="light"
                     leftSection={<IconArrowRampRight size={22} />}

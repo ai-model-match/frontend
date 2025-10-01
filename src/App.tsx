@@ -10,6 +10,7 @@ import { DirectionProvider, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import FlowPage from '@pages/FlowPage/FlowPage';
 import FlowStepPage from '@pages/FlowStepPage/FlowStepPage';
+import { RolloutStrategyPage } from '@pages/RolloutStrategyPage/RolloutStrategyPage';
 import { cssVariablesResolver, mantineTheme } from '@styles/theme';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -40,6 +41,10 @@ export function App() {
               <Route path="/use-cases/:id" element={<UseCaseStepPage />} />
               <Route path="/use-cases/:id/flows" element={<FlowPage />} />
               <Route path="/use-cases/:id/flows/:flowId" element={<FlowStepPage />} />
+              <Route
+                path="/use-cases/:id/rollout-strategy"
+                element={<RolloutStrategyPage />}
+              />
               <Route path="/logout" element={<LogoutPage />} />
 
               {/* Public login page */}

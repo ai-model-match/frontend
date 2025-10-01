@@ -67,7 +67,7 @@ export default function NewFlowComponent({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Box>
-        <Group justify="left" align="flex-start">
+        <Group>
           <ThemeIcon variant="filled" c={'white'} size={30}>
             <IconPlus size={22} />
           </ThemeIcon>

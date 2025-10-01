@@ -22,18 +22,18 @@ export default function LoginPage() {
 
   // Effects
   useEffect(() => {
-    if (!auth.loaded) return;
     if (effectRan.current) return;
     effectRan.current = true;
     (async () => {
       try {
-        if (!auth.refreshToken) {
+        const refreshToken = auth.getRefreshToken();
+        if (!refreshToken) {
           auth.logout();
           setPageLoaded(true);
           return;
         }
         const data = await authService.refreshToken({
-          refreshToken: auth.refreshToken,
+          refreshToken,
         });
         auth.refresh(data.accessToken, data.refreshToken);
         navigate('/use-cases');
