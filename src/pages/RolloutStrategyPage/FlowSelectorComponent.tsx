@@ -72,7 +72,7 @@ export function FlowSelectorComponent({
                     color="gray.5"
                     style={{ textDecoration: 'line-through' }}
                   >
-                    {t('rwWarmupFlowNotExist')}
+                    {t('rsWarmupFlowNotExist')}
                   </Badge>
                 )}
               </>
@@ -88,8 +88,8 @@ export function FlowSelectorComponent({
             clearable={false}
             unselectable="on"
             withCheckIcon={false}
-            placeholder={t('rwWarmupFlowSelect')}
-            nothingFoundMessage={t('rwWarmupFlowSelectNothingFound')}
+            placeholder={t('rsWarmupFlowSelect')}
+            nothingFoundMessage={t('rsWarmupFlowSelectNothingFound')}
             data={flows.map((flow) => ({
               value: flow.id,
               label: flow.title,

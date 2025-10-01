@@ -153,7 +153,7 @@ export function WarmupComponent({
           <PaperTitle
             mb={15}
             icon={IconTrendingUp}
-            title={t('rwWarmupTitle')}
+            title={t('rsWarmupTitle')}
             iconColor={rsWarmup !== null ? 'brand' : 'gray.5'}
           />
           <Tooltip
@@ -161,7 +161,7 @@ export function WarmupComponent({
             withArrow
             multiline
             position="top"
-            label={t('rwWarmupDescription')}
+            label={t('rsWarmupDescription')}
           >
             <IconInfoCircle color="gray" size={24} />
           </Tooltip>
@@ -180,17 +180,16 @@ export function WarmupComponent({
         {rsWarmup !== null && (
           <>
             <Text size="xs" mb={5}>
-              Based on:
+              {t('rsWarmupBasedOn')}
             </Text>
             <Group justify="space-between" align="center">
               <SegmentedControl
                 miw={240}
                 readOnly={!canEdit()}
                 value={rsWarmup.intervalMins ? 'time-based' : 'traffic-based'}
-                title="Based on"
                 data={[
-                  { value: 'time-based', label: 'Time' },
-                  { value: 'traffic-based', label: 'Traffic' },
+                  { value: 'time-based', label: t('rsWarmupTime') },
+                  { value: 'traffic-based', label: t('rsWarmupTraffic') },
                 ]}
                 onChange={(value) => onWarmupTypeChange(value)}
               />
@@ -204,7 +203,14 @@ export function WarmupComponent({
                 min={1}
                 max={999999}
                 allowDecimal={false}
-                suffix={rsWarmup.intervalMins !== null ? ' mins' : ' reqs'}
+                suffix={
+                  rsWarmup.intervalMins !== null
+                    ? ' ' + t('rsWarmupTimeMin', { count: rsWarmup.intervalMins ?? 0 })
+                    : ' ' +
+                      t('rsWarmupTrafficRequest', {
+                        count: rsWarmup.intervalSessReqs ?? 0,
+                      })
+                }
                 onChange={(value) => onWarmupIntervalChange(parseInt(value.toString()))}
               />
             </Group>
@@ -220,7 +226,7 @@ export function WarmupComponent({
                 <Group justify="flex-end" align="center" key={index} gap={5}>
                   <PercentageSelectorComponent
                     readonly
-                    tooltip={t('rwWarmupFlowCurrentTraffic')}
+                    tooltip={t('rsWarmupFlowCurrentTraffic')}
                     selectedPercentage={getAssociatedFlowPct(goal.flowId)}
                     color={!isAssociatedFlowActive(goal.flowId) ? 'gray.5' : undefined}
                   />
@@ -230,7 +236,7 @@ export function WarmupComponent({
                     </Center>
                   </Box>
                   <PercentageSelectorComponent
-                    tooltip={t('rwWarmupFlowTargetTraffic')}
+                    tooltip={t('rsWarmupFlowTargetTraffic')}
                     color={isAssociatedFlowActive(goal.flowId) ? 'orange' : 'gray.5'}
                     readonly={!isAssociatedFlowActive(goal.flowId) || !canEdit()}
                     onChangePercentage={(percentage) =>
@@ -257,7 +263,7 @@ export function WarmupComponent({
             {rsWarmup.goals.length == 0 && (
               <Group justify="center" align="center" p={20} pb={0} gap={20}>
                 <Image width={100} />
-                <Text ta={'center'}>{t('rwWarmupStart')}</Text>
+                <Text ta={'center'}>{t('rsWarmupStart')}</Text>
               </Group>
             )}
             <Divider my={20} />
@@ -276,7 +282,7 @@ export function WarmupComponent({
         {rsWarmup === null && (
           <Group justify="center" align="center" p={20} gap={20}>
             <Image width={100} />
-            <Text ta={'center'}>{t('rwWarmupDescription')}</Text>
+            <Text ta={'center'}>{t('rsWarmupDescription')}</Text>
           </Group>
         )}
       </Fieldset>
