@@ -18,9 +18,9 @@ import {
 import { assets } from '@styles/assets';
 import {
   IconArrowNarrowRightDashed,
+  IconHexagonNumber1Filled,
   IconInfoCircle,
   IconTrash,
-  IconTrendingUp,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { FlowSelectorComponent } from './FlowSelectorComponent';
@@ -152,7 +152,7 @@ export function WarmupComponent({
         <Group justify="flex-start" align="top" gap={0} mb={0}>
           <PaperTitle
             mb={15}
-            icon={IconTrendingUp}
+            icon={IconHexagonNumber1Filled}
             title={t('rsWarmupTitle')}
             iconColor={rsWarmup !== null ? 'brand' : 'gray.5'}
           />

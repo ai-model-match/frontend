@@ -103,6 +103,13 @@ export const mantineTheme: MantineThemeOverride = createTheme({
         size: 'sm',
       },
     },
+    NumberInput: {
+      defaultProps: {
+        size: 'sm',
+        stepHoldDelay: 500,
+        stepHoldInterval: (t: number) => Math.max(1000 / t ** 2, 25),
+      },
+    },
     Tooltip: {
       defaultProps: {
         fz: 'xs',

@@ -5,7 +5,7 @@ import { useForm } from '@mantine/form';
 import { useCaseStepService } from '@services/useCaseStepService';
 import { assets } from '@styles/assets';
 import { IconPlus } from '@tabler/icons-react';
-import { prepareCode } from '@utils/codeUtils';
+import { prepareCode, slugify } from '@utils/codeUtils';
 import { getErrorMessage } from '@utils/errUtils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -42,6 +42,13 @@ export default function NewUseCaseStepComponent({
   });
 
   // Handlers
+  const handleTitleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const titleValue = event.currentTarget.value;
+    if (!form.values.code) {
+      form.setFieldValue('code', prepareCode(slugify(titleValue)));
+    }
+  };
+
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiLoading(true);
@@ -93,6 +100,7 @@ export default function NewUseCaseStepComponent({
               key={form.key('title')}
               {...form.getInputProps('title')}
               mb="sm"
+              onBlur={handleTitleBlur}
             />
             <TextInput
               withAsterisk

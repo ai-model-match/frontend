@@ -161,7 +161,7 @@ export const enTranslations = {
   flowCreateNewTitleDisabled: 'No Execution Flows yet...',
   flowCreateNewTextDisabled:
     'Don’t worry! As soon as someone creates a new Execution Flow, you’ll see it appear here',
-  newFlowTitle: 'CREATE A NEW EXECUTION FLOW',
+  newFlowTitle: 'CREATE A NEW FLOW',
   newFlowTitleInput: 'Title',
   newFlowTitleInputPlaceholder: 'Type a title',
   newFlowDescriptionInput: 'Description',
@@ -209,4 +209,20 @@ export const enTranslations = {
   rsWarmupTimeMin_other: 'minutes',
   rsWarmupTrafficRequest_one: 'request',
   rsWarmupTrafficRequest_other: 'requests',
+  rsAdaptiveTitle: 'Adaptive Phase',
+  rsAdaptiveDescription:
+    'The adaptive phase relies on the feedback received. The underlying configuration parameters influence the behavior of the strategy. These parameters allow for balancing the speed of the rollout with the need to ensure stability and quality of service, dynamically adapting to the feedback received from users.',
+  rsAdaptiveIntro:
+    'The rollout strategy is adaptive and relies on the feedback received. These parameters allow for balancing the speed of the rollout with the need to ensure stability and quality of service, dynamically adapting to the feedback received.',
+  rsAdaptiveInterval: 'Interval',
+  rsAdaptiveTimeMin_one: 'minute',
+  rsAdaptiveTimeMin_other: 'minutes',
+  rsAdaptiveMaxStepPct: 'Max % Step',
+  rsAdaptiveMinFeedback: 'Min Feedback',
+  rsAdaptiveIntervalExplanation:
+    'Defines the frequency with which the strategy evaluates feedback and decides whether to adapt percentages',
+  rsAdaptiveMinFeedbackExplanation:
+    'Indicates the minimum number of feedback required before the strategy can consider adapting percentages',
+  rsAdaptiveMaxStepPctExplanation:
+    'Specifies the maximum increase in percentage that can be applied in each interval',
 };

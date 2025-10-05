@@ -39,7 +39,6 @@ import { rolloutStrategyService } from '@services/rolloutStrategyService';
 import { useCaseService } from '@services/useCaseService';
 import {
   IconArrowRampRight,
-  IconArrowsShuffle,
   IconLogout2,
   IconSettingsAutomation,
 } from '@tabler/icons-react';
@@ -48,6 +47,7 @@ import equal from 'fast-deep-equal';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AdaptiveComponent } from './AdaptiveComponent';
 import { CompletedFlowSelectorComponent } from './CompletedFlowSelectorComponent';
 import { WarmupComponent } from './WarmupComponent';
 
@@ -393,10 +393,15 @@ export function RolloutStrategyPage() {
                   }}
                 />
                 <Divider my="lg" />
-                <Group justify="space-between" align="top" gap={0} mb={0}>
-                  <PaperTitle mb={15} icon={IconArrowsShuffle} title="Adaptive Phase" />
-                </Group>
-                <Fieldset>a</Fieldset>
+                <AdaptiveComponent
+                  rsStatus={apiGetRolloutStrategyResponse.item.rolloutState}
+                  rsAdaptive={apiGetRolloutStrategyResponse.item.configuration.adaptive}
+                  onChange={(newAdaptive) => {
+                    const newRs = { ...apiGetRolloutStrategyResponse };
+                    newRs.item.configuration.adaptive = newAdaptive;
+                    setApiGetRolloutStrategyResponse(newRs);
+                  }}
+                />
               </Paper>
             </Grid.Col>
             <Grid.Col span={{ lg: 12, xl: 6 }}>

@@ -164,7 +164,7 @@ export const itTranslations = {
   flowCreateNewTitleDisabled: 'Ancora nessun Flusso di Esecuzione...',
   flowCreateNewTextDisabled:
     'Nessun problema! Non appena qualcuno creerà un nuovo Flusso di Esecuzione, lo vedrai comparire qui.',
-  newFlowTitle: 'CREA UN NUOVO FLUSSO DI ESECUZIONE',
+  newFlowTitle: 'CREA UN NUOVO FLUSSO',
   newFlowTitleInput: 'Titolo',
   newFlowTitleInputPlaceholder: 'Inserisci un titolo',
   newFlowDescriptionInput: 'Descrizione',
@@ -212,4 +212,20 @@ export const itTranslations = {
   rsWarmupTimeMin_other: 'minuti',
   rsWarmupTrafficRequest_one: 'richiesta',
   rsWarmupTrafficRequest_other: 'richieste',
+  rsAdaptiveTitle: 'Fase Adattiva',
+  rsAdaptiveDescription:
+    'La fase Adattiva si basa sui feedback ricevuti. I parametri di configurazione sottostanti influenzano il comportamento della strategia. Questi parametri consentono di bilanciare la velocità del rollout con la necessità di garantire la stabilità e la qualità del servizio, adattandosi dinamicamente ai feedback ricevuti dagli utenti.',
+  rsAdaptiveIntro:
+    'La strategia di rollout è adattiva e si basa sui feedback ricevuti. Questi parametri consentono di bilanciare la velocità del rollout con la necessità di garantire stabilità e qualità del servizio, adattandosi dinamicamente ai feedback ricevuti.',
+  rsAdaptiveInterval: 'Intervallo',
+  rsAdaptiveTimeMin_one: 'minuto',
+  rsAdaptiveTimeMin_other: 'minuti',
+  rsAdaptiveMaxStepPct: '% Massima Step',
+  rsAdaptiveMinFeedback: 'Feedback necessari',
+  rsAdaptiveIntervalExplanation:
+    'Definisce la frequenza con cui la strategia valuta i feedback e decide se adattare le percentuali',
+  rsAdaptiveMinFeedbackExplanation:
+    'Indica il numero minimo di feedback necessari prima che la strategia possa considerare di adattare le percentuali',
+  rsAdaptiveMaxStepPctExplanation:
+    'Specifica l’incremento massimo della percentuale che può essere applicato in ogni intervallo',
 };
