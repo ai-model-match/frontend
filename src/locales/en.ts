@@ -95,6 +95,9 @@ export const enTranslations = {
   useCaseStepUpdatedAt: 'Updated at',
   useCaseStepDeleteAction: 'Delete',
   useCaseStepUpdateAction: 'Edit',
+  useCaseStepComingSoon: 'Coming soon...',
+  useCaseStepComingSoonText:
+    'In this section, you’ll find a chart that displays the requests for this step over time, compared to the total requests for the use case.',
   useCaseStepCreateNewTitle: 'Create the first Step of this Use Case!',
   useCaseStepCreateNewText:
     'A Step represents a specific interaction with an AI model aimed at achieving the goal defined by the Use Case.',
@@ -192,6 +195,15 @@ export const enTranslations = {
   rsTitle: 'ROLLOUT STRATEGY',
   rsFlowInactive: 'Execution Flow Inactive',
   rsFlowActive: 'Execution Flow Active',
+
+  rsStateInit: 'Initialize',
+  rsStateWarmup: 'Warmup Phase',
+  rsStateEscaped: 'Escape Phase',
+  rsStateAdaptive: 'Adaptive Phase',
+  rsStateCompleted: 'Completed',
+  rsStateForcedCompleted: 'Forced Completion',
+  rsStateForcedEscaped: 'Forced Escape',
+  rsStateForcedStopped: 'Forced Stop',
   rsWarmupTitle: 'Warmup Phase',
   rsWarmupDescription:
     'The warmup phase gradually routes traffic to new Execution Flows, ensuring a smooth transition while allowing performance monitoring and reducing the risk of issues.',
@@ -217,7 +229,7 @@ export const enTranslations = {
   rsAdaptiveInterval: 'Interval',
   rsAdaptiveTimeMin_one: 'minute',
   rsAdaptiveTimeMin_other: 'minutes',
-  rsAdaptiveMaxStepPct: 'Max % Step',
+  rsAdaptiveMaxStepPct: '% Change per Step',
   rsAdaptiveMinFeedback: 'Min Feedback',
   rsAdaptiveIntervalExplanation:
     'Defines the frequency with which the strategy evaluates feedback and decides whether to adapt percentages',
@@ -225,4 +237,16 @@ export const enTranslations = {
     'Indicates the minimum number of feedback required before the strategy can consider adapting percentages',
   rsAdaptiveMaxStepPctExplanation:
     'Specifies the maximum increase in percentage that can be applied in each interval',
+  rsEscapeTitle: 'Escape Phase',
+  rsEscapeDescription:
+    'The Escape phase monitors feedback to identify potential issues with new Execution Flows. If feedback indicates that a Flow is not performing as expected, the strategy can roll back to mitigate the impact on users.',
+  rsEscapeFlowIf: 'If',
+  rsEscapeFlowHasAtLeast: 'has at least',
+  rsEscapeFlowWith: 'feedback with avg score ≤',
+  rsEscapeFlowThen: 'then:',
+  rsEscapeStart: 'Start adding an Execution Flow to the Escape phase',
+  rsEscapeFlowTargetTraffic: 'Final Traffic',
+  rsEscapeFlowLowerScoreTooltip: 'Minimum Score',
+  rsEscapeFlowMinFeedbackTooltip: 'Minimum Feedback',
+  rsEscapeFlowError: 'The sum of the final traffic for each Escape must be 100%',
 };

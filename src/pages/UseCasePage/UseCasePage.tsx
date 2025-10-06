@@ -100,6 +100,10 @@ export default function UseCasePage() {
     navigate(`/use-cases/${id}/flows`);
   };
 
+  const handleGoToRolloutRequest = (id: string) => {
+    navigate(`/use-cases/${id}/rollout-strategy`);
+  };
+
   const handleUpdateRequest = (id: string) => {
     const useCase = listUseCaseApiResponse?.items.find((x) => x.id === id);
     if (!useCase) return;
@@ -235,6 +239,7 @@ export default function UseCasePage() {
                                 key={useCase.id}
                                 useCase={useCase}
                                 handleGoToFlowsRequest={handleGoToFlowsRequest}
+                                handleGoToRolloutRequest={handleGoToRolloutRequest}
                                 handleUpdateRequest={handleUpdateRequest}
                                 handleDeleteRequest={handleDeleteRequest}
                               />
@@ -251,7 +256,7 @@ export default function UseCasePage() {
                         ></EmptyState>
                       )}
                     </Fieldset>
-                    <Group justify="center" align="center">
+                    <Group justify="center">
                       {listUseCaseApiResponse.totalCount > 0 && (
                         <Pagination
                           mt={40}

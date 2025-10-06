@@ -96,6 +96,9 @@ export const itTranslations = {
   useCaseStepUpdatedAt: 'Aggiornato il',
   useCaseStepDeleteAction: 'Elimina',
   useCaseStepUpdateAction: 'Modifica',
+  useCaseStepComingSoon: 'In arrivo...',
+  useCaseStepComingSoonText:
+    'In questa sezione troverai un grafico che mostra le richieste per questo step nel tempo, comparate al totale delle richieste per il caso d’uso.',
   useCaseStepCreateNewTitle: 'Crea il primo Step di questo Caso d’Uso!',
   useCaseStepCreateNewText:
     'Uno Step rappresenta una specifica iterazione con un modello AI al fine di raggiungere l’obiettivo definito dal Caso d’Uso.',
@@ -195,6 +198,14 @@ export const itTranslations = {
   rsTitle: 'STRATEGIA DI RILASCIO',
   rsFlowInactive: 'Flusso di Esecuzione Inattivo',
   rsFlowActive: 'Flusso di Esecuzione Attivo',
+  rsStateInit: 'Inizializzazione',
+  rsStateWarmup: 'Fase di Warmup',
+  rsStateEscaped: 'Fase di Fuga',
+  rsStateAdaptive: 'Fase adattiva',
+  rsStateCompleted: 'Completato',
+  rsStateForcedCompleted: 'Completatamento Forzato',
+  rsStateForcedEscaped: 'Fuga Forzata',
+  rsStateForcedStopped: 'Stop Forzato',
   rsWarmupTitle: 'Fase di Warmup',
   rsWarmupDescription:
     'La fase di warmup instrada gradualmente il traffico verso nuovi Flussi di Esecuzione, garantendo una transizione fluida mentre consente il monitoraggio delle prestazioni e riduce il rischio di problemi.',
@@ -220,7 +231,7 @@ export const itTranslations = {
   rsAdaptiveInterval: 'Intervallo',
   rsAdaptiveTimeMin_one: 'minuto',
   rsAdaptiveTimeMin_other: 'minuti',
-  rsAdaptiveMaxStepPct: '% Massima Step',
+  rsAdaptiveMaxStepPct: '% di cambio ad ogni Step',
   rsAdaptiveMinFeedback: 'Feedback necessari',
   rsAdaptiveIntervalExplanation:
     'Definisce la frequenza con cui la strategia valuta i feedback e decide se adattare le percentuali',
@@ -228,4 +239,16 @@ export const itTranslations = {
     'Indica il numero minimo di feedback necessari prima che la strategia possa considerare di adattare le percentuali',
   rsAdaptiveMaxStepPctExplanation:
     'Specifica l’incremento massimo della percentuale che può essere applicato in ogni intervallo',
+  rsEscapeTitle: 'Fase di Fuga',
+  rsEscapeDescription:
+    'La fase di Fuga monitora i feedback per identificare potenziali problemi con i nuovi Flussi di Esecuzione. Se i feedback indicano che un Flusso non sta performando come previsto, la strategia può eseguire un rollback per mitigare l’impatto sugli utenti.',
+  rsEscapeFlowIf: 'Se',
+  rsEscapeFlowHasAtLeast: 'ha almeno',
+  rsEscapeFlowWith: 'feedback con punteggio ≤',
+  rsEscapeFlowThen: 'allora:',
+  rsEscapeStart: 'Inizia aggiungendo un Flusso di Esecuzione alla fase di Fuga',
+  rsEscapeFlowTargetTraffic: 'Traffico finale',
+  rsEscapeFlowLowerScoreTooltip: 'Punteggio minimo',
+  rsEscapeFlowMinFeedbackTooltip: 'Feedback minimi',
+  rsEscapeFlowError: 'La somma di traffico finale di ogni Fuga deve essere 100%',
 };

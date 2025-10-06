@@ -91,7 +91,7 @@ export default function UpdateFlowPctBulkComponent({
         </Box>
         <Group justify="space-between">
           <Fieldset flex={1} mt={30}>
-            <Stack align="stretch" justify="flex-start" w={'100%'} gap={15} p={15}>
+            <Stack w={'100%'} gap={15} p={15}>
               {flows.map((flow, index) => (
                 <div key={flow.id}>
                   <Text key={flow.id} mt={index === 0 ? 'sm' : 'xl'}>

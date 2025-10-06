@@ -2,27 +2,35 @@ import { useAuth } from '@context/AuthContext';
 import { Badge, Box, Center, NumberInput, Tooltip } from '@mantine/core';
 import { useEffect, useState } from 'react';
 
-export interface PercentageSelectorComponentProps {
+export interface NumberSelectorComponentProps {
   readonly?: boolean;
   color?: string;
-  selectedPercentage: number;
+  selectedNumber: number;
   tooltip: string;
-  onChangePercentage?: (percentage: number) => void;
+  minValue?: number;
+  maxValue?: number;
+  suffix?: string;
+  floatingPoint?: boolean;
+  onChangeNumber?: (number: number) => void;
 }
-export function PercentageSelectorComponent({
+export function NumberSelectorComponent({
   readonly,
   color,
-  selectedPercentage,
+  selectedNumber,
   tooltip,
-  onChangePercentage,
-}: PercentageSelectorComponentProps) {
+  minValue = 0,
+  maxValue = 999999,
+  suffix = '',
+  floatingPoint = false,
+  onChangeNumber,
+}: NumberSelectorComponentProps) {
   const auth = useAuth();
-  const [selectedPct, setSelectedPct] = useState(selectedPercentage);
+  const [selectedPct, setSelectedPct] = useState(selectedNumber);
   const [inEditingMode, setInEditingMode] = useState(false);
 
   useEffect(() => {
-    setSelectedPct(selectedPercentage);
-  }, [selectedPercentage]);
+    setSelectedPct(selectedNumber);
+  }, [selectedNumber]);
 
   return (
     <Box miw={70} maw={70}>
@@ -38,27 +46,31 @@ export function PercentageSelectorComponent({
                 if (auth.canWrite() && !readonly) setInEditingMode(true);
               }}
             >
-              {selectedPct ?? 0}%
+              {floatingPoint ? selectedPct.toFixed(2) : (selectedPct ?? 0)}
+              {suffix ? ` ${suffix}` : ''}
             </Badge>
           </Tooltip>
         )}
         {auth.canWrite() && !readonly && inEditingMode && (
           <NumberInput
             size={'xs'}
-            min={0}
-            max={100}
+            min={minValue}
+            max={maxValue}
             autoFocus
             clampBehavior="strict"
-            allowDecimal={false}
+            allowDecimal={floatingPoint}
+            decimalScale={floatingPoint ? 2 : 0}
             defaultValue={selectedPct}
-            suffix="%"
+            suffix={suffix ? ` ${suffix}` : ''}
             onChange={(value) => {
               setSelectedPct(
-                parseInt(value.toString()) >= 0 ? parseInt(value.toString()) : 0
+                parseFloat(value.toString()) >= 0
+                  ? parseFloat(value.toString())
+                  : minValue
               );
             }}
             onBlur={() => {
-              if (onChangePercentage) onChangePercentage(selectedPct);
+              if (onChangeNumber) onChangeNumber(selectedPct);
               setInEditingMode(false);
             }}
           />

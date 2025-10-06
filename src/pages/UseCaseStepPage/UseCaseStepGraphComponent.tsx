@@ -1,4 +1,5 @@
-import { LineChart } from '@mantine/charts';
+import { Center, Stack, Text } from '@mantine/core';
+import { assets } from '@styles/assets';
 import { useTranslation } from 'react-i18next';
 
 export function UseCaseStepGraphComponent() {
@@ -6,7 +7,19 @@ export function UseCaseStepGraphComponent() {
   const { t } = useTranslation();
 
   // Content
-  const range = [...Array(30).keys()].map((i) => i + 1);
+  const Image = assets[`../assets/coming-soon.svg`];
+  return (
+    <Center h={300} miw={'100%'} bg={'gray.0'}>
+      <Stack align="center">
+        <Image width={180} />
+        <Text size="lg">{t('useCaseStepComingSoon')}</Text>
+        <Text size="xs" maw={'60%'} ta={'center'}>
+          {t('useCaseStepComingSoonText')}
+        </Text>
+      </Stack>
+    </Center>
+  );
+  /*const range = [...Array(30).keys()].map((i) => i + 1);
   return (
     <LineChart
       h={300}
@@ -40,5 +53,5 @@ export function UseCaseStepGraphComponent() {
       tickLine="xy"
       gridAxis="y"
     />
-  );
+  );*/
 }

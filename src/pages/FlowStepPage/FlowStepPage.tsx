@@ -165,7 +165,7 @@ export default function FlowStepPage() {
           <>
             <Grid.Col span={12}>
               <Paper>
-                <Group justify="space-between" align="center" gap={0} mb={0}>
+                <Group justify="space-between" gap={0} mb={0}>
                   <BreadcrumbPath items={breadcrumbItems} />
                   <Button
                     variant="light"
@@ -181,7 +181,7 @@ export default function FlowStepPage() {
             </Grid.Col>
             <Grid.Col span={12}>
               <Paper>
-                <Group justify="space-between" align="center" gap={0}>
+                <Group justify="space-between" gap={0}>
                   <PaperTitle
                     mb={0}
                     icon={IconSettingsCode}

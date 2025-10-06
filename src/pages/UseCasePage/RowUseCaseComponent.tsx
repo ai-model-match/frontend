@@ -7,6 +7,7 @@ import {
   IconCheck,
   IconCopy,
   IconPencil,
+  IconSettingsAutomation,
   IconTrash,
 } from '@tabler/icons-react';
 import { format } from 'date-fns';
@@ -16,12 +17,14 @@ import { useNavigate } from 'react-router-dom';
 export interface RowUseCaseComponentProps {
   useCase: UseCase;
   handleGoToFlowsRequest: (id: string) => void;
+  handleGoToRolloutRequest: (id: string) => void;
   handleUpdateRequest: (id: string) => void;
   handleDeleteRequest: (id: string) => void;
 }
 export default function RowUseCaseComponent({
   useCase,
   handleGoToFlowsRequest,
+  handleGoToRolloutRequest,
   handleUpdateRequest,
   handleDeleteRequest,
 }: RowUseCaseComponentProps) {
@@ -88,6 +91,14 @@ export default function RowUseCaseComponent({
           mw: 100,
           children: (
             <Group wrap="nowrap" gap={0}>
+              <Tooltip withArrow label={t('useCaseRolloutStrategyAction')}>
+                <ActionIcon
+                  variant="subtle"
+                  onClick={() => handleGoToRolloutRequest(useCase.id)}
+                >
+                  <IconSettingsAutomation size={22} />
+                </ActionIcon>
+              </Tooltip>
               <Tooltip withArrow label={t('useCaseFlowsAction')}>
                 <ActionIcon
                   variant="subtle"
@@ -106,7 +117,6 @@ export default function RowUseCaseComponent({
                       <IconPencil size={22} />
                     </ActionIcon>
                   </Tooltip>
-
                   <Tooltip
                     withArrow
                     label={

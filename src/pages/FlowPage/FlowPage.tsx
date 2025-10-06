@@ -232,7 +232,7 @@ export default function FlowPage() {
           <>
             <Grid.Col span={12}>
               <Paper>
-                <Group justify="space-between" align="center" gap={10} mb={0}>
+                <Group justify="space-between" gap={10} mb={0}>
                   <BreadcrumbPath items={breadcrumbItems} />
                   <Button
                     variant="light"
@@ -289,7 +289,7 @@ export default function FlowPage() {
 
               {apiListFlowResponse.items.length > 0 && (
                 <Paper mb="lg">
-                  <Group justify="space-between" align="center" gap={0} mb={0}>
+                  <Group justify="space-between" gap={0} mb={0}>
                     <PaperTitle
                       mb={30}
                       icon={IconArrowRampRight}

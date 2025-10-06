@@ -40,8 +40,8 @@ export function FlowCardComponent({
   // Content
   return (
     <Card withBorder h={300} w={'100%'}>
-      <Stack align="stretch" justify="flex-start" h={'100%'} gap={15}>
-        <Group justify="space-between" align="center">
+      <Stack align="stretch" h={'100%'} gap={15}>
+        <Group justify="space-between">
           <Tooltip withArrow label={flow.title}>
             <Text
               maw={'calc(100% - 116px)'}
@@ -54,7 +54,7 @@ export function FlowCardComponent({
               {flow.title}
             </Text>
           </Tooltip>
-          <Group justify="flex-end" align="center" gap={0} w={100}>
+          <Group justify="flex-end" gap={0} w={100}>
             {auth.canWrite() && (
               <Tooltip withArrow label={t('useCaseUpdateAction')}>
                 <ActionIcon variant="subtle" onClick={() => handleUpdateRequest(flow.id)}>

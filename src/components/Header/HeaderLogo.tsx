@@ -9,7 +9,6 @@ export function HaderLogo() {
   return (
     <Group
       gap={10}
-      justify="flex-start"
       wrap="nowrap"
       onClick={() => navigate('/')}
       style={{ cursor: 'pointer' }}

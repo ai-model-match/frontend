@@ -1,14 +1,7 @@
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
+import { useAuth } from '@context/AuthContext';
 import { RolloutStrategyState, RsAdaptive } from '@entities/rolloutStrategy';
-import {
-  Divider,
-  Fieldset,
-  Flex,
-  Group,
-  NumberInput,
-  Text,
-  Tooltip,
-} from '@mantine/core';
+import { Divider, Fieldset, Group, NumberInput, Text, Tooltip } from '@mantine/core';
 import { assets } from '@styles/assets';
 import { IconHexagonNumber2Filled, IconInfoCircle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
@@ -25,12 +18,17 @@ export function AdaptiveComponent({
 }: AdaptiveComponentProps) {
   // Services
   const { t } = useTranslation();
+  const auth = useAuth();
 
   // Content
+  const canEdit = () => {
+    return rsStatus === RolloutStrategyState.INIT && auth.canWrite();
+  };
+
   const Image = assets[`../assets/rs-adaptive.svg`];
   return (
     <>
-      <Group justify="flex-start" align="top" gap={0} mb={0}>
+      <Group align="top" gap={0} mb={0}>
         <PaperTitle
           mb={15}
           icon={IconHexagonNumber2Filled}
@@ -47,15 +45,15 @@ export function AdaptiveComponent({
         </Tooltip>
       </Group>
       <Fieldset>
-        <Flex gap="md" p={'xs'}>
-          <Image width={350} />
-          <Text size="xs">{t('rsAdaptiveIntro')}</Text>
-        </Flex>
+        <Group wrap="nowrap" p={'xs'}>
+          <Image width={300} />
+          <Text>{t('rsAdaptiveIntro')}</Text>
+        </Group>
         <Divider my="sm" />
-        <Group justify="flex-start" align="center" gap={25} mb={0}>
-          <Group justify="flex-start" align="baseline" gap={0} mb={0}>
+        <Group gap={25} mb={0}>
+          <Group align="baseline" gap={0} mb={0}>
             <NumberInput
-              readOnly={rsStatus !== RolloutStrategyState.INIT}
+              readOnly={!canEdit()}
               label={t('rsAdaptiveInterval')}
               value={rsAdaptive.intervalMins}
               min={1}
@@ -82,9 +80,9 @@ export function AdaptiveComponent({
               <IconInfoCircle color="gray" size={18} />
             </Tooltip>
           </Group>
-          <Group justify="flex-start" align="baseline" gap={0} mb={0}>
+          <Group align="baseline" gap={0} mb={0}>
             <NumberInput
-              readOnly={rsStatus !== RolloutStrategyState.INIT}
+              readOnly={!canEdit()}
               label={t('rsAdaptiveMaxStepPct')}
               value={rsAdaptive.maxStepPct}
               min={1}
@@ -109,9 +107,9 @@ export function AdaptiveComponent({
               <IconInfoCircle color="gray" size={18} />
             </Tooltip>
           </Group>
-          <Group justify="flex-start" align="baseline" gap={0} mb={0}>
+          <Group align="baseline" gap={0} mb={0}>
             <NumberInput
-              readOnly={rsStatus !== RolloutStrategyState.INIT}
+              readOnly={!canEdit()}
               label={t('rsAdaptiveMinFeedback')}
               value={rsAdaptive.minFeedback}
               min={0}

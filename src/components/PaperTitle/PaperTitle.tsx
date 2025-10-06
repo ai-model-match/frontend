@@ -78,14 +78,14 @@ export function PaperTitle({
 
   // Content
   return (
-    <Group justify="space-between" align="center" mb={mb}>
-      <Group justify="left" align="center" gap={10}>
+    <Group justify="space-between" mb={mb}>
+      <Group justify="left" gap={10}>
         <ThemeIcon variant="filled" color={iconColor} size={36}>
           <Icon stroke={1.5} />
         </ThemeIcon>
         <Text size={'xl'}>{title}</Text>
       </Group>
-      <Group justify="flex-end" align="center">
+      <Group justify="flex-end">
         {showSearch && (
           <TextInput
             id="searchField"

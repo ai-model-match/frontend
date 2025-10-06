@@ -11,6 +11,7 @@ import {
   Group,
   NumberInput,
   SegmentedControl,
+  Stack,
   Switch,
   Text,
   Tooltip,
@@ -24,7 +25,7 @@ import {
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { FlowSelectorComponent } from './FlowSelectorComponent';
-import { PercentageSelectorComponent } from './PercentageSelectorComponent';
+import { NumberSelectorComponent } from './NumberSelectorComponent';
 
 export interface WarmupComponentProps {
   rsStatus: RolloutStrategyState;
@@ -50,8 +51,10 @@ export function WarmupComponent({
     if (event.currentTarget.checked) {
       const newWarmup: RsWarmup = { goals: [], intervalMins: 60, intervalSessReqs: null };
       onChange(newWarmup);
+      checkWarmupError(newWarmup);
     } else {
       onChange(null);
+      checkWarmupError(null);
     }
   };
   const onSelectionChange = (flow: Flow, index: number) => {
@@ -98,12 +101,14 @@ export function WarmupComponent({
     onChange(newWarmup);
   };
 
-  const checkWarmupError = (warmup: RsWarmup) => {
-    if (onError)
-      onError(
-        warmup.goals.length > 0 &&
-          warmup.goals.reduce((acc, goal) => acc + goal.finalServePct, 0) !== 100
-      );
+  const checkWarmupError = (warmup: RsWarmup | null) => {
+    if (onError) {
+      if (warmup === null) {
+        onError(false);
+        return;
+      }
+      onError(warmup.goals.reduce((acc, goal) => acc + goal.finalServePct, 0) !== 100);
+    }
   };
 
   const onWarmupIntervalChange = (value: number) => {
@@ -143,13 +148,13 @@ export function WarmupComponent({
     return rsStatus === RolloutStrategyState.INIT && auth.canWrite();
   };
   const showError = () => {
-    return rsWarmup && rsWarmup.goals.length > 0 && getActiveFlowTotalPct() !== 100;
+    return rsWarmup && getActiveFlowTotalPct() !== 100;
   };
   const Image = assets[`../assets/rs-warmup.svg`];
   return (
     <>
       <Group justify="space-between" align="baseline" gap={0} mb={0}>
-        <Group justify="flex-start" align="top" gap={0} mb={0}>
+        <Group align="top" gap={0} mb={0}>
           <PaperTitle
             mb={15}
             icon={IconHexagonNumber1Filled}
@@ -174,15 +179,15 @@ export function WarmupComponent({
       </Group>
       <Fieldset
         bd={showError() ? '1px solid red' : undefined}
-        c={showError() ? 'red' : undefined}
         legend={showError() ? t('rsWarmupFlowError') : undefined}
+        styles={{ legend: { color: showError() ? 'red' : undefined } }}
       >
         {rsWarmup !== null && (
           <>
             <Text size="xs" mb={5}>
               {t('rsWarmupBasedOn')}
             </Text>
-            <Group justify="space-between" align="center">
+            <Group justify="space-between">
               <SegmentedControl
                 miw={240}
                 readOnly={!canEdit()}
@@ -216,18 +221,21 @@ export function WarmupComponent({
             </Group>
             <Divider my={20} />
             {rsWarmup.goals.map((goal, index) => (
-              <Group justify="space-between" align="center" key={index}>
+              <Group justify="space-between" key={index}>
                 <FlowSelectorComponent
                   flows={getAvailableFlows(goal.flowId)}
                   readonly={!canEdit()}
                   selectedFlowId={goal.flowId}
                   onSelectionChange={(flow) => onSelectionChange(flow, index)}
                 />
-                <Group justify="flex-end" align="center" key={index} gap={5}>
-                  <PercentageSelectorComponent
+                <Group justify="flex-end" key={index} gap={5}>
+                  <NumberSelectorComponent
+                    suffix="%"
+                    minValue={0}
+                    maxValue={100}
                     readonly
                     tooltip={t('rsWarmupFlowCurrentTraffic')}
-                    selectedPercentage={getAssociatedFlowPct(goal.flowId)}
+                    selectedNumber={getAssociatedFlowPct(goal.flowId)}
                     color={!isAssociatedFlowActive(goal.flowId) ? 'gray.5' : undefined}
                   />
                   <Box>
@@ -235,14 +243,15 @@ export function WarmupComponent({
                       <IconArrowNarrowRightDashed />
                     </Center>
                   </Box>
-                  <PercentageSelectorComponent
+                  <NumberSelectorComponent
+                    suffix="%"
+                    minValue={0}
+                    maxValue={100}
                     tooltip={t('rsWarmupFlowTargetTraffic')}
                     color={isAssociatedFlowActive(goal.flowId) ? 'orange' : 'gray.5'}
                     readonly={!isAssociatedFlowActive(goal.flowId) || !canEdit()}
-                    onChangePercentage={(percentage) =>
-                      onChangePercentage(percentage, index)
-                    }
-                    selectedPercentage={
+                    onChangeNumber={(value) => onChangePercentage(value, index)}
+                    selectedNumber={
                       isAssociatedFlowActive(goal.flowId) ? goal.finalServePct : 0
                     }
                   />
@@ -261,29 +270,27 @@ export function WarmupComponent({
               </Group>
             ))}
             {rsWarmup.goals.length == 0 && (
-              <Group justify="center" align="center" p={20} pb={0} gap={20}>
-                <Image width={100} />
+              <Stack align="center" p={20} pb={0} gap={'md'}>
+                <Image height={90} />
                 <Text ta={'center'}>{t('rsWarmupStart')}</Text>
-              </Group>
+              </Stack>
             )}
             <Divider my={20} />
-            <Group justify="space-between" align="center">
-              <FlowSelectorComponent
-                readonly={!canEdit()}
-                key={Math.random()}
-                flows={getAvailableFlows()}
-                creationMode={true}
-                selectedFlowId={''}
-                onSelectionChange={(flow) => onNewFlowSelected(flow)}
-              />
-            </Group>
+            <FlowSelectorComponent
+              readonly={!canEdit()}
+              key={Math.random()}
+              flows={getAvailableFlows()}
+              creationMode={true}
+              selectedFlowId={''}
+              onSelectionChange={(flow) => onNewFlowSelected(flow)}
+            />
           </>
         )}
         {rsWarmup === null && (
-          <Group justify="center" align="center" p={20} gap={20}>
-            <Image width={100} />
+          <Stack align="center" p={20} gap={'md'}>
+            <Image height={90} />
             <Text ta={'center'}>{t('rsWarmupDescription')}</Text>
-          </Group>
+          </Stack>
         )}
       </Fieldset>
     </>

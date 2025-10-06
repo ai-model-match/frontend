@@ -264,9 +264,9 @@ export default function UseCaseStepPage() {
           <>
             <Grid.Col span={12}>
               <Paper>
-                <Group justify="space-between" align="center" gap={0} mb={0}>
+                <Group justify="space-between" gap={0} mb={0}>
                   <BreadcrumbPath items={breadcrumbItems} />
-                  <Group justify="flex-end" align="center" gap={10} mb={0}>
+                  <Group justify="flex-end" gap={10} mb={0}>
                     <Button
                       variant="light"
                       leftSection={<IconArrowRampRight size={22} />}
@@ -293,7 +293,7 @@ export default function UseCaseStepPage() {
             </Grid.Col>
             <Grid.Col span={12}>
               <Paper>
-                <Group justify="space-between" align="center" gap={0} mb={0}>
+                <Group justify="space-between" gap={0} mb={0}>
                   <Group gap={2}>
                     <PaperTitle
                       mb={0}

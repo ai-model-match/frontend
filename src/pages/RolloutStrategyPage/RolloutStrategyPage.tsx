@@ -4,6 +4,7 @@ import {
 } from '@components/BreadcrumbPath/BreadcrumbPath';
 import { Layout } from '@components/Layout/Layout';
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
+import { useAuth } from '@context/AuthContext';
 import {
   defaultListFlowApiRequest,
   defaultListFlowApiResponse,
@@ -19,12 +20,17 @@ import {
   GetRolloutStrategyOutputDto,
 } from '@dtos/rolloutStrategyDto';
 import { GetUseCaseOutputDto } from '@dtos/useCaseDto';
-import { RolloutStrategyState } from '@entities/rolloutStrategy';
+import {
+  RolloutStrategyState,
+  RsAdaptive,
+  RsEscape,
+  RsWarmup,
+} from '@entities/rolloutStrategy';
 import { AuthGuard } from '@guards/AuthGuard';
 import {
   Button,
+  ComboboxData,
   Divider,
-  Fieldset,
   Grid,
   Group,
   JsonInput,
@@ -37,18 +43,17 @@ import { useDisclosure, useInterval } from '@mantine/hooks';
 import { flowService } from '@services/flowService';
 import { rolloutStrategyService } from '@services/rolloutStrategyService';
 import { useCaseService } from '@services/useCaseService';
-import {
-  IconArrowRampRight,
-  IconLogout2,
-  IconSettingsAutomation,
-} from '@tabler/icons-react';
+import { IconArrowRampRight, IconSettingsAutomation } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import equal from 'fast-deep-equal';
 import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AdaptiveComponent } from './AdaptiveComponent';
 import { CompletedFlowSelectorComponent } from './CompletedFlowSelectorComponent';
+import { EscapeComponent } from './EscapeComponent';
+import { getNextStates } from './RolloutStrategyData';
 import { WarmupComponent } from './WarmupComponent';
 
 export function RolloutStrategyPage() {
@@ -56,6 +61,7 @@ export function RolloutStrategyPage() {
   // Services
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const auth = useAuth();
 
   // States
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -76,7 +82,9 @@ export function RolloutStrategyPage() {
   );
   // States for rendering
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(false);
-  const [formHasError, setFormHasError] = useState(false);
+  const [formHasErrorWarmup, setFormHasErrorWarmup] = useState(false);
+  const [formHasErrorEscape, setFormHasErrorEscape] = useState(false);
+
   const [
     selectForceCompletedFlowPanelIsOpen,
     {
@@ -169,18 +177,19 @@ export function RolloutStrategyPage() {
     setApiGetRolloutStrategyResponse(
       structuredClone(apiGetInitialRolloutStrategyResponse)
     );
-    setFormHasError(false);
+    setFormHasErrorWarmup(false);
+    setFormHasErrorEscape(false);
   };
 
   const handleSave = async () => {
     try {
       setApiLoading(true);
-      if (apiGetRolloutStrategyResponse.item.configuration.warmup?.goals.length === 0) {
-        apiGetRolloutStrategyResponse.item.configuration.warmup = null;
+      if (rolloutStrategy.configuration.warmup?.goals.length === 0) {
+        rolloutStrategy.configuration.warmup = null;
       }
       const updatedRs = await rolloutStrategyService.updateRolloutStrategy({
         useCaseId: apiGetUseCaseResponse.item.id,
-        configuration: apiGetRolloutStrategyResponse.item.configuration,
+        configuration: rolloutStrategy.configuration,
       });
       setApiGetInitialRolloutStrategyResponse(structuredClone(updatedRs));
       setApiGetRolloutStrategyResponse(updatedRs);
@@ -206,6 +215,24 @@ export function RolloutStrategyPage() {
     return updateState(newState);
   };
 
+  const onWarmupConfigChange = (newWarmup: RsWarmup | null) => {
+    const newRs = { ...apiGetRolloutStrategyResponse };
+    newRs.item.configuration.warmup = newWarmup;
+    setApiGetRolloutStrategyResponse(newRs);
+  };
+
+  const onEscapeConfigChange = (newEscape: RsEscape | null) => {
+    const newRs = { ...apiGetRolloutStrategyResponse };
+    newRs.item.configuration.escape = newEscape;
+    setApiGetRolloutStrategyResponse(newRs);
+  };
+
+  const onAdaptiveConfigChange = (newAdaptive: RsAdaptive) => {
+    const newRs = { ...apiGetRolloutStrategyResponse };
+    newRs.item.configuration.adaptive = newAdaptive;
+    setApiGetRolloutStrategyResponse(newRs);
+  };
+
   const updateState = async (
     newState: RolloutStrategyState,
     completedFlowId?: string
@@ -219,6 +246,7 @@ export function RolloutStrategyPage() {
       });
       setApiGetInitialRolloutStrategyResponse(structuredClone(updatedRs));
       setApiGetRolloutStrategyResponse(updatedRs);
+      setApiGetRolloutStrategyRequest((prev) => ({ ...prev }));
     } catch (err) {
       console.error(err);
       alert('Error: ' + getErrorMessage(err));
@@ -228,55 +256,65 @@ export function RolloutStrategyPage() {
   };
 
   // Content
-  const getLabel = (state: RolloutStrategyState) => {
+  const getStatusBackgroundColor = (state: RolloutStrategyState) => {
     switch (state) {
       case RolloutStrategyState.INIT:
-        return 'Initialize';
+        return undefined;
       case RolloutStrategyState.WARMUP:
-        return 'Warmup Phase';
+        return 'var(--mantine-color-orange-1)';
       case RolloutStrategyState.ADAPTIVE:
-        return 'Adaptive Phase';
+        return 'var(--mantine-color-orange-1)';
+      case RolloutStrategyState.ESCAPED:
+        return 'var(--mantine-color-red-1)';
       case RolloutStrategyState.COMPLETED:
-        return 'Completed';
+        return 'var(--mantine-color-green-1)';
       case RolloutStrategyState.FORCED_COMPLETED:
-        return 'Force Completed';
+        return 'var(--mantine-color-green-1)';
       case RolloutStrategyState.FORCED_ESCAPED:
-        return 'Force Escaped';
+        return 'var(--mantine-color-red-1)';
       case RolloutStrategyState.FORCED_STOP:
-        return 'Force Stopped';
+        return 'var(--mantine-color-red-1)';
       default:
-        return state;
+        return undefined;
     }
   };
 
-  const getNextStates = (nextState: RolloutStrategyState): RolloutStrategyState[] => {
-    switch (nextState) {
-      case RolloutStrategyState.INIT:
-        return [RolloutStrategyState.WARMUP];
-      case RolloutStrategyState.WARMUP:
-        return [
-          RolloutStrategyState.FORCED_COMPLETED,
-          RolloutStrategyState.FORCED_ESCAPED,
-          RolloutStrategyState.FORCED_STOP,
-        ];
-      case RolloutStrategyState.ADAPTIVE:
-        return [
-          RolloutStrategyState.FORCED_COMPLETED,
-          RolloutStrategyState.FORCED_ESCAPED,
-          RolloutStrategyState.FORCED_STOP,
-        ];
-      case RolloutStrategyState.COMPLETED:
-        return [RolloutStrategyState.INIT];
-      case RolloutStrategyState.FORCED_COMPLETED:
-        return [RolloutStrategyState.INIT];
-      case RolloutStrategyState.FORCED_ESCAPED:
-        return [RolloutStrategyState.INIT];
-      case RolloutStrategyState.FORCED_STOP:
-        return [RolloutStrategyState.INIT];
-      default:
-        return [];
-    }
+  const getAvailableStates = (currentState: RolloutStrategyState): ComboboxData => {
+    return [
+      {
+        value: currentState,
+        label: getLabel(currentState),
+        disabled: true,
+      },
+      ...getNextStates(currentState).map((nextState) => {
+        return {
+          value: nextState,
+          label: getLabel(nextState),
+        };
+      }),
+    ];
   };
+
+  const stateLabels = useMemo(
+    () => ({
+      [RolloutStrategyState.INIT]: t('rsStateInit'),
+      [RolloutStrategyState.WARMUP]: t('rsStateWarmup'),
+      [RolloutStrategyState.ESCAPED]: t('rsStateEscaped'),
+      [RolloutStrategyState.ADAPTIVE]: t('rsStateAdaptive'),
+      [RolloutStrategyState.COMPLETED]: t('rsStateCompleted'),
+      [RolloutStrategyState.FORCED_COMPLETED]: t('rsStateForcedCompleted'),
+      [RolloutStrategyState.FORCED_ESCAPED]: t('rsStateForcedEscaped'),
+      [RolloutStrategyState.FORCED_STOP]: t('rsStateForcedStopped'),
+    }),
+    [t]
+  );
+
+  const getLabel = (state: RolloutStrategyState): string => {
+    return stateLabels[state as keyof typeof stateLabels] || state;
+  };
+
+  const rolloutStrategy = apiGetRolloutStrategyResponse.item;
+
   return (
     <AuthGuard>
       <Layout>
@@ -293,7 +331,7 @@ export function RolloutStrategyPage() {
           <>
             <Grid.Col span={12}>
               <Paper>
-                <Group justify="space-between" align="center" gap={10} mb={0}>
+                <Group justify="space-between" gap={10} mb={0}>
                   <BreadcrumbPath items={breadcrumbItems} />
                   <Button
                     variant="light"
@@ -312,25 +350,28 @@ export function RolloutStrategyPage() {
                 <Group justify="space-between" align="top" gap={0} mb={0}>
                   <PaperTitle mb={0} icon={IconSettingsAutomation} title={t('rsTitle')} />
 
-                  <Group justify="flex-end" align="center" gap={10} mb={0}>
-                    {(saveButtonEnabled || formHasError) && (
+                  <Group justify="flex-end" gap={10} mb={0}>
+                    {(saveButtonEnabled || formHasErrorWarmup || formHasErrorEscape) && (
                       <Button variant="outline" onClick={handleReset}>
                         {t('btnReset')}
                       </Button>
                     )}
-                    {(saveButtonEnabled || formHasError) && (
+                    {(saveButtonEnabled || formHasErrorWarmup || formHasErrorEscape) && (
                       <Button
                         color="orange"
                         loading={apiLoading}
-                        disabled={formHasError}
+                        disabled={
+                          formHasErrorWarmup || formHasErrorEscape || !auth.canWrite()
+                        }
                         loaderProps={{ type: 'dots' }}
                         onClick={handleSave}
                       >
                         {t('flowStepUpdateBtn')}
                       </Button>
                     )}
-                    {!saveButtonEnabled && !formHasError && (
+                    {!saveButtonEnabled && !formHasErrorWarmup && !formHasErrorEscape && (
                       <Select
+                        disabled={!auth.canWrite()}
                         withCheckIcon={false}
                         onChange={(value) => {
                           if (value === null) return;
@@ -338,38 +379,15 @@ export function RolloutStrategyPage() {
                         }}
                         styles={{
                           input: {
-                            backgroundColor:
-                              apiGetRolloutStrategyResponse.item.rolloutState ===
-                                RolloutStrategyState.WARMUP ||
-                              apiGetRolloutStrategyResponse.item.rolloutState ===
-                                RolloutStrategyState.ADAPTIVE
-                                ? 'var(--mantine-color-orange-1)'
-                                : apiGetRolloutStrategyResponse.item.rolloutState !==
-                                    RolloutStrategyState.INIT
-                                  ? 'var(--mantine-color-brand-1)'
-                                  : undefined,
+                            backgroundColor: getStatusBackgroundColor(
+                              rolloutStrategy.rolloutState
+                            ),
                           },
                         }}
                         allowDeselect={false}
                         clearable={false}
-                        data={[
-                          {
-                            value: apiGetRolloutStrategyResponse.item.rolloutState,
-                            label: getLabel(
-                              apiGetRolloutStrategyResponse.item.rolloutState
-                            ),
-                            disabled: true,
-                          },
-                          ...getNextStates(
-                            apiGetRolloutStrategyResponse.item.rolloutState
-                          ).map((nextState) => {
-                            return {
-                              value: nextState,
-                              label: getLabel(nextState),
-                            };
-                          }),
-                        ]}
-                        value={apiGetRolloutStrategyResponse.item.rolloutState}
+                        data={getAvailableStates(rolloutStrategy.rolloutState)}
+                        value={rolloutStrategy.rolloutState}
                       />
                     )}
                   </Group>
@@ -378,46 +396,33 @@ export function RolloutStrategyPage() {
             </Grid.Col>
             <Grid.Col span={{ lg: 12, xl: 6 }}>
               <Paper mih={'100%'}>
-                {/* Adaptive Phase */}
                 <WarmupComponent
-                  rsStatus={apiGetRolloutStrategyResponse.item.rolloutState}
+                  rsStatus={rolloutStrategy.rolloutState}
                   flows={apiListFlowResponse.items}
-                  rsWarmup={apiGetRolloutStrategyResponse.item.configuration.warmup}
-                  onError={(hasError) => {
-                    setFormHasError(hasError);
-                  }}
-                  onChange={(newWarmup) => {
-                    const newRs = { ...apiGetRolloutStrategyResponse };
-                    newRs.item.configuration.warmup = newWarmup;
-                    setApiGetRolloutStrategyResponse(newRs);
-                  }}
+                  rsWarmup={rolloutStrategy.configuration.warmup}
+                  onError={setFormHasErrorWarmup}
+                  onChange={onWarmupConfigChange}
                 />
                 <Divider my="lg" />
                 <AdaptiveComponent
-                  rsStatus={apiGetRolloutStrategyResponse.item.rolloutState}
-                  rsAdaptive={apiGetRolloutStrategyResponse.item.configuration.adaptive}
-                  onChange={(newAdaptive) => {
-                    const newRs = { ...apiGetRolloutStrategyResponse };
-                    newRs.item.configuration.adaptive = newAdaptive;
-                    setApiGetRolloutStrategyResponse(newRs);
-                  }}
+                  rsStatus={rolloutStrategy.rolloutState}
+                  rsAdaptive={rolloutStrategy.configuration.adaptive}
+                  onChange={onAdaptiveConfigChange}
                 />
               </Paper>
             </Grid.Col>
             <Grid.Col span={{ lg: 12, xl: 6 }}>
               <Paper mih={'100%'}>
-                <Group justify="space-between" align="top" gap={0} mb={0}>
-                  <PaperTitle
-                    mb={15}
-                    iconColor="red"
-                    icon={IconLogout2}
-                    title="Escape Phase"
-                  />
-                </Group>
-                <Fieldset>a</Fieldset>
+                <EscapeComponent
+                  rsStatus={rolloutStrategy.rolloutState}
+                  flows={apiListFlowResponse.items}
+                  rsEscape={rolloutStrategy.configuration.escape}
+                  onError={setFormHasErrorEscape}
+                  onChange={onEscapeConfigChange}
+                />
               </Paper>
             </Grid.Col>
-            <Grid.Col span={12}>
+            <Grid.Col span={12} hidden={true}>
               <Paper mih={'100%'}>
                 <JsonInput
                   minRows={30}
