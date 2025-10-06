@@ -22,14 +22,12 @@ export function CompletedFlowSelectorComponent({
         <ThemeIcon variant="filled" size={34}>
           <IconSelect />
         </ThemeIcon>
-        <Text size={'xl'}>{'SELECT THE WINNER'}</Text>
+        <Text size={'xl'}>{t('rsForceCompletedTitle')}</Text>
       </Group>
-      <Text mt={20}>
-        {'Select the flow to indicate as the winner of this rollout strategy'}
-      </Text>
+      <Text mt={20}>{t('rsForceCompletedDescription')}</Text>
       <Select
         mt={10}
-        placeholder={'Select the winning Flow'}
+        placeholder={t('rsForceCompletedPlaceholder')}
         clearable={false}
         withCheckIcon={false}
         data={flows.map((flow) => ({

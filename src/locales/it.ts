@@ -251,4 +251,8 @@ export const itTranslations = {
   rsEscapeFlowLowerScoreTooltip: 'Punteggio minimo',
   rsEscapeFlowMinFeedbackTooltip: 'Feedback minimi',
   rsEscapeFlowError: 'La somma di traffico finale di ogni Fuga deve essere 100%',
+  rsForceCompletedTitle: 'FORZA COMPLETAMENTO',
+  rsForceCompletedDescription:
+    'Seleziona il Flusso da indicare come vincitore di questa Strategia di Rilascio',
+  rsForceCompletedPlaceholder: 'Seleziona il Flusso vincitore',
 };

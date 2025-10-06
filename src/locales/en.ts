@@ -249,4 +249,8 @@ export const enTranslations = {
   rsEscapeFlowLowerScoreTooltip: 'Minimum Score',
   rsEscapeFlowMinFeedbackTooltip: 'Minimum Feedback',
   rsEscapeFlowError: 'The sum of the final traffic for each Escape must be 100%',
+  rsForceCompletedTitle: 'FORCE COMPLETION',
+  rsForceCompletedDescription:
+    'Select the Flow to indicate as the winner of this Rollout Strategy',
+  rsForceCompletedPlaceholder: 'Select the winning Flow',
 };
