@@ -4,6 +4,15 @@
   background: var(--aimm-gradient-bg);
 }
 
+.rootPattern {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('pattern.svg');
+  background-repeat: repeat;
+  background-position: 0 0;
+}
+
 .boxLogin {
   min-width: 400px;
   max-width: 400px;

@@ -59,16 +59,18 @@ export default function LoginPage() {
   return (
     pageLoaded && (
       <Box className={classes.root}>
-        <LanguageSelector absolutePosition></LanguageSelector>
-        <Container className={classes.boxLogin}>
-          <Paper p={'xl'}>
-            <Image src="/icon.svg" alt="Login Icon" className={classes.boxLogo} />
-            <Title className={classes.boxTitle} order={2}>
-              {t('appName')}
-            </Title>
-            <LoginPageForm />
-          </Paper>
-        </Container>
+        <Box className={classes.rootPattern}>
+          <LanguageSelector absolutePosition></LanguageSelector>
+          <Container className={classes.boxLogin}>
+            <Paper p={'xl'}>
+              <Image src="/icon.svg" alt="Login Icon" className={classes.boxLogo} />
+              <Title className={classes.boxTitle} order={2}>
+                {t('appName')}
+              </Title>
+              <LoginPageForm />
+            </Paper>
+          </Container>
+        </Box>
       </Box>
     )
   );

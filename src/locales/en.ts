@@ -192,6 +192,8 @@ export const enTranslations = {
   flowActiveAlertMessage:
     'Attention! This Execution Flow is active. Modifying the configuration of these Steps will immediately affect incoming requests.',
   flowStepConfigurationSaved: 'Configuration updated successfully!',
+  flowStepInfoPlaceholders:
+    'You can add placeholders for a dynamic configuration by putting them between << and >>. Example "<<USER_INPUT>>".',
   rsTitle: 'ROLLOUT STRATEGY',
   rsFlowInactive: 'Execution Flow Inactive',
   rsFlowActive: 'Execution Flow Active',

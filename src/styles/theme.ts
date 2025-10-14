@@ -48,8 +48,8 @@ export const mantineTheme: MantineThemeOverride = createTheme({
   other: {
     darkBgGradientBgStart: '#099268',
     darkBgGradientBgEnd: '#0b525b',
-    lightBgGradientBgStart: '#35a785ff',
-    lightBgGradientBgEnd: '#29707aff',
+    lightBgGradientBgStart: '#21b085ff',
+    lightBgGradientBgEnd: '#19717dff',
     bpPaperDark: '#252525',
     bpPaperLight: '#efefef',
   },

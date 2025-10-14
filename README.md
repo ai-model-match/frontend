@@ -123,8 +123,4 @@ AI Model Match is open-source and welcomes contributions from the community.
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-AI Model Match: Launch, test, and optimize AI configurations quickly, safely, and effectively.
+This project is licensed under the [Apache 2.0 License](LICENSE).

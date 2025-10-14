@@ -195,6 +195,8 @@ export const itTranslations = {
   flowActiveAlertMessage:
     'Attenzione! Questo Flusso di Esecuzione è attivo. Modificare la configurazione di questi Steps influenzerà immediatamente le richieste in ingresso.',
   flowStepConfigurationSaved: 'Configurazione aggiornata con successo!',
+  flowStepInfoPlaceholders:
+    'Puoi aggiungere dei placeholders per una configurazione dinamica mettendoli tra << e >>. Esempio "<<USER_INPUT>>".',
   rsTitle: 'STRATEGIA DI RILASCIO',
   rsFlowInactive: 'Flusso di Esecuzione Inattivo',
   rsFlowActive: 'Flusso di Esecuzione Attivo',

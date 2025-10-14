@@ -2,7 +2,7 @@ import { PaperTitle } from '@components/PaperTitle/PaperTitle';
 import { useAuth } from '@context/AuthContext';
 import { FlowStep } from '@entities/flowStep';
 import { UseCaseStep } from '@entities/useCaseStep';
-import { Button, Divider, Group, JsonInput } from '@mantine/core';
+import { Button, Chip, Divider, Group, JsonInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { flowStepService } from '@services/flowStepService';
 import { IconCheck, IconRoute } from '@tabler/icons-react';
@@ -112,6 +112,9 @@ export function FlowStepConfigComponent({
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <PaperTitle mb={0} icon={IconRoute} title={useCaseStep.title} />
       <Divider my="lg" />
+      <Text fs="italic" size="xs" c="dimmed">
+        {t('flowStepInfoPlaceholders')}
+      </Text>
       {flowStepState && (
         <JsonInput
           key={flowStepState.id}
@@ -126,7 +129,34 @@ export function FlowStepConfigComponent({
         />
       )}
       {auth.canWrite() && (
-        <Group justify="flex-end">
+        <Group justify="space-between">
+          {flowStepState && flowStepState.placeholders.length > 0 && (
+            <Group gap={5}>
+              <Text size="xs" c="dimmed" fs="italic">
+                Placeholders:
+              </Text>
+              {Array.from(new Set(flowStepState.placeholders)).map((ph, i) => (
+                <Chip
+                  key={i}
+                  size="xs"
+                  variant="outline"
+                  color="brand"
+                  checked={false}
+                  style={{
+                    pointerEvents: 'none',
+                    cursor: 'default',
+                  }}
+                >
+                  {ph}
+                </Chip>
+              ))}
+            </Group>
+          )}
+          {flowStepState?.placeholders.length == 0 && (
+            <Text size="xs" c="dimmed" fs="italic">
+              No placeholders found...
+            </Text>
+          )}
           <Button
             type="submit"
             loading={apiLoading}

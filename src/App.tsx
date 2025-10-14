@@ -1,5 +1,9 @@
 import './locales/i18n';
 import '@fontsource/inter';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/400-italic.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/500-italic.css';
 import '@fontsource/inter/700.css';
 import '@fontsource/inter/700-italic.css';
 import '@mantine/charts/styles.css';
