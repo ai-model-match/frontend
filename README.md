@@ -124,3 +124,7 @@ AI Model Match is open-source and welcomes contributions from the community.
 ## 📄 License
 
 This project is licensed under the [Apache 2.0 License](LICENSE).
+
+## 🫶 Support Us
+
+If you find this project useful, please consider supporting us on [**Open Collective**](https://opencollective.com/ai-model-match)
