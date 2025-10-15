@@ -4,8 +4,6 @@ AI Model Match is an open-source service that helps product teams release, test,
 
 By organizing AI experimentation into use cases, flows, and steps, AI Model Match allows product teams to rapidly test different strategies, collect real feedback, and deliver AI experiences that continuously improve.
 
----
-
 ## 🚀 Overview
 
 AI Model Match enables teams to:
@@ -17,8 +15,6 @@ AI Model Match enables teams to:
 - Collect and use feedback from both end users and product teams to automatically improve AI performance.
 
 This system empowers product managers to iterate independently, accelerate release cycles, and minimize risk, while end users benefit from AI interactions that steadily improve.
-
----
 
 ## 📐 Core Concepts
 
@@ -42,8 +38,6 @@ This system empowers product managers to iterate independently, accelerate relea
    - Ratings (1–5) and optional notes can be submitted for each session.
    - Feedback is aggregated per flow to guide automated flow selection and optimization.
 
----
-
 ## ⚙️ Rollout Strategy
 
 AI Model Match automates the rollout of flows using a controlled, multi-phase approach:
@@ -58,8 +52,6 @@ AI Model Match automates the rollout of flows using a controlled, multi-phase ap
 3. **Escape**
    - Configurable rollback conditions trigger automatic reversion if a flow underperforms (e.g., ≥10 evaluations with an average score < 2/5).
    - Protects user experience while minimizing risks.
-
----
 
 ## 💡 Benefits
 
@@ -80,8 +72,6 @@ AI Model Match automates the rollout of flows using a controlled, multi-phase ap
 - Identifies the best-performing strategies quickly.
 - Lowers risk while scaling successful configurations.
 
----
-
 ## 🛠️ Technical Details
 
 - AI Model Match is implemented as an open-source **microservice**.
@@ -92,8 +82,6 @@ AI Model Match automates the rollout of flows using a controlled, multi-phase ap
 - Can be deployed standalone or integrated with existing production environments.
 - Future plans may include a **SaaS version** to abstract deployment and infrastructure management.
 
----
-
 ## 📈 How It Works
 
 1. Define a **use case** representing a product goal.
@@ -101,15 +89,11 @@ AI Model Match automates the rollout of flows using a controlled, multi-phase ap
 3. Release the flows and let AI Model Match manage traffic distribution and feedback collection.
 4. Monitor performance as the system automatically optimizes flow selection based on real-world data.
 
----
-
 ## 🎯 Target Audience
 
 - **Product Managers** looking to test AI strategies quickly and independently.
 - **Development Teams** integrating AI-driven workflows into their applications.
 - **End Users** who benefit from AI interactions that are consistent, coherent, and continuously improving.
-
----
 
 ## 🔗 Contributing
 
@@ -118,8 +102,6 @@ AI Model Match is open-source and welcomes contributions from the community.
 - To report bugs or request features, open an **issue**.
 - To contribute code or documentation, submit a **pull request**.
 - Feedback and suggestions are always appreciated!
-
----
 
 ## 📄 License
 
