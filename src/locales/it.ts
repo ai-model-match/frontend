@@ -9,6 +9,7 @@ export const itTranslations = {
   btnReset: 'Reset',
   btnShowMore: 'Mostra di più',
   btnHide: 'Nascondi',
+  btnClose: 'Chiudi',
   deleteMe: 'elimina',
   deactivateMe: 'disattiva',
   deleteUndo: ' Questa operazione non é annullabile.',
@@ -257,4 +258,6 @@ export const itTranslations = {
   rsForceCompletedDescription:
     'Seleziona il Flusso da indicare come vincitore di questa Strategia di Rilascio',
   rsForceCompletedPlaceholder: 'Seleziona il Flusso vincitore',
+  rsWinnerFlowMessage:
+    'è stato considerato il Flusso di Esecuzione con le migliori prestazioni disponibili!',
 };

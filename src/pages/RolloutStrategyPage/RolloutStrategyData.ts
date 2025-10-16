@@ -1,18 +1,28 @@
-import { RolloutStrategyState } from '@entities/rolloutStrategy';
+import {
+  RolloutStrategyConfiguration,
+  RolloutStrategyState,
+} from '@entities/rolloutStrategy';
 
 export const getNextStates = (
-  nextState: RolloutStrategyState
+  nextState: RolloutStrategyState,
+  config: RolloutStrategyConfiguration
 ): RolloutStrategyState[] => {
   switch (nextState) {
     case RolloutStrategyState.INIT:
       return [RolloutStrategyState.WARMUP];
     case RolloutStrategyState.WARMUP:
+      if (config.escape === null) {
+        return [RolloutStrategyState.FORCED_COMPLETED, RolloutStrategyState.FORCED_STOP];
+      }
       return [
         RolloutStrategyState.FORCED_COMPLETED,
         RolloutStrategyState.FORCED_ESCAPED,
         RolloutStrategyState.FORCED_STOP,
       ];
     case RolloutStrategyState.ADAPTIVE:
+      if (config.escape === null) {
+        return [RolloutStrategyState.FORCED_COMPLETED, RolloutStrategyState.FORCED_STOP];
+      }
       return [
         RolloutStrategyState.FORCED_COMPLETED,
         RolloutStrategyState.FORCED_ESCAPED,

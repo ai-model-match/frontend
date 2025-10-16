@@ -9,6 +9,7 @@ export const enTranslations = {
   btnReset: 'Reset',
   btnShowMore: 'Show more',
   btnHide: 'Hide',
+  btnClose: 'Close',
   deleteMe: 'delete me',
   deactivateMe: 'deactivate me',
   deleteUndo: 'This operation cannot be undone.',
@@ -255,4 +256,6 @@ export const enTranslations = {
   rsForceCompletedDescription:
     'Select the Flow to indicate as the winner of this Rollout Strategy',
   rsForceCompletedPlaceholder: 'Select the winning Flow',
+  rsWinnerFlowMessage:
+    'has been considered as the best-performing Execution Flow available!',
 };

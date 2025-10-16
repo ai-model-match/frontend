@@ -6,6 +6,7 @@ import { Layout } from '@components/Layout/Layout';
 import { PaperTitle } from '@components/PaperTitle/PaperTitle';
 import { useAuth } from '@context/AuthContext';
 import {
+  defaultFlow,
   defaultListFlowApiRequest,
   defaultListFlowApiResponse,
 } from '@dtos/defaultFlowDto';
@@ -20,7 +21,9 @@ import {
   GetRolloutStrategyOutputDto,
 } from '@dtos/rolloutStrategyDto';
 import { GetUseCaseOutputDto } from '@dtos/useCaseDto';
+import { Flow } from '@entities/flow';
 import {
+  RolloutStrategyConfiguration,
   RolloutStrategyState,
   RsAdaptive,
   RsEscape,
@@ -55,6 +58,7 @@ import { CompletedFlowSelectorComponent } from './CompletedFlowSelectorComponent
 import { EscapeComponent } from './EscapeComponent';
 import { getNextStates } from './RolloutStrategyData';
 import { WarmupComponent } from './WarmupComponent';
+import { WinnerFlowComponent } from './WinnerFlowComponent';
 
 export function RolloutStrategyPage() {
   const { id } = useParams();
@@ -80,17 +84,22 @@ export function RolloutStrategyPage() {
   const [apiListFlowResponse, setApiListFlowResponse] = useState<ListFlowOutputDto>(
     defaultListFlowApiResponse
   );
+  const [winnerFlow, setWinnerFlow] = useState<Flow>(defaultFlow);
   // States for rendering
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(false);
   const [formHasErrorWarmup, setFormHasErrorWarmup] = useState(false);
   const [formHasErrorEscape, setFormHasErrorEscape] = useState(false);
-
+  const [winnerModalShownOne, setWinnerModalShownOnce] = useState(false);
   const [
     selectForceCompletedFlowPanelIsOpen,
     {
       open: selectForceCompletedFlowOpenPanel,
       close: selectForceCompletedFlowClosePanel,
     },
+  ] = useDisclosure(false);
+  const [
+    winnerFlowPanelIsOpen,
+    { open: winnerFlowOpenPanel, close: winnerFlowClosePanel },
   ] = useDisclosure(false);
   // Refresh page
   const interval = useInterval(
@@ -146,7 +155,36 @@ export function RolloutStrategyPage() {
     } else {
       interval.stop();
     }
-  }, [apiGetRolloutStrategyResponse, interval]);
+    // Check if Winner Flow Modal needs to be opened
+    const winnerFlow = apiListFlowResponse.items.find(
+      (f) => f.currentServePct === 100 && f.active
+    );
+    if (
+      winnerFlow &&
+      !winnerModalShownOne &&
+      (apiGetRolloutStrategyResponse.item.rolloutState ===
+        RolloutStrategyState.FORCED_COMPLETED ||
+        apiGetRolloutStrategyResponse.item.rolloutState ===
+          RolloutStrategyState.COMPLETED)
+    ) {
+      setWinnerFlow(winnerFlow);
+      setWinnerModalShownOnce(true);
+      winnerFlowOpenPanel();
+    }
+    if (
+      apiGetRolloutStrategyResponse.item.rolloutState !==
+        RolloutStrategyState.FORCED_COMPLETED &&
+      apiGetRolloutStrategyResponse.item.rolloutState !== RolloutStrategyState.COMPLETED
+    ) {
+      setWinnerModalShownOnce(false);
+    }
+  }, [
+    apiGetRolloutStrategyResponse,
+    interval,
+    winnerFlowOpenPanel,
+    winnerModalShownOne,
+    apiListFlowResponse,
+  ]);
 
   useEffect(() => {
     // Set breadcrumb and adapt by change on data or translation
@@ -279,14 +317,17 @@ export function RolloutStrategyPage() {
     }
   };
 
-  const getAvailableStates = (currentState: RolloutStrategyState): ComboboxData => {
+  const getAvailableStates = (
+    currentState: RolloutStrategyState,
+    config: RolloutStrategyConfiguration
+  ): ComboboxData => {
     return [
       {
         value: currentState,
         label: getLabel(currentState),
         disabled: true,
       },
-      ...getNextStates(currentState).map((nextState) => {
+      ...getNextStates(currentState, config).map((nextState) => {
         return {
           value: nextState,
           label: getLabel(nextState),
@@ -386,7 +427,10 @@ export function RolloutStrategyPage() {
                         }}
                         allowDeselect={false}
                         clearable={false}
-                        data={getAvailableStates(rolloutStrategy.rolloutState)}
+                        data={getAvailableStates(
+                          rolloutStrategy.rolloutState,
+                          rolloutStrategy.configuration
+                        )}
                         value={rolloutStrategy.rolloutState}
                       />
                     )}
@@ -444,6 +488,10 @@ export function RolloutStrategyPage() {
             onCancel={selectForceCompletedFlowClosePanel}
             onForcedCompletedFlowSelected={onForcedCompletedFlowSelected}
           />
+        </Modal>
+
+        <Modal opened={winnerFlowPanelIsOpen} onClose={winnerFlowClosePanel}>
+          <WinnerFlowComponent onClose={winnerFlowClosePanel} winnerFlow={winnerFlow} />
         </Modal>
       </Layout>
     </AuthGuard>

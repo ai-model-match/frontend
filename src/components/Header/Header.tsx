@@ -1,6 +1,10 @@
 import { LanguageSelector } from '@components/LanguageSelector/LanguageSelector';
 import { Box, Group } from '@mantine/core';
-import { IconBrandGithub, IconBrandOpenSource } from '@tabler/icons-react';
+import {
+  IconBrandGithub,
+  IconBrandOpenSource,
+  IconHeartDollar,
+} from '@tabler/icons-react';
 import classes from './Header.module.css';
 import { HeaderExternalLink } from './HeaderExternalLink';
 import { HaderLogo } from './HeaderLogo';
@@ -14,6 +18,10 @@ export function Header() {
           <HeaderExternalLink
             link="https://github.com/ai-model-match"
             icon={IconBrandGithub}
+          />
+          <HeaderExternalLink
+            link="https://opencollective.com/ai-model-match"
+            icon={IconHeartDollar}
           />
           <HeaderExternalLink
             link="https://en.wikipedia.org/wiki/Open_source"
