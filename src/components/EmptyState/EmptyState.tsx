@@ -29,12 +29,12 @@ export function EmptyState({
         {title}
       </Title>
       {text && (
-        <Text ta={'center'} maw={500}>
+        <Text ta={'center'} maw={450} size="md">
           {text}
         </Text>
       )}
       {suggestion && (
-        <Text maw={500} fs={'italic'} size="md" ta={'center'} mt={20}>
+        <Text maw={400} fs={'italic'} size="sm" ta={'center'} mt={20}>
           {suggestion}
         </Text>
       )}

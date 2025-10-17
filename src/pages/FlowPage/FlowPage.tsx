@@ -177,12 +177,37 @@ export default function FlowPage() {
     activateFlowOpenPanel();
   };
 
+  const onFlowStartNow = async () => {
+    try {
+      const data = await flowService.createFlow({
+        useCaseID: apiGetUseCaseResponse.item.id,
+        title: 'Default Experiment',
+        description:
+          'This experiment represents the concrete implementation of the selected Use Case Template. For each step in the template, you can customize the model, parameters, and prompts. Edit this experiment to tailor it to your needs and test how the prompt flow performs in practice.',
+      });
+      await flowService.updateFlow({
+        id: data.item.id,
+        active: true,
+      });
+      onFlowCreated(data.item);
+    } catch (err: unknown) {
+      switch (getErrorMessage(err)) {
+        case 'refresh-token-failed':
+          navigate('/logout', { replace: true });
+          break;
+        default:
+          navigate('/internal-server-error', { replace: true });
+          break;
+      }
+    }
+  };
+
   const onFlowCreated = useCallback(
-    (_: Flow) => {
+    (flow: Flow) => {
       newFlowClosePanel();
-      setApiListFlowRequest((prev) => ({ ...prev }));
+      navigate(`/use-cases/${apiGetUseCaseResponse.item.id}/flows/${flow.id}`);
     },
-    [setApiListFlowRequest, newFlowClosePanel]
+    [navigate, newFlowClosePanel, apiGetUseCaseResponse]
   );
 
   const onFlowUpdated = useCallback(() => {
@@ -330,7 +355,7 @@ export default function FlowPage() {
                         text={t('flowCreateNewText')}
                         suggestion={t('flowCreateNewSuggestion')}
                         btnText={t('flowCreateNewBtn')}
-                        btnHandle={newFlowOpenPanel}
+                        btnHandle={onFlowStartNow}
                       ></EmptyState>
                     ) : (
                       <EmptyState

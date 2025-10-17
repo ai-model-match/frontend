@@ -29,7 +29,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { OrderDir } from '@services/api.type';
 import { useCaseService } from '@services/useCaseService';
-import { IconTargetArrow, IconPlus } from '@tabler/icons-react';
+import { IconPlus, IconTemplate } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import equal from 'fast-deep-equal';
 import { useCallback, useEffect, useState } from 'react';
@@ -216,7 +216,7 @@ export default function UseCasePage() {
               <Box>
                 <PaperTitle
                   mb={30}
-                  icon={IconTargetArrow}
+                  icon={IconTemplate}
                   title={t('useCaseTitlePage')}
                   searchValue={searchKeyValue}
                   showSearch={!hasNoResults()}

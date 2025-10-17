@@ -2,11 +2,9 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import { enTranslations } from './en';
-import { itTranslations } from './it';
 
 const resources = {
   en: { translation: enTranslations },
-  it: { translation: itTranslations },
 };
 
 const rtlLanguages = ['ar', 'he', 'fa', 'ur'];

@@ -38,7 +38,6 @@ import { useDisclosure } from '@mantine/hooks';
 import { useCaseService } from '@services/useCaseService';
 import { useCaseStepService } from '@services/useCaseStepService';
 import {
-  IconTargetArrow,
   IconCheck,
   IconCopy,
   IconPencil,
@@ -46,7 +45,7 @@ import {
   IconRoute,
   IconTrash,
   IconArrowRampRight,
-  IconSettingsAutomation,
+  IconTemplate,
 } from '@tabler/icons-react';
 import { getErrorMessage } from '@utils/errUtils';
 import { useCallback, useEffect, useState } from 'react';
@@ -276,17 +275,6 @@ export default function UseCaseStepPage() {
                     >
                       {t('useCaseFlowsAction')}
                     </Button>
-                    <Button
-                      variant="light"
-                      leftSection={<IconSettingsAutomation size={22} />}
-                      onClick={() =>
-                        navigate(
-                          `/use-cases/${apiGetUseCaseResponse.item.id}/rollout-strategy`
-                        )
-                      }
-                    >
-                      {t('useCaseRolloutStrategyAction')}
-                    </Button>
                   </Group>
                 </Group>
               </Paper>
@@ -297,8 +285,8 @@ export default function UseCaseStepPage() {
                   <Group gap={2}>
                     <PaperTitle
                       mb={0}
-                      icon={IconTargetArrow}
-                      title={apiGetUseCaseResponse.item.title}
+                      icon={IconTemplate}
+                      title={`${apiGetUseCaseResponse.item.title} ${t('useCaseStepTitleSuffix')}`}
                     />
                     <Code>{apiGetUseCaseResponse.item.code}</Code>
                     <CopyButton value={apiGetUseCaseResponse.item.code} timeout={1000}>

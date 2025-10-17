@@ -188,11 +188,14 @@ export default function FlowStepPage() {
                     title={apiGetFlowResponse.item.title}
                   />
                 </Group>
-                {auth.canWrite() && apiGetFlowResponse.item.active && (
-                  <Alert color="orange" icon={<IconAlertCircle />} mt={'sm'}>
-                    {t('flowActiveAlertMessage')}
-                  </Alert>
-                )}
+                {
+                  // eslint-disable-next-line no-constant-binary-expression
+                  false && auth.canWrite() && apiGetFlowResponse.item.active && (
+                    <Alert color="orange" icon={<IconAlertCircle />} mt={'sm'}>
+                      {t('flowActiveAlertMessage')}
+                    </Alert>
+                  )
+                }
                 <Grid mt={30}>
                   {apiListUseCaseStepResponse.items.length > 0 && (
                     <>
